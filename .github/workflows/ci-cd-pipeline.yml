@@ -24,11 +24,15 @@ jobs:
         with:
           node-version: 16 # Specify the Node.js version
 
-      # Step 3: Install dependencies
+      # Step 3: Navigate to the project directory
+      - name: Change to project directory
+        run: cd Ecommerce # Replace 'Ecommerce' with the correct subdirectory if needed
+
+      # Step 4: Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Run tests
+      # Step 5: Run tests
       - name: Run tests
         run: npm test
 
@@ -47,4 +51,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./build # Replace with your build directory
+          publish_dir: ./build
