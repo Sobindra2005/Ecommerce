@@ -53,8 +53,18 @@ export const config = {
     // Database configuration
     databaseUrl: getEnvVariable('DATABASE_URL', 'mongodb://localhost:27017/ecommerce'),
     MONGODB_URL: getEnvVariable('MONGODB_URL', 'mongodb://localhost:27017/ecommerce'),
+
+    //redis configuration
+    redisHost: getEnvVariable('REDIS_HOST', '127.0.0.1'),
+    redisPort: parseInt(getEnvVariable('REDIS_PORT', '6379'), 10),
+
     // API configuration
     apiVersion: 'v1',
+
+    // JWT configuration
+    jwtSecret: getEnvVariable('JWT_SECRET'),
+    jwtAccessExpiration: getEnvVariable('JWT_ACCESS_EXPIRATION', '15m'),
+    jwtRefreshExpiration: getEnvVariable('JWT_REFRESH_EXPIRATION', '7d'),
 
     // Security configuration
     rateLimitWindowMs: 15 * 60 * 1000, // 15 minutes
@@ -70,7 +80,7 @@ export const validateEnv = (): void => {
         console.log('🔍 Validating environment variables...');
 
         // This will throw if any required variable is missing
-        const requiredVars = ['PORT', 'NODE_ENV', 'DATABASE_URL', 'MONGODB_URL'];
+        const requiredVars = ['PORT', 'NODE_ENV', 'DATABASE_URL', 'MONGODB_URL', 'REDIS_HOST', 'REDIS_PORT', 'JWT_SECRET'];
 
         requiredVars.forEach(key => {
             getEnvVariable(key);
