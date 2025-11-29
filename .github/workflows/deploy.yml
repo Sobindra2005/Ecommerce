@@ -3,14 +3,17 @@ name: Dev CI/CD
 on:
   push:
     branches:
-      - dev
+      - development
   pull_request:
     branches:
-      - dev
+      - development
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
 
     steps:
       - name: Checkout code
@@ -41,6 +44,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build Docker image
+      - name: Build Backend Docker image
         run: |
-          docker build -t my-app:dev .
+          docker build -t ecommerce-backend:dev ./backend
+
+      - name: Build Nginx Docker image
+        run: |
+          docker build -t ecommerce-nginx:dev ./nginx
+
+      - name: Test Docker Compose
+        run: |
+          docker-compose up -d
+          sleep 10
+          docker-compose ps
+          docker-compose logs
+          docker-compose down
