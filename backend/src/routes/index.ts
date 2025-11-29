@@ -1,5 +1,6 @@
 import express from 'express';
-
+import authRoutes from './authRoutes';
+import testRoutes from './testRoutes';
 
 const router = express.Router();
 
@@ -8,5 +9,10 @@ const router = express.Router();
  * Mount all route modules here
  */
 
+// Authentication routes
+router.use('/auth', authRoutes);
+
+// Test routes (for verifying auth functionality)
+router.use('/test', testRoutes);
 
 export default router;
