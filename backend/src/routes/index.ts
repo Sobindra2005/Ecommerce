@@ -4,6 +4,9 @@ import addressRoutes from './addressRoutes';
 import orderRoutes from './orderRoutes';
 import settingRoutes from './settingRoutes';
 import inventoryRoutes from './inventoryRoutes';
+import categoryRoutes from './categoryRoutes';
+import productRoutes from './productRoutes';
+import searchRoutes from './searchRoutes';
 import testRoutes from './testRoutes';
 
 const router = express.Router();
@@ -27,6 +30,15 @@ router.use('/settings', settingRoutes);
 
 // Inventory routes
 router.use('/inventory', inventoryRoutes);
+
+// Category routes
+router.use('/categories', categoryRoutes);
+
+// Product routes
+router.use('/products', productRoutes);
+
+// Search routes
+router.use('/search', searchRoutes);
 
 // Test routes (for verifying auth functionality)
 router.use('/test', testRoutes);
