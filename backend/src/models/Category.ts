@@ -281,27 +281,6 @@ CategorySchema.statics.getBreadcrumb = async function (categoryId: string) {
     return breadcrumb;
 };
 
-// Instance method to get all descendants
-CategorySchema.methods.getDescendants = function () {
-    return mongoose.model('Category').find({
-        ancestors: this._id
-    });
-};
-
-// Instance method to get direct children
-CategorySchema.methods.getChildren = function () {
-    return mongoose.model('Category').find({
-        parent: this._id,
-        isActive: true
-    }).sort({ displayOrder: 1, name: 1 });
-};
-
-// Instance method to get full path (slug-based)
-CategorySchema.methods.getFullPath = async function () {
-    const breadcrumb = await mongoose.model<ICategory, ICategoryModel>('Category').getBreadcrumb(this._id);
-    return breadcrumb.map((cat: { slug: string }) => cat.slug).join('/');
-};
-
 // Instance method to update product count
 CategorySchema.methods.updateProductCount = async function () {
     const Product = mongoose.model('Product');

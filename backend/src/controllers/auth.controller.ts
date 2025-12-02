@@ -88,7 +88,7 @@ export const signup = asyncHandler(async (req: Request, res: Response) => {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
-        path: "/auth/refresh",
+        path: `/api/${config.apiVersion}/auth/refresh-token`,
     });
 
 
@@ -158,7 +158,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
         httpOnly: true,
         secure: true,
         sameSite: "strict",
-        path: "/auth/refresh",
+        path: `/api/${config.apiVersion}/auth/refresh-token`,
     });
 
     // 8. Prepare user data (exclude password)
@@ -182,7 +182,7 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
  * POST /api/v1/auth/refresh-token
  */
 export const refreshAccessToken = asyncHandler(async (req: Request, res: Response) => {
-    const { refreshToken } = req.body;
+    const refreshToken = req.cookies.refreshToken;
 
     // 1. Validate refresh token is provided
     if (!refreshToken) {
