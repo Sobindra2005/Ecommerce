@@ -1,5 +1,6 @@
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { FlashSaleCard } from "@/components/FlashSaleCard";
 import { PopularCategories } from "@/components/PopularCategories";
 import { ProductGrid } from "@/components/ProductGrid";
 import { sampleProducts } from "@/data/products";
@@ -11,6 +12,7 @@ export default function Home() {
       <main>
         <Hero />
         <PopularCategories />
+        <FlashSaleCard />
         <ProductGrid products={sampleProducts} />
       </main>
     </div>
