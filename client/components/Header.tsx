@@ -9,12 +9,15 @@ import { MainContainer } from "./wrapper";
 import { useState, useEffect, useRef } from "react";
 import { searchProducts, popularCategoriesSearch, SearchProduct, PopularCategory } from "@/data/searchSuggestions";
 import { motion } from "framer-motion";
+import { useCart } from "@/contexts/CartContext";
 
 export function Header() {
     const [isSearchFocused, setIsSearchFocused] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredProducts, setFilteredProducts] = useState<SearchProduct[]>([]);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const { getTotalItems } = useCart();
+    const totalItems = getTotalItems();
 
     // Filter products based on search query
     useEffect(() => {
@@ -159,10 +162,17 @@ export function Header() {
                         <User className="h-6 w-6" />
                         <span className="">Account</span>
                     </Button>
-                    <Button variant="ghost" size="lg" className="relative">
-                        <ShoppingCart className="h-6 w-6" />
-                        <span className="">Cart</span>
-                    </Button>
+                    <Link href="/cart">
+                        <Button variant="ghost" size="lg" className="relative">
+                            <ShoppingCart className="h-6 w-6" />
+                            <span className="">Cart</span>
+                            {totalItems > 0 && (
+                                <span className="absolute -top-1 -right-1 bg-orange-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                                    {totalItems}
+                                </span>
+                            )}
+                        </Button>
+                    </Link>
                 </div>
             </MainContainer>
         </header>

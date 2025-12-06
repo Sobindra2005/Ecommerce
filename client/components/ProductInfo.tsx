@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import { Heart, ChevronDown, Package, Truck, Calendar, Box, Minus, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Product } from "@/types/product";
 import { SizeSelector } from "./SizeSelector";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductInfoProps {
     product: Product;
@@ -17,6 +19,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
     const [quantity, setQuantity] = useState(1);
     const [descriptionOpen, setDescriptionOpen] = useState(true);
     const [shippingOpen, setShippingOpen] = useState(true);
+    
+    const { addToCart } = useCart();
+    const router = useRouter();
 
     const handleIncrement = () => {
         setQuantity((prev) => prev + 1);
@@ -24,6 +29,18 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
     const handleDecrement = () => {
         setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+    };
+
+    const handleAddToCart = () => {
+        addToCart({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: quantity,
+            size: selectedSize,
+        });
+        router.push("/cart");
     };
 
     return (
@@ -84,12 +101,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
                     </button>
                 </div>
                 
-                {/* Buy Now Button */}
+                {/* Add to Cart Button */}
                 <Button
+                    onClick={handleAddToCart}
                     className="flex-1 h-12 rounded-full bg-orange-700 text-white font-medium hover:bg-orange-800"
                     size="lg"
                 >
-                   Buy Now
+                   Add to cart
                 </Button>
 
                 {/* Wishlist Button */}
