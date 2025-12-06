@@ -84,7 +84,7 @@ export function Hero() {
 
         const interval = setInterval(() => {
             api.scrollNext()
-        }, 4000)
+        }, 8000)
 
         return () => clearInterval(interval)
     }, [api])
@@ -94,15 +94,15 @@ export function Hero() {
     }
 
     return (
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden container">
             <Carousel 
                 setApi={setApi} 
-                className="w-full"
+                className=" border-2 border-white "
                 opts={{
                     loop: true,
                 }}
             >
-                <CarouselContent>
+                    <CarouselContent>
                     {heroSlides.map((slide, index) => (
                         <CarouselItem key={slide.id}>
                             <Card className="border-0 rounded-none p-0">

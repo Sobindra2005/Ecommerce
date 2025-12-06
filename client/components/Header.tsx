@@ -4,22 +4,22 @@ import Link from "next/link";
 import { Search, ShoppingCart, User, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { MainContainer } from "./wrapper";
 
 export function Header() {
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-white">
-            <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+            <MainContainer className="container flex h-16 items-center justify-between">
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2">
+                <Link href="/" className="flex items-center ">
                     <div className="flex h-14 w-42 items-center justify-center">
                         <Image src="/logo.png" alt="Logo" width={168} height={56} />
                     </div>
                 </Link>
 
                 {/* Navigation */}
-                <nav className="hidden items-center gap-6 md:flex">
+                <nav className="hidden items-center gap-6 md:flex ">
                     <button className="flex items-center gap-1 text-sm font-medium hover:text-emerald-600 transition-colors">
                         Categories
                         <ChevronDown className="h-4 w-4" />
@@ -58,7 +58,7 @@ export function Header() {
                         <span className="sr-only">Cart</span>
                     </Button>
                 </div>
-            </div>
+            </MainContainer>
         </header>
     );
 }
