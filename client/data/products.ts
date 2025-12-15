@@ -163,3 +163,80 @@ export const sampleProducts: Product[] = [
     }
 ];
 
+export const flashSaleProducts: Product[] = [
+    {
+        id: "fs-1",
+        name: "Premium Wireless Earbuds",
+        description: "Active noise cancellation and transparency mode.",
+        detailedDescription: "Experience immersive sound with our premium wireless earbuds...",
+        price: 129.99,
+        image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&q=80",
+        rating: 4.8,
+        reviewCount: 342,
+        category: "Electronics",
+        shippingInfo: {
+            discount: "50% OFF",
+            packageType: "Box",
+            deliveryTime: "Quick delivery",
+            estimatedDelivery: "Tomorrow"
+        }
+    },
+    {
+        id: "fs-2",
+        name: "Smart Watch Series X",
+        description: "Advanced health tracking and always-on display.",
+        price: 299.99,
+        image: "https://images.unsplash.com/photo-1579586337278-3befd40fd17a?w=800&q=80",
+        rating: 4.9,
+        reviewCount: 156,
+        category: "Electronics",
+        shippingInfo: {
+            discount: "20% OFF",
+            packageType: "Box",
+            deliveryTime: "1 week",
+            estimatedDelivery: "Next Monday"
+        }
+
+    },
+    {
+        id: "fs-3",
+        name: "Ultraboost Running Shoes",
+        description: "Responsive cushioning for an energized run.",
+        price: 89.99,
+        image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800&q=80",
+        rating: 4.7,
+        reviewCount: 89,
+        category: "Footwear",
+    },
+    {
+        id: "fs-4",
+        name: "Designer Sunglasses",
+        description: "UV protection with a classic style.",
+        price: 159.50,
+        image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80",
+        rating: 4.6,
+        reviewCount: 120,
+        category: "Accessories",
+    },
+    {
+        id: "fs-5",
+        name: "Gaming Console",
+        description: "Next-gen gaming performance.",
+        price: 499.99,
+        image: "https://images.unsplash.com/photo-1481437156560-3205f6a55735?w=800&q=80",
+        rating: 4.9,
+        reviewCount: 1200,
+        category: "Electronics",
+    },
+    {
+        id: "fs-6",
+        name: "4K Action Camera",
+        description: "Capture your adventures in stunning detail.",
+        price: 249.99,
+        image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&q=80",
+        rating: 4.5,
+        reviewCount: 67,
+        category: "Electronics",
+    }
+];
+

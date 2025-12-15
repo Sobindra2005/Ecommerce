@@ -1,15 +1,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { FilterSidebar } from "@/components/search/FilterSidebar";
 import { ProductCard } from "@/components/ProductCard";
 import { mockProducts } from "@/data/mockSearchData";
 import { Button } from "@/components/ui/button";
-import { Filter, SlidersHorizontal } from "lucide-react";
-// import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"; // Using Sheet if available, assume it might not be since not listed, but I'll try standard conditional rendering first to be safe as per my previous tool result which showed NO sheet.tsx
-
-// Re-checking tool output: badge, button, card, carousel, input. Sheet is NOT there.
-// So I will implement a custom mobile drawer using standard React/Tailwind variables.
+import { Filter } from "lucide-react";
 
 export default function SearchPage() {
     const [filters, setFilters] = useState({
@@ -26,12 +23,8 @@ export default function SearchPage() {
     const filteredProducts = useMemo(() => {
         return mockProducts.filter(product => {
             // Brand Filter
-            if (filters.brands.length > 0 && !filters.brands.includes(product.name.split(' ')[0])) { // Simple mock brand check (first word) or just ignore brand match for now since data doesn't have brand field explicitly? 
-                // Wait, mock data didn't have brand field. I should update mock data or infer it. 
-                // Let's infer brand from first word of name or add brand to mock data. 
-                // Actually, mockProducts definition I wrote earlier, I just used `Product` interface. 
-                // Let's assume for this mock data that Brand is checked against a hardcoded list or mapped.
-                // For safer implementation with current data, I'll check if any brand string is part of the product name.
+            if (filters.brands.length > 0 && !filters.brands.includes(product.name.split(' ')[0])) {
+
                 const productBrand = filters.brands.find(brand => product.name.toLowerCase().includes(brand.toLowerCase()));
                 if (!productBrand) return false;
             }
@@ -48,18 +41,11 @@ export default function SearchPage() {
             // Rating Filter
             if (filters.minRating !== null && product.rating < filters.minRating) return false;
 
-            // Tags Filter - simplified check (if product has tags)
-            // My mock data interface didn't have tags in `Product` (it was optional/custom). 
-            // I'll skip strict tag filtering if the field is missing on Product type, or cast it.
-            // In Javascript/Typescript, I can just check if property exists.
             if (filters.tags.length > 0) {
                 // @ts-ignore
                 const productTags = product.tags as string[] | undefined;
                 if (!productTags || !filters.tags.some(tag => productTags.includes(tag))) {
-                    // For strict filtering: return false;
-                    // But for demo if data is sparse, maybe lenient? No, sticky to logic.
-                    // If product has no tags, and we actived tag filter, it should be hidden.
-                    // Note: Only product 2 has tags in my mock data.
+
                     if (!productTags) return false;
                 }
             }
@@ -142,16 +128,22 @@ export default function SearchPage() {
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-20 bg-muted/30 rounded-lg border border-dashed">
-                            <div className="flex justify-center mb-4">
-                                <SlidersHorizontal className="h-10 w-10 text-muted-foreground/50" />
+                        <div className="flex flex-col items-center justify-center py-16 text-center">
+                            <div className="relative mb-6 h-48 w-48 sm:h-64 sm:w-64">
+                                <Image
+                                    src="/images/no-search-results.png"
+                                    alt="No Results Found"
+                                    fill
+                                    className="object-contain"
+                                />
                             </div>
-                            <h3 className="text-lg font-medium">No results found</h3>
-                            <p className="text-muted-foreground mt-1">Try adjusting your filters or search query.</p>
+                            <h3 className="text-xl font-semibold mb-2">No results found</h3>
+                            <p className="text-muted-foreground mb-6 max-w-sm">
+                                We couldn't find any products matching your search. Try checking for typos or using different keywords.
+                            </p>
                             <Button
-                                variant="link"
+                                variant="outline"
                                 onClick={() => setFilters({ brands: [], categories: [], minPrice: "", maxPrice: "", minRating: null, tags: [] })}
-                                className="mt-4"
                             >
                                 Clear all filters
                             </Button>
