@@ -112,9 +112,9 @@ export function Header() {
                                         {/* Popular Categories */}
                                         {showPopularCategories && (
                                             <motion.div
-                                                initial={{ opacity: 0}}
-                                                animate={{ opacity: 1}}
-                                                transition={{ duration:0.5 }}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ duration: 0.5 }}
                                                 className="p-4">
                                                 <h3 className="text-sm font-semibold text-gray-900 mb-4">Popular Categories</h3>
                                                 <div className="grid grid-cols-2 gap-3">
@@ -128,9 +128,9 @@ export function Header() {
                                         {/* Product Suggestions */}
                                         {showProductSuggestions && (
                                             <motion.div
-                                                initial={{ opacity: 0}}
-                                                animate={{ opacity: 1}}
-                                                transition={{ duration:0.5 }} className="py-2">
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ duration: 0.5 }} className="py-2">
                                                 {filteredProducts.map((product) => (
                                                     <ProductSuggestion key={product.id} product={product} />
                                                 ))}
@@ -140,9 +140,9 @@ export function Header() {
                                         {/* No Results */}
                                         {showDropdown && searchQuery.trim() && filteredProducts.length === 0 && (
                                             <motion.div
-                                                initial={{ opacity: 0}}
-                                                animate={{ opacity: 1}}
-                                                transition={{ duration:0.5 }}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ duration: 0.5 }}
                                                 className="p-8 text-center text-gray-500">
                                                 <p className="text-sm">No products found for &quot;{searchQuery}&quot;</p>
                                             </motion.div>
@@ -152,16 +152,16 @@ export function Header() {
                             </div>
                         </div>
                     </div>
-
                 </nav>
-
 
                 {/* Actions */}
                 <div className="flex items-center gap-4">
-                    <Button variant="ghost" size="lg" className="hidden md:flex">
-                        <User className="h-6 w-6" />
-                        <span className="">Account</span>
-                    </Button>
+                    <Link href="/account">
+                        <Button variant="ghost" size="lg" className="hidden md:flex">
+                            <User className="h-6 w-6" />
+                            <span className="">Account</span>
+                        </Button>
+                    </Link>
                     <Link href="/cart">
                         <Button variant="ghost" size="lg" className="relative">
                             <ShoppingCart className="h-6 w-6" />
@@ -175,7 +175,7 @@ export function Header() {
                     </Link>
                 </div>
             </MainContainer>
-        </header>
+        </header >
     );
 }
 

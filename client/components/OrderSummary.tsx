@@ -9,12 +9,13 @@ import { Card } from "@/components/ui/card";
 interface OrderSummaryProps {
     subtotal: number;
     vatRate?: number;
+    onCheckout?: () => void;
 }
 
-export function OrderSummary({ subtotal, vatRate = 0.05 }: OrderSummaryProps) {
+export function OrderSummary({ subtotal, vatRate = 0.05, onCheckout }: OrderSummaryProps) {
     const [couponCode, setCouponCode] = useState("");
     const [showCouponInput, setShowCouponInput] = useState(false);
-    
+
     const vat = subtotal * vatRate;
     const total = subtotal + vat;
 
@@ -48,7 +49,7 @@ export function OrderSummary({ subtotal, vatRate = 0.05 }: OrderSummaryProps) {
                     <span className="font-medium">Add a coupon</span>
                     <Minus className={`w-5 h-5 transition-transform ${showCouponInput ? 'rotate-0' : 'rotate-90'}`} />
                 </button>
-                
+
                 {showCouponInput && (
                     <div className="mt-4 flex gap-2">
                         <Input
@@ -75,7 +76,8 @@ export function OrderSummary({ subtotal, vatRate = 0.05 }: OrderSummaryProps) {
             </div>
 
             {/* Checkout Button */}
-            <Button 
+            <Button
+                onClick={onCheckout}
                 className="w-full h-12 rounded-full bg-yellow-400 text-black font-semibold hover:bg-yellow-500"
                 size="lg"
             >
