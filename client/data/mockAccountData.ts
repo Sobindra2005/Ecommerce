@@ -71,20 +71,20 @@ export const mockUser: User = {
     ],
     wishlist: [mockProducts[1], mockProducts[4]],
     paymentMethods: [
-        {
-            id: "pm1",
-            type: "Credit Card",
-            brand: "Visa",
-            last4: "4242",
-            expiryDate: "12/25",
-            isDefault: true
-        },
-        {
-            id: "pm2",
-            type: "PayPal",
-            brand: "PayPal",
-            isDefault: false
-        }
+        // {
+        //     id: "pm1",
+        //     type: "Credit Card",
+        //     brand: "Visa",
+        //     last4: "4242",
+        //     expiryDate: "12/25",
+        //     isDefault: true
+        // },
+        // {
+        //     id: "pm2",
+        //     type: "PayPal",
+        //     brand: "PayPal",
+        //     isDefault: false
+        // }
     ],
     notifications: {
         email: true,
