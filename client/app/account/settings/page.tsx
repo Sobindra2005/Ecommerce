@@ -1,18 +1,36 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { passwordChangeSchema, PasswordChangeFormData } from "@/lib/schemas/settings.schema";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-// import { Switch } from "@/components/ui/switch"; // Component not installed
-// import { Checkbox } from "@/components/ui/checkbox"; // Component not installed
+import { Form } from "@/components/ui/form";
+import { FormPasswordInput } from "@/components/form/FormPasswordInput";
 import { mockUser } from "@/data/mockAccountData";
+import { FaLock } from "react-icons/fa";
 
 export default function SettingsPage() {
     const [notifications, setNotifications] = useState(mockUser.notifications);
 
+    const form = useForm<PasswordChangeFormData>({
+        resolver: zodResolver(passwordChangeSchema),
+        defaultValues: {
+            currentPassword: "",
+            newPassword: "",
+            confirmNewPassword: "",
+        },
+    });
+
     // Mock toggle
     const toggleNotification = (key: keyof typeof notifications) => {
         setNotifications({ ...notifications, [key]: !notifications[key] });
+    };
+
+    const onSubmit = (data: PasswordChangeFormData) => {
+        console.log("Password change submitted:", data);
+        // Show success message and reset form
+        form.reset();
     };
 
     return (
@@ -23,20 +41,38 @@ export default function SettingsPage() {
             <section className="space-y-4">
                 <h2 className="text-xl font-semibold border-b pb-2">Security</h2>
                 <div className="space-y-4 max-w-md">
-                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wider">Change Password</h3>
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium">Current Password</label>
-                        <Input type="password" placeholder="••••••••" />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium">New Password</label>
-                        <Input type="password" placeholder="••••••••" />
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium">Confirm New Password</label>
-                        <Input type="password" placeholder="••••••••" />
-                    </div>
-                    <Button>Update Password</Button>
+                    <h3 className="font-medium text-sm text-muted-foreground uppercase tracking-wider">
+                        Change Password
+                    </h3>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                            <FormPasswordInput
+                                control={form.control}
+                                name="currentPassword"
+                                label="Current Password"
+                                placeholder="••••••••"
+                                icon={<FaLock size={16} />}
+                            />
+
+                            <FormPasswordInput
+                                control={form.control}
+                                name="newPassword"
+                                label="New Password"
+                                placeholder="••••••••"
+                                icon={<FaLock size={16} />}
+                            />
+
+                            <FormPasswordInput
+                                control={form.control}
+                                name="confirmNewPassword"
+                                label="Confirm New Password"
+                                placeholder="••••••••"
+                                icon={<FaLock size={16} />}
+                            />
+
+                            <Button type="submit">Update Password</Button>
+                        </form>
+                    </Form>
                 </div>
             </section>
 
@@ -47,7 +83,9 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between max-w-lg">
                         <div>
                             <h4 className="font-medium">Email Notifications</h4>
-                            <p className="text-sm text-muted-foreground">Receive order updates and usage alerts via email.</p>
+                            <p className="text-sm text-muted-foreground">
+                                Receive order updates and usage alerts via email.
+                            </p>
                         </div>
                         {/* Custom Toggle Switch using Tailwind */}
                         <label className="relative inline-flex items-center cursor-pointer">
@@ -55,7 +93,7 @@ export default function SettingsPage() {
                                 type="checkbox"
                                 className="sr-only peer"
                                 checked={notifications.email}
-                                onChange={() => toggleNotification('email')}
+                                onChange={() => toggleNotification("email")}
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                         </label>
@@ -64,14 +102,16 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between max-w-lg">
                         <div>
                             <h4 className="font-medium">SMS Notifications</h4>
-                            <p className="text-sm text-muted-foreground">Receive delivery updates via SMS.</p>
+                            <p className="text-sm text-muted-foreground">
+                                Receive delivery updates via SMS.
+                            </p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input
                                 type="checkbox"
                                 className="sr-only peer"
                                 checked={notifications.sms}
-                                onChange={() => toggleNotification('sms')}
+                                onChange={() => toggleNotification("sms")}
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                         </label>
@@ -80,14 +120,16 @@ export default function SettingsPage() {
                     <div className="flex items-center justify-between max-w-lg">
                         <div>
                             <h4 className="font-medium">Promotional Emails</h4>
-                            <p className="text-sm text-muted-foreground">Receive offers, surveys, and news.</p>
+                            <p className="text-sm text-muted-foreground">
+                                Receive offers, surveys, and news.
+                            </p>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
                             <input
                                 type="checkbox"
                                 className="sr-only peer"
                                 checked={notifications.promotional}
-                                onChange={() => toggleNotification('promotional')}
+                                onChange={() => toggleNotification("promotional")}
                             />
                             <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                         </label>

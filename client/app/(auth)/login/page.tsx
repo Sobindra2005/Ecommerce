@@ -1,45 +1,38 @@
-"use client"
+"use client";
 
-import Link from "next/link"
-import * as React from "react" // For useState
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { FcGoogle } from "react-icons/fc"
-import { FaCheck, FaExclamationCircle, FaEye, FaEyeSlash, FaLock } from "react-icons/fa"
-import { MdEmail } from "react-icons/md"
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, LoginFormData } from "@/lib/schemas/auth.schema";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { FormInput } from "@/components/form/FormInput";
+import { FormPasswordInput } from "@/components/form/FormPasswordInput";
+import { FcGoogle } from "react-icons/fc";
+import { MdEmail } from "react-icons/md";
+import { FaLock } from "react-icons/fa";
 
 export default function LoginPage() {
-    const [formData, setFormData] = React.useState({
-        email: "",
-        password: ""
-    })
-    const [showPassword, setShowPassword] = React.useState(false)
+    const form = useForm<LoginFormData>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: "",
+        },
+    });
 
-    // Real-time validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isEmailValid = emailRegex.test(formData.email)
-    const isEmailInvalid = formData.email.length > 0 && !isEmailValid
-
-    // Password validation (just check for existence for login, or maybe min length if desired, but existence is key)
-    const isPasswordValid = formData.password.length > 0
-
-    const isFormValid = isEmailValid && isPasswordValid
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target
-        setFormData(prev => ({ ...prev, [id]: value }))
-    }
-
-    const handleSubmit = () => {
+    const onSubmit = (data: LoginFormData) => {
         // Mock submit
-        console.log("Logging in with:", formData)
-    }
+        console.log("Logging in with:", data);
+    };
 
     return (
         <div className="flex flex-col gap-6">
             <div className="text-center md:text-left">
                 <h1 className="text-3xl font-bold">Welcome Back!</h1>
-                <p className="text-muted-foreground mt-2">Sign in to access your cart, orders, and exclusive deals</p>
+                <p className="text-muted-foreground mt-2">
+                    Sign in to access your cart, orders, and exclusive deals
+                </p>
             </div>
 
             {/* Toggle Button */}
@@ -55,76 +48,43 @@ export default function LoginPage() {
                 </Link>
             </div>
 
-            <div className="grid gap-4">
-                <div className="grid gap-2">
-                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="email">
-                        Email Address
-                    </label>
-                    <div className="relative">
-                        <div className="absolute left-3 top-3 text-muted-foreground/60">
-                            <MdEmail size={18} />
-                        </div>
-                        <Input
-                            id="email"
-                            placeholder="you@example.com"
-                            type="email"
-                            className={`pl-10 ${isEmailValid ? "border-green-500 focus-visible:ring-green-500/50" : isEmailInvalid ? "border-red-500 focus-visible:ring-red-500/50" : ""}`}
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+                    <FormInput
+                        control={form.control}
+                        name="email"
+                        label="Email Address"
+                        placeholder="you@example.com"
+                        type="email"
+                        icon={<MdEmail size={18} />}
+                    />
 
-                        {/* Validation Icons */}
-                        {isEmailValid && (
-                            <div className="absolute right-3 top-3 text-green-500">
-                                <FaCheck size={14} />
-                            </div>
-                        )}
-                        {isEmailInvalid && (
-                            <div className="absolute right-3 top-3 text-red-500 animate-in fade-in zoom-in">
-                                <FaExclamationCircle size={14} />
-                            </div>
-                        )}
-                    </div>
-                    {isEmailInvalid && <p className="text-xs text-red-500">Please enter a valid email address</p>}
-                </div>
-
-                <div className="grid gap-2">
-                    <div className="flex items-center justify-between">
-                        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="password">
-                            Password
-                        </label>
-                        <Link href="#" className="text-xs text-blue-600 hover:underline">Forgot password?</Link>
-                    </div>
-                    <div className="relative">
-                        <div className="absolute left-3 top-3 text-muted-foreground/60">
-                            <FaLock size={16} />
+                    <div className="grid gap-2">
+                        <div className="flex items-center justify-between">
+                            <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Password
+                            </label>
+                            <Link href="#" className="text-xs text-blue-600 hover:underline">
+                                Forgot password?
+                            </Link>
                         </div>
-                        <Input
-                            id="password"
+                        <FormPasswordInput
+                            control={form.control}
+                            name="password"
                             placeholder="••••••••"
-                            type={showPassword ? "text" : "password"}
-                            className="pl-10 pr-10"
-                            value={formData.password}
-                            onChange={handleChange}
+                            icon={<FaLock size={16} />}
                         />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                        >
-                            {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
-                        </button>
                     </div>
-                </div>
 
-                <Button
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md rounded-xl h-12 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
-                    disabled={!isFormValid}
-                    onClick={handleSubmit}
-                >
-                    Continue
-                </Button>
-            </div>
+                    <Button
+                        type="submit"
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md rounded-xl h-12 text-base font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={!form.formState.isValid || !form.watch("email") || !form.watch("password")}
+                    >
+                        Continue
+                    </Button>
+                </form>
+            </Form>
 
             <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -143,5 +103,5 @@ export default function LoginPage() {
                 </Button>
             </div>
         </div>
-    )
+    );
 }
