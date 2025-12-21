@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Star, Check } from "lucide-react";
 import { Button } from "@repo/ui/ui/button";
 import { Input } from "@repo/ui/ui/input";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/lib/utils";
 import { mockFilters } from "@/data/mockSearchData";
 
 interface FilterState {
