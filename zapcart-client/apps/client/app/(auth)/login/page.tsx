@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, LoginFormData } from "@/lib/schemas/auth.schema";
+import { loginSchema, LoginFormData } from "@repo/lib/schemas/auth.schema";
 import { Button } from "@repo/ui/ui/button";
 import { Form } from "@repo/ui/ui/form";
 import { FormInput } from "@repo/ui/form/FormInput";

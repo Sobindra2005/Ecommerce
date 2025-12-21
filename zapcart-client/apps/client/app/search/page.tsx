@@ -2,12 +2,12 @@
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
-import { FilterSidebar } from "@repo/ui/search/FilterSidebar";
-import { ProductCard } from "@repo/ui/ProductCard";
+import { FilterSidebar } from "@/components/search/FilterSidebar";
+import { ProductCard } from "@/components/ProductCard";
 import { mockProducts } from "@/data/mockSearchData";
 import { Button } from "@repo/ui/ui/button";
 import { Filter } from "lucide-react";
-import { SortSelect, productSortOptions } from "@repo/ui/SortSelect";
+import { SortSelect, productSortOptions } from "@/components/SortSelect";
 
 export default function SearchPage() {
     const [filters, setFilters] = useState({

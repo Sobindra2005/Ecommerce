@@ -2,7 +2,7 @@ import { Address } from "@/types/user";
 import { Button } from "@repo/ui/ui/button";
 import { Card, CardContent } from "@repo/ui/ui/card";
 import { MapPin, Edit, Trash2, Home, Briefcase } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/lib/utils";
 
 interface AddressCardProps {
     address: Address;

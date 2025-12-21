@@ -11,7 +11,7 @@ import { Button } from "@repo/ui/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/ui/form";
 import { Input } from "@repo/ui/ui/input";
 import { Textarea } from "@repo/ui/ui/textarea";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/lib/utils";
 import {motion} from "framer-motion"
 
 // Review form validation schema

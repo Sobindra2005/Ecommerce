@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@repo/ui/ui/button";
 import { Product } from "@/types/product";
 import { SizeSelector } from "./SizeSelector";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/lib/utils";
 import { useCart } from "@/contexts/CartContext";
 import { motion } from "framer-motion";
 

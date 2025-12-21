@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { passwordChangeSchema, PasswordChangeFormData } from "@/lib/schemas/settings.schema";
+import { passwordChangeSchema, PasswordChangeFormData } from "@repo/lib/schemas/settings.schema";
 import { Button } from "@repo/ui/ui/button";
 import { Form } from "@repo/ui/ui/form";
 import { FormPasswordInput } from "@repo/ui/form/FormPasswordInput";

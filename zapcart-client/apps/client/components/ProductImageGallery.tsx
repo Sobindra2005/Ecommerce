@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/lib/utils";
 
 interface ProductImageGalleryProps {
     images: string[];

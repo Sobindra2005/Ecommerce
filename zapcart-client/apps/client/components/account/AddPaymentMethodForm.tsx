@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
     paymentMethodSchema,
     PaymentMethodFormData,
-} from "@/lib/schemas/payment.schema";
+} from "@repo/lib/schemas/payment.schema";
 import { PaymentMethod } from "@/types/user";
 import {
     Dialog,

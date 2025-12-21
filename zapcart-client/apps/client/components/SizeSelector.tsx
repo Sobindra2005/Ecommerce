@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/lib/utils";
 import { Button } from "@repo/ui/ui/button";
 
 interface SizeSelectorProps {

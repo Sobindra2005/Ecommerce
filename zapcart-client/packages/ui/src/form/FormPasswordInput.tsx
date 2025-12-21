@@ -15,7 +15,7 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@repo/ui/ui/tooltip";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/lib/utils";
 import { FaEye, FaEyeSlash, FaExclamationCircle } from "react-icons/fa";
 
 interface FormPasswordInputProps<

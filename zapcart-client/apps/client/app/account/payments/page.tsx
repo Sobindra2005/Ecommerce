@@ -6,7 +6,7 @@ import { PaymentMethod } from "@/types/user";
 import { Button } from "@repo/ui/ui/button";
 import { Card, CardContent } from "@repo/ui/ui/card";
 import { CreditCard, Trash2, Plus } from "lucide-react";
-import { AddPaymentMethodForm } from "@repo/ui/account/AddPaymentMethodForm";
+import { AddPaymentMethodForm } from "@/components/account/AddPaymentMethodForm";
 
 export default function PaymentsPage() {
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(

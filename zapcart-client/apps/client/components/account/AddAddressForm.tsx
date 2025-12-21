@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { addressSchema, AddressFormData } from "@/lib/schemas/address.schema";
+import { addressSchema, AddressFormData } from "@repo/lib/schemas/address.schema";
 import { Address } from "@/types/user";
 import {
     Dialog,

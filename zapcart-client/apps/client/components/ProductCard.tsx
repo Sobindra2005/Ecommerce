@@ -6,7 +6,7 @@ import { Heart, Star } from "lucide-react";
 import { Card, CardContent } from "@repo/ui/ui/card";
 import { Button } from "@repo/ui/ui/button";
 import { Product } from "@/types/product";
-import { cn } from "@/lib/utils";
+import { cn } from "@repo/lib/utils";
 
 interface ProductCardProps {
     product: Product;

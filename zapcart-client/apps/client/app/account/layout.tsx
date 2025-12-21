@@ -1,4 +1,4 @@
-import { AccountSidebar } from "@repo/ui/account/AccountSidebar";
+import { AccountSidebar } from "@/components/account/AccountSidebar";
 
 export default function AccountLayout({
     children,
