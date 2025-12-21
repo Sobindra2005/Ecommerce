@@ -3,9 +3,9 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@repo/ui/ui/card";
+import { Button } from "@repo/ui/ui/button";
+import { Badge } from "@repo/ui/ui/badge";
 import { MainContainer } from "./wrapper";
 
 export function FlashSaleCard() {

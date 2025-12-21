@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { mockUser } from "@/data/mockAccountData";
 import { PaymentMethod } from "@/types/user";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@repo/ui/ui/button";
+import { Card, CardContent } from "@repo/ui/ui/card";
 import { CreditCard, Trash2, Plus } from "lucide-react";
-import { AddPaymentMethodForm } from "@/components/account/AddPaymentMethodForm";
+import { AddPaymentMethodForm } from "@repo/ui/account/AddPaymentMethodForm";
 
 export default function PaymentsPage() {
     const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>(

@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Heart, Star } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@repo/ui/ui/card";
+import { Button } from "@repo/ui/ui/button";
 import { Product } from "@/types/product";
 import { cn } from "@/lib/utils";
 

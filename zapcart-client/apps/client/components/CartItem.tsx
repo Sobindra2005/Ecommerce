@@ -2,7 +2,7 @@
 
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/ui/button";
 import { CartItem as CartItemType } from "@/contexts/CartContext";
 
 interface CartItemProps {

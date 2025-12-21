@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import { Button } from "@repo/ui/ui/button"
 import { MainContainer } from "./wrapper"
 import { SectionHeader } from "./SectionHeader"
 

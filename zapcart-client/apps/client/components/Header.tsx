@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { Search, ShoppingCart, User, ChevronDown, Star } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { Input } from "@repo/ui/ui/input";
+import { Button } from "@repo/ui/ui/button";
 import Image from "next/image";
 import { MainContainer } from "./wrapper";
 import { useState, useEffect, useRef } from "react";
@@ -112,7 +112,7 @@ export function Header() {
                                         initial={{ opacity: 0, y: 40 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ duration: 0.3 }}
-                                        className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-[500px] overflow-y-auto z-50">
+                                        className="absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl border border-gray-200 max-h-125 overflow-y-auto z-50">
                                         {/* Popular Categories */}
                                         {showPopularCategories && (
                                             <motion.div

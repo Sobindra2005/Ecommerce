@@ -1,6 +1,6 @@
 import { Address } from "@/types/user";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@repo/ui/ui/button";
+import { Card, CardContent } from "@repo/ui/ui/card";
 import { MapPin, Edit, Trash2, Home, Briefcase } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ export function AddressCard({ address, onEdit, onDelete, onSetDefault }: Address
     return (
         <Card className={cn(
             "group relative overflow-hidden transition-all duration-300 hover:shadow-lg rounded-2xl", 
-            address.isDefault ? "border-primary ring-1 ring-primary/20 bg-primary/[0.02]" : "hover:border-primary/30"
+            address.isDefault ? "border-primary ring-1 ring-primary/20 bg-primary/2" : "hover:border-primary/30"
         )}>
             <CardContent className="p-5">
                 <div className="flex items-start justify-between mb-4">

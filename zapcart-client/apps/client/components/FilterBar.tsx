@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/ui/button";
 
 const filters = [
     { label: "Headphone Type", hasDropdown: true },

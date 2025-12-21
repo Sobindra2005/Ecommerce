@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Heart, ChevronDown, Package, Truck, Calendar, Box, Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/ui/button";
 import { Product } from "@/types/product";
 import { SizeSelector } from "./SizeSelector";
 import { cn } from "@/lib/utils";

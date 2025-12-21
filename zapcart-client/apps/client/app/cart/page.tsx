@@ -4,11 +4,11 @@ import { useState } from "react";
 import { ShoppingCart, ShoppingBag, Receipt } from "lucide-react";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
-import { CartItem } from "@/components/CartItem";
-import { OrderSummary } from "@/components/OrderSummary";
-import { Button } from "@/components/ui/button";
-import { CheckoutForm } from "@/components/CheckoutForm";
-import { OrderConfirmation } from "@/components/OrderConfirmation";
+import { CartItem } from "@repo/ui/CartItem";
+import { OrderSummary } from "@repo/ui/OrderSummary";
+import { Button } from "@repo/ui/ui/button";
+import { CheckoutForm } from "@repo/ui/CheckoutForm";
+import { OrderConfirmation } from "@repo/ui/OrderConfirmation";
 
 export default function CartPage() {
     const { items, updateQuantity, removeFromCart, getSubtotal, clearCart } = useCart();

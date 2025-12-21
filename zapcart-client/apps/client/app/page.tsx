@@ -1,9 +1,9 @@
-import { Hero } from "@/components/Hero";
-import { FlashSaleCard } from "@/components/FlashSaleCard";
-import { PopularCategories } from "@/components/PopularCategories";
-import { ProductGrid } from "@/components/ProductGrid";
+import { Hero } from "@repo/ui/Hero";
+import { FlashSaleCard } from "@repo/ui/FlashSaleCard";
+import { PopularCategories } from "@repo/ui/PopularCategories";
+import { ProductGrid } from "@repo/ui/ProductGrid";
 import { sampleProducts } from "@/data/products";
-import { FeaturedProducts } from "@/components/featuredProduct";
+import { FeaturedProducts } from "@repo/ui/featuredProduct";
 
 export default function Home() {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@repo/ui/ProductCard";
 import { Product } from "@/types/product";
 import { MainContainer } from "./wrapper";
 import { SectionHeader } from "./SectionHeader";

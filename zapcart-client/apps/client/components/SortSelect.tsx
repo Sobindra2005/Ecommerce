@@ -6,7 +6,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@repo/ui/ui/select";
 
 export interface SortOption {
     value: string;

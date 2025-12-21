@@ -11,23 +11,23 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@repo/ui/ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@repo/ui/ui/form";
+import { Input } from "@repo/ui/ui/input";
+import { Button } from "@repo/ui/ui/button";
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select";
+} from "@repo/ui/ui/select";
 import {
     Tooltip,
     TooltipContent,
     TooltipProvider,
     TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "@repo/ui/ui/tooltip";
 import { MapPin } from "lucide-react";
 import { FaExclamationCircle } from "react-icons/fa";
 
@@ -70,7 +70,7 @@ export function AddAddressForm({ open, onOpenChange, onSubmit }: AddAddressFormP
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-125">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2">
                         <MapPin className="h-5 w-5" />

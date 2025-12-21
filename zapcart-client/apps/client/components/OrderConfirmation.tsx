@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle, ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/ui/button";
 
 export function OrderConfirmation() {
     return (

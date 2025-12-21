@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordChangeSchema, PasswordChangeFormData } from "@/lib/schemas/settings.schema";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { FormPasswordInput } from "@/components/form/FormPasswordInput";
+import { Button } from "@repo/ui/ui/button";
+import { Form } from "@repo/ui/ui/form";
+import { FormPasswordInput } from "@repo/ui/form/FormPasswordInput";
 import { mockUser } from "@/data/mockAccountData";
 import { FaLock } from "react-icons/fa";
 

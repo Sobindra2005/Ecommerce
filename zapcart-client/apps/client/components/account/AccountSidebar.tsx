@@ -11,8 +11,8 @@ import {
     Settings,
     LogOut
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { cn } from "@repo/lib/utils";
+import { Button } from "@repo/ui/ui/button";
 
 const sidebarItems = [
     {

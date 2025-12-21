@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button } from "@repo/ui/ui/button";
+import { Input } from "@repo/ui/ui/input";
+import { Label } from "@repo/ui/ui/label";
+import { RadioGroup, RadioGroupItem } from "@repo/ui/ui/radio-group";
 import { motion } from "framer-motion";
 
 interface OrderDetails {

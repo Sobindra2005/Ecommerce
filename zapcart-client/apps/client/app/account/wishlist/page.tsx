@@ -1,9 +1,9 @@
 "use client";
 
 import { mockUser } from "@/data/mockAccountData";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductCard } from "@repo/ui/ProductCard";
 import { Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/ui/button";
 
 export default function WishlistPage() {
     const wishlist = mockUser.wishlist;

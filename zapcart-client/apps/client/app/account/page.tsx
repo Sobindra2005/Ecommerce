@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { mockUser } from "@/data/mockAccountData";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@repo/ui/ui/button";
+import { Input } from "@repo/ui/ui/input";
 import { User as UserIcon, Mail, Phone, Camera } from "lucide-react";
 import Image from "next/image";
 

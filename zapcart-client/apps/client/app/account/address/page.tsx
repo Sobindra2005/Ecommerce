@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { mockUser } from "@/data/mockAccountData";
 import { Address } from "@/types/user";
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/ui/button";
 import { Plus } from "lucide-react";
-import { AddressCard } from "@/components/account/AddressCard";
-import { AddAddressForm } from "@/components/account/AddAddressForm";
+import { AddressCard } from "@repo/ui/account/AddressCard";
+import { AddAddressForm } from "@repo/ui/account/AddAddressForm";
 
 export default function AddressPage() {
     const [addresses, setAddresses] = useState<Address[]>(mockUser.addresses);

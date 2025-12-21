@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { sampleProducts } from "@/data/products";
-import { ProductImageGallery } from "@/components/ProductImageGallery";
-import { ProductInfo } from "@/components/ProductInfo";
-import { ReviewsSection } from "@/components/ReviewsSection";
-import { MainContainer } from "@/components/wrapper";
+import { ProductImageGallery } from "@repo/ui/ProductImageGallery";
+import { ProductInfo } from "@repo/ui/ProductInfo";
+import { ReviewsSection } from "@repo/ui/ReviewsSection";
+import { MainContainer } from "@repo/ui/wrapper";
 
 interface ProductPageProps {
     params: Promise<{

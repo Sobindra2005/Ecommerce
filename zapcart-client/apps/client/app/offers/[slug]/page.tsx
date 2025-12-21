@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { flashSaleProducts } from "@/data/products";
-import { OfferProductList } from "@/components/OfferProductList";
+import { OfferProductList } from "@repo/ui/OfferProductList";
 
 interface OfferPageProps {
     params: Promise<{

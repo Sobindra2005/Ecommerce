@@ -3,14 +3,14 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent } from "@repo/ui/ui/card"
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
     type CarouselApi,
-} from "@/components/ui/carousel"
-import { Button } from "@/components/ui/button"
+} from "@repo/ui/ui/carousel"
+import { Button } from "@repo/ui/ui/button"
 
 const heroSlides = [
     {

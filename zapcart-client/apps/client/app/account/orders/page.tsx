@@ -1,8 +1,8 @@
 "use client";
 
 import { mockUser } from "@/data/mockAccountData";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Badge } from "@repo/ui/ui/badge";
+import { Button } from "@repo/ui/ui/button";
 import { Package, ChevronRight } from "lucide-react";
 import Image from "next/image";
 
