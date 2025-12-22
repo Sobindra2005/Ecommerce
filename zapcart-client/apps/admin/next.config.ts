@@ -4,6 +4,14 @@ const nextConfig: NextConfig = {
   /* config options here */
   output: "standalone",
   transpilePackages: ["@repo/ui", "@repo/lib"],
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
 };
 
 export default nextConfig;
