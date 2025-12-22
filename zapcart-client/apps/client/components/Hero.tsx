@@ -11,6 +11,7 @@ import {
     type CarouselApi,
 } from "@repo/ui/ui/carousel"
 import { Button } from "@repo/ui/ui/button"
+import { MainContainer } from "./wrapper"
 
 const heroSlides = [
     {
@@ -94,87 +95,86 @@ export function Hero() {
     }
 
     return (
-        <section className="relative overflow-hidden container">
-            <Carousel 
-                setApi={setApi} 
-                className=" border-2 border-white "
-                opts={{
-                    loop: true,
-                }}
-            >
-                    <CarouselContent>
-                    {heroSlides.map((slide, index) => (
-                        <CarouselItem key={slide.id}>
-                            <Card className="border-0 rounded-none p-0">
-                                <CardContent className="p-0 relative h-96 md:h-[500px] lg:h-[600px]">
-                                    {/* Background Gradient */}
-                                    <div className={`absolute inset-0 bg-linear-to-r ${slide.gradient}`}>
-                                        {/* Image */}
-                                        <Image
-                                            src={slide.image}
-                                            alt={slide.title || `Slide ${index + 1}`}
-                                            fill
-                                            className="object-cover mix-blend-overlay"
-                                            priority={index === 0}
-                                        />
-                                    </div>
+        <MainContainer className="relative rounded-2xl overflow-hidden container mt-5">
+                <Carousel
+                    setApi={setApi}
+                    className="rounded-2xl overflow-hidden"
+                    opts={{
+                        loop: true,
+                    }}
+                >
+                    <CarouselContent className="w-full">
+                        {heroSlides.map((slide, index) => (
+                            <CarouselItem key={slide.id} className="w-full">
+                                <Card className=" rounded-none p-0 w-full">
+                                    <CardContent className="p-0 relative h-96 md:h-[500px] lg:h-[600px] ">
+                                        {/* Background Gradient */}
+                                        <div className={`absolute inset-0 bg-linear-to-r ${slide.gradient} rounded-2xl`}>
+                                            {/* Image */}
+                                            <Image
+                                                src={slide.image}
+                                                alt={slide.title || `Slide ${index + 1}`}
+                                                fill
+                                                className="object-cover mix-blend-overlay"
+                                                priority={index === 0}
+                                            />
+                                        </div>
 
-                                    {/* Conditional Content Overlay */}
-                                    {(slide.title || slide.subtitle || slide.cta) ? (
-                                        // Show content overlay if any text content exists
-                                        <div className="relative h-full flex items-center">
-                                            <div className="container mx-auto px-4 md:px-6 w-full">
-                                                <div className="max-w-md">
-                                                    {slide.title && (
-                                                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 text-balance">
-                                                            {slide.title}
-                                                        </h2>
-                                                    )}
-                                                    {slide.subtitle && (
-                                                        <p className="text-lg md:text-xl text-white/90 mb-8">
-                                                            {slide.subtitle}
-                                                        </p>
-                                                    )}
-                                                    {slide.cta && slide.link && (
-                                                        <Link href={slide.link}>
-                                                            <Button className="bg-white text-foreground hover:bg-white/90">
-                                                                {slide.cta}
-                                                            </Button>
-                                                        </Link>
-                                                    )}
+                                        {/* Conditional Content Overlay */}
+                                        {(slide.title || slide.subtitle || slide.cta) ? (
+                                            // Show content overlay if any text content exists
+                                            <div className="relative h-full flex items-center">
+                                                <div className="container mx-auto px-4 md:px-6 w-full">
+                                                    <div className="max-w-md">
+                                                        {slide.title && (
+                                                            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 text-balance">
+                                                                {slide.title}
+                                                            </h2>
+                                                        )}
+                                                        {slide.subtitle && (
+                                                            <p className="text-lg md:text-xl text-white/90 mb-8">
+                                                                {slide.subtitle}
+                                                            </p>
+                                                        )}
+                                                        {slide.cta && slide.link && (
+                                                            <Link href={slide.link}>
+                                                                <Button className="bg-white text-foreground hover:bg-white/90">
+                                                                    {slide.cta}
+                                                                </Button>
+                                                            </Link>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    ) : (
-                                        // If no text content, make entire image clickable
-                                        slide.link && (
-                                            <Link href={slide.link} className="absolute inset-0 z-10">
-                                                <span className="sr-only">View {slide.link}</span>
-                                            </Link>
-                                        )
-                                    )}
-                                </CardContent>
-                            </Card>
-                        </CarouselItem>
-                    ))}
-                </CarouselContent>
-                
-                {/* Indicator Dots - Bottom Center */}
-                <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 flex gap-3">
-                    {heroSlides.map((_, index) => (
-                        <button
-                            key={index}
-                            onClick={() => goToSlide(index)}
-                            className={`h-3 rounded-full transition-all duration-300 ${
-                                index === current
-                                    ? "bg-white w-8"
-                                    : "bg-white/50 hover:bg-white/70 w-3"
-                            }`}
-                            aria-label={`Go to slide ${index + 1}`}
-                        />
-                    ))}
-                </div>
-            </Carousel>
-        </section>
+                                        ) : (
+                                            // If no text content, make entire image clickable
+                                            slide.link && (
+                                                <Link href={slide.link} className="absolute inset-0 z-10">
+                                                    <span className="sr-only">View {slide.link}</span>
+                                                </Link>
+                                            )
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+
+                    {/* Indicator Dots - Bottom Center */}
+                    <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-10 flex gap-3">
+                        {heroSlides.map((_, index) => (
+                            <button
+                                key={index}
+                                onClick={() => goToSlide(index)}
+                                className={`h-3 rounded-full transition-all duration-300 ${index === current
+                                        ? "bg-white w-8"
+                                        : "bg-white/50 hover:bg-white/70 w-3"
+                                    }`}
+                                aria-label={`Go to slide ${index + 1}`}
+                            />
+                        ))}
+                    </div>
+                </Carousel>
+        </MainContainer>
     )
 }
