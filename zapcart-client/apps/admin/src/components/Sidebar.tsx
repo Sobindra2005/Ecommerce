@@ -10,6 +10,7 @@ import {
     Users,
     Settings,
     LogOut,
+    Megaphone,
     ChevronDown,
     Bell,
     ChevronUp,
@@ -29,6 +30,16 @@ const sidebarItems = [
         subItems: [
             { name: "Product List", href: "/products/list" },
             { name: "Categories", href: "/products/categories" }
+        ]
+    },
+    {
+        name: "Marketing",
+        icon: Megaphone,
+        href: "/marketing",
+        subItems: [
+            { name: "Flash Sales", href: "/marketing/flash-sales" },
+            { name: "Hero Carousel", href: "/marketing/hero-carousel" },
+            { name: "Featured Products", href: "/marketing/featured-products" }
         ]
     },
     { name: "Sales", icon: Tag, href: "/sales" },
@@ -97,7 +108,7 @@ export function Sidebar() {
                                             )}
                                         >
                                             <div className="flex items-center gap-3">
-                                                <item.icon className={cn("h-5 w-5 flex-shrink-0", isActive ? "text-primary" : "text-gray-400")} />
+                                                <item.icon className={cn("h-5 w-5 shrink-0", isActive ? "text-primary" : "text-gray-400")} />
                                                 {!isCollapsed && <span>{item.name}</span>}
                                             </div>
                                             {!isCollapsed && (isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />)}
