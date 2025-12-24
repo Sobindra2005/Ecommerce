@@ -231,17 +231,13 @@ const PredictiveSales = () => (
     </Card>
 );
 
-import React, { useMemo } from "react";
+
+const COHORT_OPACITIES = Array.from({ length: 25 }).map(
+    () => [0.1, 0.3, 0.6, 0.9][Math.floor(Math.random() * 4)]
+);
 
 const CohortAnalysis = () => {
-    const cohortOpacities = useMemo(
-        () =>
-            Array.from({ length: 25 }).map(
-                () => [0.1, 0.3, 0.6, 0.9][Math.floor(Math.random() * 4)]
-            ),
-        []
-    );
-
+    const cohortOpacities = COHORT_OPACITIES;
     return (
         <Card className="shadow-sm border-gray-200">
             <CardHeader className="pb-4">
