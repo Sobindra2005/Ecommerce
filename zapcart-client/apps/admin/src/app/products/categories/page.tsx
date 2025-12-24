@@ -450,7 +450,7 @@ export default function CategoriesPage() {
 
                 {/* Details Panel */}
                 {selectedCategory && (
-                    <Card className="w-full g:w-100 shadow-sm border-gray-200 sticky top-8">
+                    <Card className="w-full lg:w-100 shadow-sm border-gray-200 sticky top-8">
                         <CardHeader className="border-b border-gray-100 pb-4">
                             <div className="flex items-center justify-between mb-2">
                                 <Badge variant="secondary" className="bg-primary/5 text-primary border-primary/20">
