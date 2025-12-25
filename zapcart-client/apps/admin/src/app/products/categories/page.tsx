@@ -1,5 +1,5 @@
 "use client";
-
+import { BulkActionBar } from "@repo/ui/ui/bulk-action-bar";
 import {
     Search,
     Plus,
@@ -38,6 +38,7 @@ import {
     ResponsiveContainer,
     Cell
 } from "recharts";
+import { AdminCard } from "@/components/AdminCard";
 
 interface Category {
     id: string;
@@ -285,6 +286,7 @@ const CategoryRow = ({
     );
 };
 
+
 export default function CategoriesPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(["1", "2"]));
@@ -325,11 +327,31 @@ export default function CategoriesPage() {
         }
     };
 
+    const bulkActions = [
+        {
+            icon: Edit,
+            label: "Bulk Edit",
+            onClick: () => console.log("Bulk edit", Array.from(selectedIds))
+        },
+        {
+            icon: Globe,
+            label: "Update Status",
+            onClick: () => console.log("Update status", Array.from(selectedIds))
+        },
+        {
+            icon: Trash2,
+            label: "",
+            onClick: () => console.log("Delete", Array.from(selectedIds)),
+            variant: "destructive" as const,
+            className: "h-8 w-8 p-0"
+        }
+    ];
+
     return (
         <div className="p-8">
             {/* Analytics Header */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <Card className="shadow-sm border-gray-200">
+                <AdminCard>
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-medium text-gray-500 flex items-center gap-2">
                             <LayoutGrid className="h-4 w-4" />
@@ -345,8 +367,8 @@ export default function CategoriesPage() {
                             </span>
                         </div>
                     </CardContent>
-                </Card>
-                <Card className="shadow-sm border-gray-200">
+                </AdminCard>
+                <AdminCard>
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-medium text-gray-500 flex items-center gap-2">
                             <Activity className="h-4 w-4" />
@@ -362,8 +384,8 @@ export default function CategoriesPage() {
                             </span>
                         </div>
                     </CardContent>
-                </Card>
-                <Card className="shadow-sm border-gray-200 col-span-1 md:col-span-2">
+                </AdminCard>
+                <AdminCard className="col-span-1 md:col-span-2 ">
                     <CardHeader className="pb-2 flex flex-row items-center justify-between space-y-0">
                         <div>
                             <CardTitle className="text-sm font-medium text-gray-500">Sales by Category</CardTitle>
@@ -386,12 +408,12 @@ export default function CategoriesPage() {
                             </BarChart>
                         </ResponsiveContainer>
                     </CardContent>
-                </Card>
+                </AdminCard>
             </div>
 
             <div className="flex flex-col lg:flex-row gap-8 items-start">
                 {/* Main List */}
-                <div className="flex-1 w-full bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <AdminCard className="flex-1 w-full p-0">
                     <div className="px-6 py-5 border-b border-gray-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div className="relative w-full sm:max-w-xs">
                             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
@@ -446,11 +468,11 @@ export default function CategoriesPage() {
                             ))}
                         </div>
                     </div>
-                </div>
+                </AdminCard>
 
                 {/* Details Panel */}
                 {selectedCategory && (
-                    <Card className="w-full lg:w-100 shadow-sm border-gray-200 sticky top-8">
+                    <AdminCard className="w-full lg:w-100 sticky top-8 px-0">
                         <CardHeader className="border-b border-gray-100 pb-4">
                             <div className="flex items-center justify-between mb-2">
                                 <Badge variant="secondary" className="bg-primary/5 text-primary border-primary/20">
@@ -525,46 +547,16 @@ export default function CategoriesPage() {
                                 <Button className="bg-primary hover:bg-primary/90 font-bold">Save Changes</Button>
                             </div>
                         </CardContent>
-                    </Card>
+                    </AdminCard>
                 )}
             </div>
 
-            {/* Bulk Action Bar */}
-            {selectedIds.size > 0 && (
-                <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-8 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
-                    <div className="flex items-center gap-3 border-r border-gray-700 pr-8">
-                        <div className="bg-primary text-white h-6 w-6 rounded-full flex items-center justify-center text-xs font-bold">
-                            {selectedIds.size}
-                        </div>
-                        <span className="text-sm font-bold tracking-wide">Categories Selected</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 font-bold">
-                        <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 gap-2 h-9 px-4">
-                            <Edit className="h-4 w-4" />
-                            Bulk Edit
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 gap-2 h-9 px-4">
-                            <Globe className="h-4 w-4" />
-                            Update Status
-                        </Button>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-500 hover:bg-red-500/10">
-                            <Trash2 className="h-4 w-4" />
-                        </Button>
-                    </div>
-
-                    <div className="border-l border-gray-700 pl-8">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            className="text-gray-400 hover:text-white hover:bg-transparent px-0 font-bold"
-                            onClick={() => setSelectedIds(new Set())}
-                        >
-                            Deselect all
-                        </Button>
-                    </div>
-                </div>
-            )}
+            <BulkActionBar
+                selectedCount={selectedIds.size}
+                onDeselectAll={() => setSelectedIds(new Set())}
+                label="Categories Selected"
+                actions={bulkActions}
+            />
         </div>
     );
 }
