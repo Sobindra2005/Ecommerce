@@ -1,28 +1,19 @@
 "use client";
 
 import {
-    DollarSign,
-    ShoppingBag,
-    ArrowUpRight,
-    ArrowDownRight,
     Search,
     Filter,
     Download,
     MoreHorizontal,
-    TrendingUp,
-    AlertCircle,
     Calendar,
     ChevronRight,
-    Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@repo/ui/ui/input";
 import { Button } from "@repo/ui/ui/button";
 import { Badge } from "@repo/ui/ui/badge";
 import {
-    Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@repo/ui/ui/card";
@@ -44,6 +35,7 @@ import {
 import { AdminCard } from "@/components/AdminCard";
 import { Stat, StatsCards } from "@/components/common/StatsCards";
 import { ChartWrapper } from "@/components/wrapper";
+import { LabelFormatter } from "recharts/types/component/Label";
 
 const stats: Stat[] = [
     { label: "Total Sales", value: "$124,592.00", trend: "+12.5%", trendDir: "up", vs: "vs last month" },
@@ -352,7 +344,7 @@ export default function SalesPage() {
                                             dataKey="sales"
                                             position="right"
                                             style={{ fill: "#0f172a", fontWeight: 700, fontSize: 13 }}
-                                            formatter={(value: any) => `${value} sold`}
+                                            formatter={(value) => `${value} sold`}
                                         />
                                     </Bar>
                                 </BarChart>

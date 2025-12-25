@@ -6,7 +6,6 @@ import { Header } from "@/components/Header";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { AdminCard } from "./AdminCard";
-import { AreaChart, ResponsiveContainer } from "recharts";
 import { MoreHorizontal } from 'lucide-react'
 
 export function LayoutWrapper({ children }: { children: React.ReactNode }) {

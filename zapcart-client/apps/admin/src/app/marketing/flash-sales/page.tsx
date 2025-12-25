@@ -7,9 +7,7 @@ import {
     Calendar,
     Clock,
     Zap,
-    TrendingUp,
     BarChart3,
-    ArrowUpRight,
     Edit,
     Trash2,
     Eye,
@@ -25,8 +23,6 @@ import { Badge } from "@repo/ui/ui/badge";
 import {
     Card,
     CardContent,
-    CardHeader,
-    CardTitle,
 } from "@repo/ui/ui/card";
 import { AdminCard } from "@/components/AdminCard";
 import { Stat, StatsCards } from "@/components/common/StatsCards";

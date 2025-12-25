@@ -1,20 +1,17 @@
 "use client";
 
 import {
-    MousePointer2,
     TrendingUp,
     Smartphone,
     Zap,
     AlertTriangle,
     Sparkles,
     Calendar,
-    Target
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@repo/ui/ui/button";
 import { Badge } from "@repo/ui/ui/badge";
 import {
-    Card,
     CardContent,
     CardDescription,
     CardHeader,
