@@ -37,6 +37,7 @@ import {
 } from "recharts";
 import { AdminCard } from "@/components/AdminCard";
 import { Stat, StatsCards } from "@/components/common/StatsCards";
+import { ChartWrapper } from "@/components/wrapper";
 
 // --- Mock Data ---
 
@@ -74,21 +75,14 @@ const performanceScatterData = [
 ];
 
 const TrafficChart = () => (
-    <AdminCard className="px-0">
-        <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-                <CardTitle className="text-lg font-bold">Traffic Source Breakdown</CardTitle>
-                <CardDescription>Visualizing organic vs paid sessions across 24h.</CardDescription>
-            </div>
-            <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-100 rounded-lg text-[10px] font-bold">
-                    <div className="h-2 w-2 rounded-full bg-blue-500" /> Organic
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-100 rounded-lg text-[10px] font-bold">
-                    <div className="h-2 w-2 rounded-full bg-green-500" /> Paid
-                </div>
-            </div>
-        </CardHeader>
+    <ChartWrapper label="Traffic Source Breakdown" topComponent={<div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-100 rounded-lg text-[10px] font-bold">
+            <div className="h-2 w-2 rounded-full bg-blue-500" /> Organic
+        </div>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-100 rounded-lg text-[10px] font-bold">
+            <div className="h-2 w-2 rounded-full bg-green-500" /> Paid
+        </div>
+    </div>}>
         <CardContent className="h-75">
             <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={trafficData}>
@@ -111,7 +105,7 @@ const TrafficChart = () => (
                 </AreaChart>
             </ResponsiveContainer>
         </CardContent>
-    </AdminCard>
+    </ChartWrapper>
 );
 
 const FunnelStep = ({ step, max }: { step: typeof funnelData[0], max: number }) => {
@@ -223,7 +217,7 @@ export default function AnalyticsPage() {
         <div className="p-8 max-w-400 mx-auto space-y-8">
             {/* Header */}
             <div className="flex flex-col sm:flex-row items-baseline sm:items-center justify-end gap-6">
-            
+
                 <div className="flex items-center gap-3">
                     <div className="flex bg-gray-100 p-1 rounded-xl">
                         <Button variant="ghost" size="sm" className="h-8 px-4 font-bold text-[10px] uppercase bg-white shadow-sm">Real-time</Button>
@@ -265,10 +259,7 @@ export default function AnalyticsPage() {
                 <div className="lg:col-span-2 space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {/* Device Breakdown */}
-                        <AdminCard className="px-0 ">
-                            <CardHeader className="pb-0">
-                                <CardTitle className="text-base font-bold">Session by Device</CardTitle>
-                            </CardHeader>
+                        <ChartWrapper label="Session by Device" className="lg:col-span-0">
                             <CardContent className="flex items-center pt-0">
                                 <div className="h-50 w-1/2">
                                     <ResponsiveContainer width="100%" height="100%">
@@ -301,7 +292,8 @@ export default function AnalyticsPage() {
                                     ))}
                                 </div>
                             </CardContent>
-                        </AdminCard>
+                        </ChartWrapper>
+
 
                         {/* Retention */}
                         <AdminCard className="p-0 h-full">
@@ -312,11 +304,7 @@ export default function AnalyticsPage() {
                     </div>
 
                     {/* Product Performance Correlation */}
-                    <AdminCard className="px-0">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-bold">Performance Matrix</CardTitle>
-                            <CardDescription>Correlation between Price (X) and Views (Y). Bubble size = Conversion Rate.</CardDescription>
-                        </CardHeader>
+                    <ChartWrapper label="Product Performance Correlation">
                         <CardContent className="h-75">
                             <ResponsiveContainer width="100%" height="100%">
                                 <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
@@ -329,7 +317,7 @@ export default function AnalyticsPage() {
                                 </ScatterChart>
                             </ResponsiveContainer>
                         </CardContent>
-                    </AdminCard>
+                    </ChartWrapper>
                 </div>
             </div>
         </div>

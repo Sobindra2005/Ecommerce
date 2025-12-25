@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 import { SidebarProvider } from "@/lib/SidebarContext";
-import { LayoutWrapper } from "@/components/LayoutWrapper";
+import { LayoutWrapper } from "@/components/wrapper";
 
 export default function RootLayout({
   children,
