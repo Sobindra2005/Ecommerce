@@ -1,13 +1,9 @@
 "use client";
 
 import {
-    MoreHorizontal,
-    TrendingUp,
-    TrendingDown,
     Filter,
     ChevronDown,
     ArrowUpRight,
-    MoreVertical
 } from "lucide-react";
 import {
     XAxis,
@@ -25,6 +21,7 @@ import {
 import Image from "next/image";
 import { AdminCard } from "@/components/AdminCard";
 import { StatsCards, type Stat } from "@/components/common/StatsCards";
+import { ChartWrapper } from "@/components/wrapper";
 
 // Mock Data for Charts
 const revenueData = [
@@ -75,100 +72,83 @@ export default function DashboardPage() {
 
             {/* 2. Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <AdminCard hoverable className="lg:col-span-8 overflow-hidden">
-                    <div className="flex justify-between items-center mb-10">
-                        <h2 className="text-lg font-bold text-gray-900">Revenue Trend</h2>
-                        <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
-                                <div className="w-3 h-3 rounded-full bg-[#10B981]" />
-                                <span className="text-xs font-medium text-gray-400">Revenue</span>
-                            </div>
-                            <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                                <MoreHorizontal className="h-5 w-5" />
-                            </button>
-                        </div>
+                <ChartWrapper label="Revenue Overview" topComponent={
+                    <div className="flex items-center gap-2">
+                        <div className="w-3 h-3 rounded-full bg-[#10B981]" />
+                        <span className="text-xs font-medium text-gray-400">Revenue</span>
                     </div>
-                    <div className="h-75 w-full">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                                <defs>
-                                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
-                                        <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
-                                    </linearGradient>
-                                </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.3} />
-                                <XAxis
-                                    dataKey="name"
-                                    axisLine={false}
-                                    tickLine={false}
-                                    tick={{ fill: "#6B7280", fontSize: 12, fontWeight: 500 }}
-                                    dy={10}
-                                    ticks={["Dec 10", "Dec 17", "Dec 19", "Dec 21", "Dec 22"]}
-                                />
-                                <YAxis
-                                    axisLine={false}
-                                    tickLine={false}
-                                    tick={{ fill: "#6B7280", fontSize: 12, fontWeight: 500 }}
-                                    tickFormatter={(val) => `$${val / 1000}k`}
-                                />
-                                <Tooltip
-                                    contentStyle={{ backgroundColor: "#1F2937", border: "none", borderRadius: "8px", color: "#fff" }}
-                                    itemStyle={{ color: "#10B981" }}
-                                    cursor={{ stroke: "#374151", strokeWidth: 1 }}
-                                />
-                                <Area
-                                    type="monotone"
-                                    dataKey="value"
-                                    stroke="#10B981"
-                                    strokeWidth={3}
-                                    fillOpacity={1}
-                                    fill="url(#colorRevenue)"
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                </AdminCard>
+                }>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                            <defs>
+                                <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.3} />
+                                    <stop offset="95%" stopColor="#10B981" stopOpacity={0} />
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.3} />
+                            <XAxis
+                                dataKey="name"
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{ fill: "#6B7280", fontSize: 12, fontWeight: 500 }}
+                                dy={10}
+                                ticks={["Dec 10", "Dec 17", "Dec 19", "Dec 21", "Dec 22"]}
+                            />
+                            <YAxis
+                                axisLine={false}
+                                tickLine={false}
+                                tick={{ fill: "#6B7280", fontSize: 12, fontWeight: 500 }}
+                                tickFormatter={(val) => `$${val / 1000}k`}
+                            />
+                            <Tooltip
+                                contentStyle={{ backgroundColor: "#1F2937", border: "none", borderRadius: "8px", color: "#fff" }}
+                                itemStyle={{ color: "#10B981" }}
+                                cursor={{ stroke: "#374151", strokeWidth: 1 }}
+                            />
+                            <Area
+                                type="monotone"
+                                dataKey="value"
+                                stroke="#10B981"
+                                strokeWidth={3}
+                                fillOpacity={1}
+                                fill="url(#colorRevenue)"
+                            />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </ChartWrapper>
 
                 {/* Regional Sales Pie Chart */}
-                <AdminCard className="lg:col-span-4 flex flex-col">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-lg font-bold text-gray-900">Regional Sales</h2>
-                        <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                            <MoreHorizontal className="h-5 w-5" />
-                        </button>
+                <ChartWrapper label="Regional Sales" className="lg:col-span-4 flex flex-col">
+                    <div className="h-60 w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={regionData}
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius={60}
+                                    outerRadius={80}
+                                    paddingAngle={5}
+                                    dataKey="value"
+                                >
+                                    {regionData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                    ))}
+                                </Pie>
+                                <Tooltip
+                                    contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)" }}
+                                />
+                                <Legend
+                                    verticalAlign="bottom"
+                                    align="center"
+                                    iconType="circle"
+                                    formatter={(value) => <span className="text-xs font-medium text-gray-500">{value}</span>}
+                                />
+                            </PieChart>
+                        </ResponsiveContainer>
                     </div>
-                    <div className="flex-1 flex flex-col items-center justify-center p-4">
-                        <div className="h-60 w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={regionData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={60}
-                                        outerRadius={80}
-                                        paddingAngle={5}
-                                        dataKey="value"
-                                    >
-                                        {regionData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={entry.color} />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip
-                                        contentStyle={{ borderRadius: "8px", border: "none", boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)" }}
-                                    />
-                                    <Legend
-                                        verticalAlign="bottom"
-                                        align="center"
-                                        iconType="circle"
-                                        formatter={(value) => <span className="text-xs font-medium text-gray-500">{value}</span>}
-                                    />
-                                </PieChart>
-                            </ResponsiveContainer>
-                        </div>
-                    </div>
-                </AdminCard>
+                </ChartWrapper>
             </div>
 
             {/* 3. Bottom Table Section */}
@@ -240,49 +220,42 @@ export default function DashboardPage() {
                 </AdminCard>
 
                 {/* Monthly Target Radial Chart */}
-                <AdminCard className="lg:col-span-3 flex flex-col">
-                    <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-lg font-bold text-gray-900">Monthly Target</h2>
-                        <button className="text-gray-400 hover:text-gray-600 transition-colors">
-                            <MoreVertical className="h-5 w-5" />
+
+                <ChartWrapper label="Monthly Target" className="lg:col-span-3 flex flex-col">
+                    <div className="relative w-48 h-48">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={targetData}
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius={60}
+                                    outerRadius={80}
+                                    startAngle={90}
+                                    endAngle={-270}
+                                    dataKey="value"
+                                    stroke="none"
+                                >
+                                    {targetData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={TARGET_COLORS[index % TARGET_COLORS.length]} />
+                                    ))}
+                                </Pie>
+                            </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center">
+                            <span className="text-3xl font-bold text-gray-900">75%</span>
+                            <span className="text-xs font-semibold text-gray-400">Target reached</span>
+                        </div>
+                    </div>
+                    <div className="mt-8 text-center">
+                        <p className="text-sm font-medium text-gray-500 line-clamp-2 px-4 italic">
+                            &quot;Target you&apos;ve set for each month&quot;
+                        </p>
+                        <button className="mt-6 px-6 py-2 bg-gray-50 text-gray-600 text-sm font-bold rounded-xl hover:bg-gray-100 transition-all border border-gray-100">
+                            Manage Target
                         </button>
                     </div>
-                    <div className="flex-1 flex flex-col items-center justify-center py-4">
-                        <div className="relative w-48 h-48">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={targetData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={60}
-                                        outerRadius={80}
-                                        startAngle={90}
-                                        endAngle={-270}
-                                        dataKey="value"
-                                        stroke="none"
-                                    >
-                                        {targetData.map((entry, index) => (
-                                            <Cell key={`cell-${index}`} fill={TARGET_COLORS[index % TARGET_COLORS.length]} />
-                                        ))}
-                                    </Pie>
-                                </PieChart>
-                            </ResponsiveContainer>
-                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <span className="text-3xl font-bold text-gray-900">75%</span>
-                                <span className="text-xs font-semibold text-gray-400">Target reached</span>
-                            </div>
-                        </div>
-                        <div className="mt-8 text-center">
-                            <p className="text-sm font-medium text-gray-500 line-clamp-2 px-4 italic">
-                                &quot;Target you&apos;ve set for each month&quot;
-                            </p>
-                            <button className="mt-6 px-6 py-2 bg-gray-50 text-gray-600 text-sm font-bold rounded-xl hover:bg-gray-100 transition-all border border-gray-100">
-                                Manage Target
-                            </button>
-                        </div>
-                    </div>
-                </AdminCard>
+                </ChartWrapper>
             </div>
         </div>
     );

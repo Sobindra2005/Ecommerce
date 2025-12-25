@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@repo/ui/ui/button";
 import { Badge } from "@repo/ui/ui/badge";
 import {
-    Card,
     CardContent,
     CardHeader,
     CardTitle,

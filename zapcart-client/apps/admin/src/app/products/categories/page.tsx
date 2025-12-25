@@ -6,11 +6,6 @@ import {
     MoreVertical,
     ChevronRight,
     ChevronDown,
-    LayoutGrid,
-    BarChart3,
-    Activity,
-    ArrowUpRight,
-    ArrowDownRight,
     Filter,
     Edit,
     Trash2,
@@ -26,18 +21,11 @@ import { Input } from "@repo/ui/ui/input";
 import { Button } from "@repo/ui/ui/button";
 import { Badge } from "@repo/ui/ui/badge";
 import {
-    Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from "@repo/ui/ui/card";
-import {
-    BarChart,
-    Bar,
-    ResponsiveContainer,
-    Cell
-} from "recharts";
 import { AdminCard } from "@/components/AdminCard";
 import { Stat, StatsCards } from "@/components/common/StatsCards";
 
@@ -142,13 +130,6 @@ const mockCategories: Category[] = [
     }
 ];
 
-const performanceData = [
-    { name: "Electronics", sales: 45000, products: 1240 },
-    { name: "Fashion", sales: 52000, products: 2100 },
-    { name: "Home & Garden", sales: 38000, products: 850 },
-    { name: "Beauty", sales: 25000, products: 600 },
-    { name: "Toys", sales: 18000, products: 450 },
-];
 
 const StatusBadge = ({ status }: { status: Category["status"] }) => {
     const styles = {

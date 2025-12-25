@@ -1,28 +1,19 @@
 "use client";
 
 import {
-    DollarSign,
-    ShoppingBag,
-    ArrowUpRight,
-    ArrowDownRight,
     Search,
     Filter,
     Download,
     MoreHorizontal,
-    TrendingUp,
-    AlertCircle,
     Calendar,
     ChevronRight,
-    Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Input } from "@repo/ui/ui/input";
 import { Button } from "@repo/ui/ui/button";
 import { Badge } from "@repo/ui/ui/badge";
 import {
-    Card,
     CardContent,
-    CardDescription,
     CardHeader,
     CardTitle,
 } from "@repo/ui/ui/card";
@@ -38,10 +29,13 @@ import {
     Bar,
     Cell,
     PieChart,
-    Pie
+    Pie,
+    LabelList
 } from "recharts";
 import { AdminCard } from "@/components/AdminCard";
 import { Stat, StatsCards } from "@/components/common/StatsCards";
+import { ChartWrapper } from "@/components/wrapper";
+import { LabelFormatter } from "recharts/types/component/Label";
 
 const stats: Stat[] = [
     { label: "Total Sales", value: "$124,592.00", trend: "+12.5%", trendDir: "up", vs: "vs last month" },
@@ -153,9 +147,9 @@ const OrdersTable = () => {
 };
 
 const RealTimeTicker = () => (
-    <AdminCard className="p-2 px-0">
-        <CardHeader className="pb-3 flex flex-row items-center justify-between">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
+    <AdminCard className="p-0 overflow-hidden">
+        <CardHeader className="py-1 flex flex-row items-center justify-between bg-green-500">
+            <CardTitle className="text-sm font-bold flex items-center gap-2 justify-center text-white">
                 <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
                 Live Sales Activity
             </CardTitle>
@@ -180,46 +174,11 @@ const RealTimeTicker = () => (
     </AdminCard>
 );
 
-const PredictiveSales = () => (
-    <AdminCard className="p-2">
-        <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-bold flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-primary" />
-                Sales Forecast
-            </CardTitle>
-        </CardHeader>
-        <CardContent>
-            <div className="space-y-4">
-                <div className="bg-primary/5 p-4 rounded-xl border border-primary/10">
-                    <p className="text-[10px] text-primary uppercase tracking-widest font-bold mb-1">Expected this month</p>
-                    <div className="flex items-baseline gap-2">
-                        <span className="text-2xl font-black text-gray-900">$142.8k</span>
-                        <span className="text-xs font-bold text-green-600 flex items-center gap-0.5">
-                            <ArrowUpRight className="h-3 w-3" /> +14%
-                        </span>
-                    </div>
-                </div>
-                <div className="space-y-2">
-                    <div className="flex justify-between text-[10px] uppercase font-bold text-gray-500">
-                        <span>Confidence Level</span>
-                        <span>High (92%)</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
-                        <div className="h-full bg-primary rounded-full transition-all duration-500" style={{ width: "92%" }} />
-                    </div>
-                </div>
-            </div>
-        </CardContent>
-    </AdminCard>
-);
 
 const SalesByChannel = () => {
     return (
-        <AdminCard className="p-2">
-            <CardHeader>
-                <CardTitle className="text-sm font-bold">Sales by Channel</CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center justify-between pt-0">
+        <ChartWrapper label="Sales by Channel" >
+            <CardContent className="flex items-center">
                 <div className="h-30 w-30">
                     <ResponsiveContainer width="100%" height="100%">
                         <PieChart>
@@ -249,7 +208,7 @@ const SalesByChannel = () => {
                     ))}
                 </div>
             </CardContent>
-        </AdminCard>
+        </ChartWrapper>
     )
 }
 
@@ -277,20 +236,16 @@ export default function SalesPage() {
             {/* Main Content Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Sales Trend Chart */}
-                <AdminCard className="lg:col-span-2 p-2">
-                    <CardHeader className="pb-8">
-                        <div className="flex items-center justify-between">
-                            <div>
-                                <CardTitle className="text-lg font-bold">Revenue Insights</CardTitle>
-                                <CardDescription>Sales growth trend across the current week.</CardDescription>
-                            </div>
-                            <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-lg">
-                                <Button variant="ghost" size="sm" className="h-7 px-3 font-bold text-[10px] uppercase bg-white shadow-sm">Revenue</Button>
-                                <Button variant="ghost" size="sm" className="h-7 px-3 font-bold text-[10px] uppercase text-gray-500">Volume</Button>
-                            </div>
+                <ChartWrapper className="lg:col-span-2 " label="Revenue Insights" topComponent={
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-lg">
+                            <Button variant="ghost" size="sm" className="h-7 px-3 font-bold text-[10px] uppercase bg-white shadow-sm">Revenue</Button>
+                            <Button variant="ghost" size="sm" className="h-7 px-3 font-bold text-[10px] uppercase text-gray-500">Volume</Button>
                         </div>
-                    </CardHeader>
+                    </div>
+                }>
                     <CardContent className="h-87.5">
+
                         <ResponsiveContainer width="100%" height="100%">
                             <AreaChart data={salesTrendData}>
                                 <defs>
@@ -327,12 +282,11 @@ export default function SalesPage() {
                             </AreaChart>
                         </ResponsiveContainer>
                     </CardContent>
-                </AdminCard>
+                </ChartWrapper>
 
                 {/* Right Sidebar Widgets */}
                 <div className="space-y-6">
                     <RealTimeTicker />
-                    <PredictiveSales />
                     <SalesByChannel />
                 </div>
             </div>
@@ -349,32 +303,57 @@ export default function SalesPage() {
                 </div>
 
                 {/* Secondary Charts */}
-                <div className="space-y-6">
+                <div>
                     {/* Top Products */}
-                    <AdminCard className="px-0">
-                        <CardHeader>
-                            <CardTitle className="text-sm font-bold">Best Selling Products</CardTitle>
-                        </CardHeader>
-                        <CardContent className="h-87.5 p-0 px-6">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={topProductsData} layout="vertical">
+                    <ChartWrapper label="Top Selling Products">
+                        <CardContent className="h-auto px-6 flex flex-col justify-between">
+                            <ResponsiveContainer width="100%" height={180}>
+                                <BarChart
+                                    data={topProductsData}
+                                    layout="vertical"
+                                    margin={{ top: 10, right: 20, left: 0, bottom: 10 }}
+                                    barCategoryGap={16}
+                                >
                                     <XAxis type="number" hide />
                                     <YAxis
                                         dataKey="name"
                                         type="category"
                                         axisLine={false}
                                         tickLine={false}
-                                        tick={{ fill: "#64748b", fontSize: 10, fontWeight: 700 }}
-                                        width={100}
+                                        tick={{ fill: "#64748b", fontSize: 12, fontWeight: 700 }}
+                                        width={110}
                                     />
-                                    <Tooltip />
-                                    <Bar dataKey="sales" fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={12} />
+                                    <Tooltip
+                                        cursor={{ fill: "#f1f5f9" }}
+                                        contentStyle={{
+                                            borderRadius: "10px",
+                                            border: "none",
+                                            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+                                            fontWeight: 700,
+                                            fontSize: 13,
+                                        }}
+                                    />
+                                    <Bar dataKey="sales" radius={[0, 12, 12, 0]} barSize={18} fill="#3b82f6">
+                                        {topProductsData.map((entry, idx) => (
+                                            <Cell
+                                                key={`cell-${idx}`}
+                                                fill={["#3b82f6", "#6366f1", "#06b6d4", "#f59e42", "#10b981"][idx % 5]}
+                                            />
+                                        ))}
+                                        <LabelList
+                                            dataKey="sales"
+                                            position="right"
+                                            style={{ fill: "#0f172a", fontWeight: 700, fontSize: 13 }}
+                                            formatter={(value) => `${value} sold`}
+                                        />
+                                    </Bar>
                                 </BarChart>
                             </ResponsiveContainer>
+                            
                         </CardContent>
-                    </AdminCard>
+                    </ChartWrapper>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

@@ -13,7 +13,6 @@ import Image from "next/image";
 import { Input } from "@repo/ui/ui/input";
 import { Button } from "@repo/ui/ui/button";
 import {
-    Card,
     CardContent,
     CardHeader,
     CardTitle,
