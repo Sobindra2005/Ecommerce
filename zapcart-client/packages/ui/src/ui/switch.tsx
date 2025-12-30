@@ -9,7 +9,7 @@ interface ToggleItemProps {
   className?: string;
 }
 
-export const ToggleItem = ({
+export const Switch = ({
   id,
   label,
   checked,

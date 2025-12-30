@@ -24,7 +24,7 @@ import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { Input } from "@repo/ui/ui/input";
 import { Label } from "@repo/ui/ui/label";
 import { Textarea } from "@repo/ui/ui/textarea";
-import { ToggleItem } from "@repo/ui/ui/switch";
+import { Switch } from "@repo/ui/ui/switch";
 
 type SettingsTab = "profile" | "notifications" | "security" | "appearance" | "general";
 
@@ -255,7 +255,7 @@ export default function SettingsPage() {
                                             { key: "emailInventory", label: "Inventory alerts" },
                                             { key: "emailMarketing", label: "Marketing campaigns" },
                                         ].map(({ key, label }) => (
-                                            <ToggleItem
+                                            <Switch
                                                 key={key}
                                                 id={`email-${key}`}
                                                 label={label}
@@ -285,7 +285,7 @@ export default function SettingsPage() {
                                             { key: "pushInventory", label: "Inventory alerts" },
                                             { key: "pushMarketing", label: "Marketing campaigns" },
                                         ].map(({ key, label }) => (
-                                            <ToggleItem
+                                            <Switch
                                                 key={key}
                                                 id={`push-${key}`}
                                                 label={label}
@@ -389,7 +389,7 @@ export default function SettingsPage() {
                                         </p>
                                     </div>
 
-                                    <ToggleItem
+                                    <Switch
                                         label=""
                                         checked={securitySettings.twoFactorAuth}
                                         onCheckedChange={(checked) =>
@@ -415,7 +415,7 @@ export default function SettingsPage() {
                                             Get notified when someone logs into your account
                                         </p>
                                     </div>
-                                    <ToggleItem
+                                    <Switch
                                     label=""
                                     checked={securitySettings.loginNotifications}
                                     onCheckedChange={(checked) =>

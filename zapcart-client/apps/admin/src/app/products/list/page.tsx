@@ -150,6 +150,8 @@ import {
   TableRow,
 } from "@repo/ui/ui/table";
 import { Pagination } from "@repo/ui/ui/pagination";
+import { FormPopup } from "@repo/ui/ui/form-popup";
+import { AddProductForm } from "@/components/forms/AddProductForm";
 
 // ... existing imports
 
@@ -271,10 +273,18 @@ export default function ProductListPage() {
               <Filter className="h-4 w-4" />
               Filter
             </button>
-            <button className="flex items-center gap-2 px-4 py-1.5 text-sm font-bold text-white bg-primary rounded-lg hover:bg-primary/90 transition-all shadow-md shadow-primary/20">
-              <Plus className="h-4 w-4" strokeWidth={3} />
-              Add Product
-            </button>
+            <FormPopup
+              title="Add New Product"
+              description="Fill in the details to create a new product."
+              trigger={
+                <button className="flex items-center gap-2 px-4 py-1.5 text-sm font-bold text-white bg-primary rounded-lg hover:bg-primary/90 transition-all shadow-md shadow-primary/20">
+                  <Plus className="h-4 w-4" strokeWidth={3} />
+                  Add Product
+                </button>
+              }
+            >
+              <AddProductForm onSubmit={(data) => console.log(data)} />
+            </FormPopup>
           </div>
         </div>
 
