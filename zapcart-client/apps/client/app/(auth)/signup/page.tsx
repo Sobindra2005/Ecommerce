@@ -16,11 +16,11 @@ import { toast } from "sonner";
 import { authApi } from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { useAuthStore, useUserStore } from "@/stores";
+import { setAuthToken } from "@/app/actions/auth.actions";
 
 export default function SignupPage() {
     const router = useRouter();
     
-    // Access methods directly for stable references
     const login = useAuthStore((state) => state.login);
     const setUser = useUserStore((state) => state.setUser);
 
@@ -36,7 +36,11 @@ export default function SignupPage() {
 
     const signupMutation = useMutation({
         mutationFn: authApi.signup,
-        onSuccess: (data) => {
+        onSuccess: async (data) => {
+            if (data?.token?.accessToken) {
+                await setAuthToken(data.token.accessToken);
+            }
+            
             toast.success("Account created successfully!", {
                 description: "Please check your email to verify your account.",
             });
