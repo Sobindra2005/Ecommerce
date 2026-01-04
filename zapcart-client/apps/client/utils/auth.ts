@@ -1,6 +1,7 @@
 import { removeAuthToken } from "@/app/actions/auth.actions";
 import { useAuthStore } from "@/stores/auth/auth.store";
 import { useUserStore } from "@/stores/user/user.store";
+import { authApi } from "./api";
 
 /**
  * Centralized logout function
@@ -8,6 +9,7 @@ import { useUserStore } from "@/stores/user/user.store";
  */
 export async function handleLogout() {
   try {
+    await authApi.logout();
     await removeAuthToken();
     useUserStore.getState().clearUser();
     useAuthStore.getState().logout();
