@@ -74,6 +74,8 @@ export const config = {
     CLOUDINARY_CLOUD_NAME: getEnvVariable('CLOUDINARY_CLOUD_NAME'),
     CLOUDINARY_API_KEY: getEnvVariable('CLOUDINARY_API_KEY'),
     CLOUDINARY_API_SECRET: getEnvVariable('CLOUDINARY_API_SECRET'),
+
+    frontendUrl: getEnvVariable('FRONTEND_URL'),
 } as const;
 
 /**
