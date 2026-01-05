@@ -21,6 +21,8 @@ import { protect, restrictTo } from '@/middlewares/authMiddleware';
 
 const router = Router();
 
+router.use(protect);
+
 // Public routes (no authentication required)
 router.get('/featured', getFeaturedProducts);
 router.get('/search', searchProducts);
@@ -29,8 +31,6 @@ router.get('/:identifier', getProductById);
 router.get('/:id/related', getRelatedProducts);
 router.post('/:id/view', incrementProductViews);
 
-// Protected routes (authentication required)
-router.use(protect);
 
 // Customer routes (authenticated users)
 router.get('/', getAllProducts);

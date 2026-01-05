@@ -31,6 +31,7 @@ model User {
   firstName     String
   lastName      String
   phone         String?
+  avatar        String?
   role          UserRole      @default(CUSTOMER)
   status        UserStatus    @default(ACTIVE)
   emailVerified Boolean       @default(false)
