@@ -3,7 +3,7 @@ import mongoose, { Schema, Document, Model } from 'mongoose';
 // Review Interface
 export interface IProductReview extends Document {
   product: mongoose.Types.ObjectId;
-  user: mongoose.Types.ObjectId;
+  user: number;
 
   // Review Content
   rating: number;
@@ -20,7 +20,7 @@ export interface IProductReview extends Document {
   // Helpful votes
   helpfulCount: number;
   notHelpfulCount: number;
-  helpfulVotes: mongoose.Types.ObjectId[]; // User IDs who voted helpful
+  helpfulVotes: number[]; // User IDs who voted helpful
 
   // Moderation
   status: 'pending' | 'approved' | 'rejected';
@@ -46,8 +46,8 @@ export interface IProductReview extends Document {
   // Instance methods
   approve(moderatorId: string, note?: string): Promise<this>;
   reject(moderatorId: string, note: string): Promise<this>;
-  addReply(content: string, userId: string): Promise<this>;
-  markHelpful(userId: string): Promise<this>;
+  addReply(content: string, userId: number): Promise<this>;
+  markHelpful(userId: number): Promise<this>;
   markNotHelpful(): Promise<this>;
 }
 
@@ -74,11 +74,11 @@ export interface IProductReviewModel extends Model<IProductReview> {
   }>;
 
   getUserReviews(
-    userId: string,
+    userId: number,
     options?: { limit?: number; skip?: number }
   ): Promise<IProductReview[]>;
 
-  hasUserReviewed(userId: string, productId: string): Promise<boolean>;
+  hasUserReviewed(userId: number, productId: string): Promise<boolean>;
 }
 
 // Product Review Schema
@@ -91,8 +91,7 @@ const ProductReviewSchema = new Schema<IProductReview>(
       index: true
     },
     user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
+      type: Number,
       required: [true, 'User reference is required'],
       index: true
     },
@@ -152,8 +151,7 @@ const ProductReviewSchema = new Schema<IProductReview>(
       min: 0
     },
     helpfulVotes: [{
-      type: Schema.Types.ObjectId,
-      ref: 'User'
+      type:Number,
     }],
 
     // Moderation
@@ -168,8 +166,7 @@ const ProductReviewSchema = new Schema<IProductReview>(
       maxlength: [500, 'Moderator note cannot exceed 500 characters']
     },
     moderatedBy: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
+      type: Number,
     },
     moderatedAt: Date,
 
@@ -180,8 +177,7 @@ const ProductReviewSchema = new Schema<IProductReview>(
         maxlength: [1000, 'Reply cannot exceed 1000 characters']
       },
       repliedBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'User'
+        type: Number,
       },
       repliedAt: Date
     }
@@ -286,7 +282,6 @@ ProductReviewSchema.statics.getProductReviews = function (
   }
 
   return this.find(query)
-    .populate('user', 'name email')
     .sort(sort)
     .limit(limit)
     .skip(skip);
@@ -333,7 +328,7 @@ ProductReviewSchema.statics.getRatingDistribution = async function (productId: s
 };
 
 // Static method to get user's reviews
-ProductReviewSchema.statics.getUserReviews = function (userId: string, options: { limit?: number; skip?: number } = {}) {
+ProductReviewSchema.statics.getUserReviews = function (userId: number, options: { limit?: number; skip?: number } = {}) {
   const { limit = 10, skip = 0 } = options;
 
   return this.find({ user: userId })
@@ -345,7 +340,7 @@ ProductReviewSchema.statics.getUserReviews = function (userId: string, options: 
 
 // Static method to check if user has already reviewed a product
 ProductReviewSchema.statics.hasUserReviewed = async function (
-  userId: string,
+  userId: number,
   productId: string
 ) {
   const review = await this.findOne({
@@ -377,10 +372,10 @@ ProductReviewSchema.methods.reject = async function (moderatorId: string, note: 
 };
 
 // Instance method to add reply
-ProductReviewSchema.methods.addReply = async function (content: string, userId: string) {
+ProductReviewSchema.methods.addReply = async function (content: string, userId: number) {
   this.reply = {
     content,
-    repliedBy: new mongoose.Types.ObjectId(userId),
+    repliedBy: userId,
     repliedAt: new Date()
   };
 
@@ -388,11 +383,11 @@ ProductReviewSchema.methods.addReply = async function (content: string, userId: 
 };
 
 // Instance method to mark as helpful
-ProductReviewSchema.methods.markHelpful = async function (userId: string) {
-  const userIdObj = new mongoose.Types.ObjectId(userId);
+ProductReviewSchema.methods.markHelpful = async function (userId: number) {
+  const userIdObj = userId;
 
   // Check if user already voted
-  const hasVoted = this.helpfulVotes.some((id: mongoose.Types.ObjectId) => id.equals(userIdObj));
+  const hasVoted = this.helpfulVotes.some((id: number) => id === userIdObj);
 
   if (!hasVoted) {
     this.helpfulVotes.push(userIdObj);

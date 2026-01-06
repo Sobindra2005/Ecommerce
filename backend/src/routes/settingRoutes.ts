@@ -10,12 +10,12 @@ import { UserRole } from '@/generated/prisma';
 
 const router = express.Router();
 
-// Protect subsequent routes
-router.use(protect);
 
 router.get('/', getAllSystemSettings);
 router.get('/delivery-estimate', getDeliveryEstimate);
 
+// Protect subsequent routes
+router.use(protect);
 router.use(restrictTo(UserRole.ADMIN, UserRole.SUPERADMIN));
 router.post('/', addSystemSetting);
 router.put('/delivery-estimate', updateDeliveryEstimate);

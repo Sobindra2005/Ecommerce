@@ -136,13 +136,12 @@ export const createReview = asyncHandler(async (req: Request, res: Response) => 
     }
 
     // Check if user has already reviewed this product
-    const hasReviewed = await ProductReview.hasUserReviewed(userId.toString(), product);
+    const hasReviewed = await ProductReview.hasUserReviewed(userId, product);
     if (hasReviewed) {
         throw new AppError('You have already reviewed this product', 400);
     }
 
     // Create review
-    // @ts-expect-error - Mongoose typing limitation with custom fields
     const review = (await ProductReview.create({
         product,
         user: userId,
@@ -175,12 +174,12 @@ export const getUserReviews = asyncHandler(async (req: Request, res: Response) =
     const limitNum = Number(limit);
     const skip = (pageNum - 1) * limitNum;
 
-    const reviews = await ProductReview.getUserReviews(userId.toString(), {
+    const reviews = await ProductReview.getUserReviews(userId, {
         limit: limitNum,
         skip,
     });
 
-    const total = await ProductReview.countDocuments({ user: userId.toString() });
+    const total = await ProductReview.countDocuments({ user: userId });
 
     res.status(200).json({
         status: 'success',
@@ -269,7 +268,7 @@ export const markReviewHelpful = asyncHandler(async (req: Request, res: Response
     }
 
     // Use instance method to mark as helpful
-    await review.markHelpful(userId.toString());
+    await review.markHelpful(userId);
 
     res.status(200).json({
         status: 'success',
@@ -325,7 +324,7 @@ export const addReplyToReview = asyncHandler(async (req: Request, res: Response)
     }
 
     // Use instance method to add reply
-    await review.addReply(content, userId.toString());
+    await review.addReply(content, userId);
 
     res.status(200).json({
         status: 'success',
