@@ -359,7 +359,6 @@ model InventoryLog {
 // SYSTEM SETTINGS
 // ===========================
 enum SystemSettingKey {
-  SHIPPING_FEE
   ESTIMATED_DELIVERY_DAYS
   SHIPPING_INFO
   SUPPORT_EMAIL
@@ -369,8 +368,8 @@ enum SystemSettingKey {
 model SystemSetting {
   id          Int      @id @default(autoincrement())
   key         String   @unique 
-  value       String
-  description String?
+  value       String?
+  description Json?
   
   updatedAt   DateTime @updatedAt
   createdAt   DateTime @default(now())
