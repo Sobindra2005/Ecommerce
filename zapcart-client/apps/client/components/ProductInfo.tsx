@@ -15,7 +15,16 @@ interface ProductInfoProps {
 }
 
 export function ProductInfo({ product }: ProductInfoProps) {
-    const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "");
+
+    const availableSizes = product.hasVariants && product.variants
+        ? Array.from(new Set(product.variants.map(v => v.size).filter(Boolean)))
+        : product.sizes || [];
+
+    // Check if product has variants but no sizes
+    const hasVariantsWithoutSizes = product.hasVariants && product.variants && product.variants.length > 0 && availableSizes.length === 0;
+    
+    const [selectedSize, setSelectedSize] = useState(availableSizes[0] || "");
+    const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
     const [isFavorite, setIsFavorite] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const [descriptionOpen, setDescriptionOpen] = useState(true);
@@ -23,6 +32,17 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
     const { addToCart } = useCart();
     const router = useRouter();
+
+    // Get current variant based on selected size or index
+    const currentVariant = product.hasVariants && product.variants
+        ? (selectedSize 
+            ? product.variants.find(v => v.size === selectedSize)
+            : product.variants[selectedVariantIndex])
+        : null;
+
+    // Determine price and stock based on variant or product
+    const currentPrice = currentVariant?.price ?? product.basePrice;
+    const currentStock = currentVariant?.stock ?? product.inStock;
 
     const handleIncrement = () => {
         setQuantity((prev) => prev + 1);
@@ -36,24 +56,38 @@ export function ProductInfo({ product }: ProductInfoProps) {
         addToCart({
             id: product.id,
             name: product.name,
-            price: product.price,
-            image: product.image,
+            price: currentPrice,
+            image: currentVariant?.images?.[0] ?? product.thumbnail ?? "",
             quantity: quantity,
             size: selectedSize,
+            variant: currentVariant ? {
+                sku: currentVariant.sku,
+                color: currentVariant.color,
+                material: currentVariant.material,
+            } as any : undefined,
         });
         router.push("/cart");
+    };
+
+    // Generate variant display label
+    const getVariantLabel = (variant: any, index: number) => {
+        const parts = [];
+        if (variant.color) parts.push(variant.color);
+        if (variant.material) parts.push(variant.material);
+        if (variant.sku) parts.push(`SKU: ${variant.sku}`);
+        return parts.length > 0 ? parts.join(' - ') : `Variant ${index + 1}`;
     };
 
     return (
         <div className="space-y-6">
             {/* Category */}
-            <div className="text-sm text-muted-foreground">{product.category}</div>
+            <div className="text-sm text-muted-foreground">{typeof product.category === "string" ? product.category : product.category.name}</div>
 
             {/* Product Name */}
             <h1 className="text-3xl font-bold">{product.name}</h1>
 
             {/* Price */}
-            <div className="text-2xl font-bold">${product.price.toFixed(2)}</div>
+            <div className="text-2xl font-bold">${currentPrice.toFixed(2)}</div>
 
             {/* Delivery Info */}
             {product.shippingInfo && (
@@ -66,17 +100,39 @@ export function ProductInfo({ product }: ProductInfoProps) {
             )}
 
             {/* Size Selector */}
-            {product.sizes && product.sizes.length > 0 && (
+            {availableSizes && availableSizes.length > 0 && (
                 <SizeSelector
-                    sizes={product.sizes}
+                    sizes={availableSizes}
                     selectedSize={selectedSize}
                     onSizeChange={setSelectedSize}
                 />
             )}
 
+            {/* Variant Selector (when no sizes) */}
+            {hasVariantsWithoutSizes && product.variants && (
+                <div className="space-y-2">
+                    <label className="text-sm font-medium">Select Variant</label>
+                    <select
+                        value={selectedVariantIndex}
+                        onChange={(e) => setSelectedVariantIndex(Number(e.target.value))}
+                        className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                    >
+                        {product.variants.map((variant, index) => (
+                            <option key={variant.sku} value={index}>
+                                {getVariantLabel(variant, index)} - ${variant.price.toFixed(2)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+            )}
+
             {/* Stock Status */}
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <span>In stock (can be backordered)</span>
+                <span>
+                    {currentStock && currentStock > 0
+                        ? `In stock (${currentStock} available)`
+                        : "Out of stock (can be backordered)"}
+                </span>
             </div>
 
             {/* Quantity Selector & Add to Cart */}
@@ -145,7 +201,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         className="py-3 text-sm text-muted-foreground leading-relaxed">
-                        {product.detailedDescription || product.description}
+                        {product.description || product.shortDescription || "No description available."}
                     </motion.div>
                 )}
             </div>

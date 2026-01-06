@@ -417,7 +417,8 @@ ProductSchema.statics.findFeatured = function (limit: number = 10) {
   })
     .sort({ salesCount: -1, averageRating: -1 })
     .limit(limit)
-    .populate('category');
+    .populate('category')
+    .select('-costPrice');
 };
 
 // Static method to find products by category

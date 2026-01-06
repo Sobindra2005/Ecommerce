@@ -20,7 +20,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
     }
 
     // Default images if not provided
-    const images = product.images || [product.image, product.image, product.image, product.image];
+    const images = (product.images && product.images.filter((img): img is string => typeof img === "string")) ||
+        [product.thumbnail, product.thumbnail, product.thumbnail, product.thumbnail].filter((img): img is string => typeof img === "string");
 
     return (
         <MainContainer className="max-w-7xl">
@@ -36,7 +37,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 {/* Reviews Section */}
                 {product.reviews && product.reviews.length > 0 && (
                     <ReviewsSection
-                        rating={product.rating}
+                        rating={product.averageRating}
                         reviewCount={product.reviewCount}
                         reviews={product.reviews}
                     />

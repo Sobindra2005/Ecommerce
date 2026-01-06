@@ -1,4 +1,6 @@
+
 import axios from 'axios';
+import { getCookie } from './cookies';
 
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || 'http://localhost:8080/api';
 
@@ -9,6 +11,7 @@ const endpoints = {
     logout: '/auth/logout',
 }
 
+
 const axiosInstance = axios.create({
     baseURL: baseUrl,
     headers: {
@@ -16,6 +19,18 @@ const axiosInstance = axios.create({
     },
     withCredentials: true,
 });
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = getCookie('token');
+        if (token) {
+            config.headers = config.headers || {};
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
 
 const apiClient = {
     get: async (endpoint: string, config = {}) => {
@@ -28,12 +43,11 @@ const apiClient = {
     },
 }
 
-
 export const authApi = {
     signup: (data: { firstName: string; lastName: string; email: string; password: string }) => {
         return apiClient.post(endpoints.signup, data);
     },
-    login:(data: { email: string; password: string }) => {
+    login: (data: { email: string; password: string }) => {
         return apiClient.post(endpoints.login, data);
     },
     refreshToken: () => {
@@ -41,5 +55,11 @@ export const authApi = {
     },
     logout: () => {
         return apiClient.post(endpoints.logout, {});
+    }
+};
+
+export const productApi = {
+    getProducts: () => {
+        return apiClient.get('/products/featured');
     }
 };

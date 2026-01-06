@@ -37,8 +37,8 @@ export default function SearchPage() {
             }
 
             // Price Filter
-            if (filters.minPrice !== "" && product.price < filters.minPrice) return false;
-            if (filters.maxPrice !== "" && product.price > filters.maxPrice) return false;
+            if (filters.minPrice !== "" && product.basePrice < filters.minPrice) return false;
+            if (filters.maxPrice !== "" && product.basePrice > filters.maxPrice) return false;
 
             // Rating Filter
             if (filters.minRating !== null && product.rating < filters.minRating) return false;
