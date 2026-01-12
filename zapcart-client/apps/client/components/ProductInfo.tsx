@@ -8,7 +8,10 @@ import { Product } from "@/types/product";
 import { SizeSelector } from "./SizeSelector";
 import { cn } from "@repo/lib/utils";
 import { useCart } from "@/contexts/CartContext";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { systemSettingsApi } from "@/utils/api";
+import { ShippingSettingsDescription, SystemSetting } from "@/types/systemSetting";
 
 interface ProductInfoProps {
     product: Product;
@@ -21,7 +24,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
     // Check if product has variants but no sizes
     const hasVariantsWithoutSizes = product.hasVariants && product.variants && product.variants.length > 0 && availableSizes.length === 0;
-    
+
     const [selectedSize, setSelectedSize] = useState(availableSizes[0] || "");
     const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
     const [isFavorite, setIsFavorite] = useState(false);
@@ -34,7 +37,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
     // Get current variant based on selected size or index
     const currentVariant = product.hasVariants && product.variants
-        ? (selectedSize 
+        ? (selectedSize
             ? product.variants.find(v => v.size === selectedSize)
             : product.variants[selectedVariantIndex])
         : null;
@@ -77,8 +80,15 @@ export function ProductInfo({ product }: ProductInfoProps) {
         return parts.length > 0 ? parts.join(' - ') : `Variant ${index + 1}`;
     };
 
+    const { data } = useQuery({
+        queryKey: ['systemSettings'],
+        queryFn: systemSettingsApi.getSettings
+    })
+
+    const shippingInfo = (data?.data.settings as SystemSetting[] | undefined)?.find(s => s.key === "SHIPPING_INFO");
+    const shippingInfoDescription:ShippingSettingsDescription | undefined = shippingInfo && typeof shippingInfo.description === 'string' ? JSON.parse(shippingInfo.description) : undefined;
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 min-h-screen">
             {/* Category */}
             <div className="text-sm text-muted-foreground">{typeof product.category === "string" ? product.category : product.category.name}</div>
 
@@ -89,11 +99,11 @@ export function ProductInfo({ product }: ProductInfoProps) {
             <div className="text-2xl font-bold">${currentPrice.toFixed(2)}</div>
 
             {/* Delivery Info */}
-            {product.shippingInfo && (
+            {shippingInfo?.value && (
                 <div className="flex items-center gap-2 text-sm">
                     <Calendar className="w-4 h-4" />
                     <span>
-                        Order in <span className="font-semibold">{product.shippingInfo.estimatedDelivery}</span> to get next day delivery
+                        Order in <span className="font-semibold">{shippingInfo.value}</span> to get next day delivery
                     </span>
                 </div>
             )}
@@ -194,19 +204,24 @@ export function ProductInfo({ product }: ProductInfoProps) {
                         )}
                     />
                 </button>
-                {descriptionOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className="py-3 text-sm text-muted-foreground leading-relaxed">
-                        {product.description || product.shortDescription || "No description available."}
-                    </motion.div>
-                )}
+                <AnimatePresence>
+                    {descriptionOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: "auto" }}
+                            exit={{ opacity: 0, height: 0 }}
+                            transition={{ duration: 0.2 }}
+                            className="overflow-hidden">
+                            <div className="py-3 text-sm text-muted-foreground leading-relaxed">
+                                {product.description || product.shortDescription || "No description available."}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
 
             {/* Shipping */}
-            {product.shippingInfo && (
+            {shippingInfoDescription && (
                 <div className="border-t pt-6">
                     <button
                         onClick={() => setShippingOpen(!shippingOpen)}
@@ -220,60 +235,101 @@ export function ProductInfo({ product }: ProductInfoProps) {
                             )}
                         />
                     </button>
-                    {shippingOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="py-3 space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-start gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
-                                        <Package className="w-5 h-5 text-white" />
-                                    </div>
-                                    <div>
-                                        <div className="text-sm font-medium">Discount</div>
-                                        <div className="text-sm text-muted-foreground">
-                                            {product.shippingInfo.discount}
+                    <AnimatePresence>
+                        {shippingOpen && (
+                            <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="overflow-hidden">
+                                <div className="py-3 space-y-4">
+                            {/* Shipping Methods */}
+                            {shippingInfoDescription.methods?.filter(m => m.active).map((method) => {
+                                const freeOverRule = method.costRules?.find(r => r.type === "FREE_OVER");
+                                const flatRateRule = method.costRules?.find(r => r.type === "FLAT_RATE");
+                                
+                                return (
+                                    <div key={method.code} className="space-y-3">
+                                        <div className="flex items-center gap-2">
+                                            <Truck className="w-4 h-4" />
+                                            <span className="font-medium">{method.label}</span>
+                                        </div>
+                                        <p className="text-sm text-muted-foreground">{method.description}</p>
+                                        
+                                        <div className="grid grid-cols-2 gap-4">
+                                            {/* Free Shipping Info */}
+                                            {freeOverRule && (
+                                                <div className="flex items-start gap-3">
+                                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
+                                                        <Package className="w-5 h-5 text-white" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm font-medium">Free Shipping</div>
+                                                        <div className="text-sm text-muted-foreground">
+                                                            Orders over {freeOverRule.currency}{freeOverRule.value}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {/* Flat Rate */}
+                                            {flatRateRule && (
+                                                <div className="flex items-start gap-3">
+                                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
+                                                        <Box className="w-5 h-5 text-white" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm font-medium">Shipping Cost</div>
+                                                        <div className="text-sm text-muted-foreground">
+                                                            {flatRateRule.currency}{flatRateRule.value}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
+                                            
+                                            {/* Delivery Time */}
+                                            <div className="flex items-start gap-3">
+                                                <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
+                                                    <Calendar className="w-5 h-5 text-white" />
+                                                </div>
+                                                <div>
+                                                    <div className="text-sm font-medium">Delivery Time</div>
+                                                    <div className="text-sm text-muted-foreground">
+                                                        {method.deliveryTimeInDays.min}-{method.deliveryTimeInDays.max} business days
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            {/* Handling Time */}
+                                            {shippingInfoDescription.general?.handlingTimeInDays && (
+                                                <div className="flex items-start gap-3">
+                                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
+                                                        <Truck className="w-5 h-5 text-white" />
+                                                    </div>
+                                                    <div>
+                                                        <div className="text-sm font-medium">Processing Time</div>
+                                                        <div className="text-sm text-muted-foreground">
+                                                            {shippingInfoDescription.general.handlingTimeInDays[0]}-{shippingInfoDescription.general.handlingTimeInDays[1]} business days
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
-                                        <Truck className="w-5 h-5 text-white" />
-                                    </div>
-                                    <div>
-                                        <div className="text-sm font-medium">Package</div>
-                                        <div className="text-sm text-muted-foreground">
-                                            {product.shippingInfo.packageType}
+                                );
+                            })}
+                            
+                                    {/* Business Days */}
+                                    {shippingInfoDescription.general?.shippingBusinessDays && (
+                                        <div className="text-xs text-muted-foreground pt-2 border-t">
+                                            Ships on: {shippingInfoDescription.general.shippingBusinessDays.join(", ")}
                                         </div>
-                                    </div>
+                                    )}
                                 </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
-                                        <Calendar className="w-5 h-5 text-white" />
-                                    </div>
-                                    <div>
-                                        <div className="text-sm font-medium">Delivery Time</div>
-                                        <div className="text-sm text-muted-foreground">
-                                            {product.shippingInfo.deliveryTime}
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
-                                        <Box className="w-5 h-5 text-white" />
-                                    </div>
-                                    <div>
-                                        <div className="text-sm font-medium">Estimated Arrival</div>
-                                        <div className="text-sm text-muted-foreground">
-                                            {product.shippingInfo.estimatedDelivery}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </motion.div>
-                    )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
             )}
         </div>
