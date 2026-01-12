@@ -104,11 +104,6 @@ const ProductReviewSchema = new Schema<IProductReview>(
       max: [5, 'Rating cannot exceed 5'],
       index: true
     },
-    title: {
-      type: String,
-      trim: true,
-      maxlength: [100, 'Review title cannot exceed 100 characters']
-    },
     comment: {
       type: String,
       required: [true, 'Review comment is required'],

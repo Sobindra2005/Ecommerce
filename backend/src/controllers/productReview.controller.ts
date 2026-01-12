@@ -128,7 +128,7 @@ export const getReviewById = asyncHandler(async (req: Request, res: Response) =>
  */
 export const createReview = asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user!.id;
-    const { product, rating, title, comment, images, orderId } = req.body;
+    const { product, rating, comment, images, orderId } = req.body;
 
     // Validation
     if (!product || !rating || !comment) {
@@ -146,7 +146,6 @@ export const createReview = asyncHandler(async (req: Request, res: Response) => 
         product,
         user: userId,
         rating,
-        title,
         comment,
         images,
         orderId,

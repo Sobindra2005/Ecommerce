@@ -8,6 +8,7 @@ import { productApi } from "@/utils/api"
 import { useQuery } from "@tanstack/react-query"
 import { EmptySection } from "@/components/emptySection"
 import { Package, Loader2 } from "lucide-react"
+import { notFound } from "next/navigation"
 
 export const ProductById = ({ productId }: {
     productId: string;
@@ -34,12 +35,7 @@ export const ProductById = ({ productId }: {
 
     if (error || !product) {
         return (
-            <EmptySection
-                message="Product not found"
-                description="The product you're looking for doesn't exist or has been removed."
-                icon={<Package size={48} />}
-                minHeight="500px"
-            />
+            notFound()
         );
     }
 

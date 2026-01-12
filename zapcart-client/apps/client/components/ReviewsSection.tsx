@@ -8,7 +8,6 @@ import { Star } from "lucide-react";
 import { ReviewCard } from "./ReviewCard";
 import { Button } from "@repo/ui/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@repo/ui/ui/form";
-import { Input } from "@repo/ui/ui/input";
 import { Textarea } from "@repo/ui/ui/textarea";
 import { cn } from "@repo/lib/utils";
 import { motion } from "framer-motion"
@@ -17,11 +16,11 @@ import { reviewsApi } from "@/utils/api";
 import { getQueryClient } from "../../../packages/ui/src/get-query-client";
 import { Product } from "@/types/product";
 import { IProductReview } from "@/types/productReviews";
+import { selectUserId, useUserStore } from "@/stores";
 
 // Review form validation schema
 const reviewSchema = z.object({
     rating: z.number().min(1, "Please select a rating").max(5),
-    title: z.string().min(3, "Title must be at least 3 characters").max(100, "Title must be less than 100 characters"),
     comment: z.string().min(10, "Review must be at least 10 characters").max(500, "Review must be less than 500 characters"),
 });
 
@@ -39,10 +38,11 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
         resolver: zodResolver(reviewSchema),
         defaultValues: {
             rating: 0,
-            title: "",
             comment: "",
         },
     });
+
+   const userId = useUserStore(selectUserId)
 
     const { data } = useQuery({
         queryKey: ['productReviews', productId],
@@ -65,8 +65,7 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
     const handleSubmitReview = (data: ReviewFormData) => {
         console.log("Review submitted:", {
             ...data,
-            userId: "mock-user-id",
-            userName: "Current User",
+            userId: userId, 
             date: new Date().toISOString(),
             id: crypto.randomUUID(),
         });
@@ -74,6 +73,12 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
         // Reset form and hide it
         form.reset();
         setShowReviewForm(false);
+    };
+
+    const handleVoteHelpful = (reviewId: string, voteType: 'helpful' | 'notHelpful') => {
+        console.log(`User voted ${voteType} on review:`, reviewId);
+        // TODO: Implement API call to record vote
+        // Example: reviewsApi.voteReview(reviewId, voteType)
     };
 
     return (
@@ -176,24 +181,6 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
                                         )}
                                     />
 
-                                    {/* Title Field */}
-                                    <FormField
-                                        control={form.control}
-                                        name="title"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Review Title *</FormLabel>
-                                                <FormControl>
-                                                    <Input
-                                                        placeholder="Summarize your review"
-                                                        {...field}
-                                                    />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-
                                     {/* Comment Field */}
                                     <FormField
                                         control={form.control}
@@ -226,7 +213,11 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
                     <div className="space-y-0">
                         {reviews.length > 0 ? (
                             reviews.map((review) => (
-                                <ReviewCard key={review.id} review={review} />
+                                <ReviewCard 
+                                    key={review.id} 
+                                    review={review}
+                                    onVoteHelpful={handleVoteHelpful}
+                                />
                             ))
                         ) : (
                             <p className="text-muted-foreground text-center py-8">
