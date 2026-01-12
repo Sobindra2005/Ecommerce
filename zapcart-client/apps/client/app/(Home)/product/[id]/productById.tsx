@@ -22,8 +22,6 @@ export const ProductById = ({ productId }: {
 
     const product: Product | undefined = data?.data.product;
 
-    console.log("ProductById - productId:", productId, "product:", product, "isLoading:", isLoading, "error:", error);
-
     if (isLoading) {
         return (
             <EmptySection

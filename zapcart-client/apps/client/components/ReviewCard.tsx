@@ -1,10 +1,10 @@
 "use client";
 
+import { IProductReview } from "@/types/productReviews";
 import { Star } from "lucide-react";
-import { Review } from "@/types/product";
 
 interface ReviewCardProps {
-    review: Review;
+    review: IProductReview;
 }
 
 export function ReviewCard({ review }: ReviewCardProps) {
@@ -22,14 +22,14 @@ export function ReviewCard({ review }: ReviewCardProps) {
             <div className="flex items-start gap-4 mb-3">
                 <div className="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0">
                     <span className="text-sm font-semibold text-white">
-                        {getInitials(review.userName)}
+                        {review?.user ? getInitials(review.user.name || "Anonymous User") : "AU"}
                     </span>
                 </div>
                 <div className="flex-1">
                     <div className="flex items-start justify-between mb-1">
-                        <h4 className="font-semibold text-base">{review.userName}</h4>
+                        <h4>{review?.user ? review.user.name : "Anonymous"}</h4>
                     </div>
-                    <span className="text-sm text-muted-foreground">{review.date}</span>
+                    <span className="text-sm text-muted-foreground">{review.createdAt.toString()}</span>
                     <div className="flex items-center gap-1 mt-2">
                         {[...Array(5)].map((_, i) => (
                             <Star

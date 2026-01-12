@@ -14,6 +14,9 @@ import { cn } from "@repo/lib/utils";
 import { motion } from "framer-motion"
 import { useQuery } from "@tanstack/react-query";
 import { reviewsApi } from "@/utils/api";
+import { getQueryClient } from "../../../packages/ui/src/get-query-client";
+import { Product } from "@/types/product";
+import { IProductReview } from "@/types/productReviews";
 
 // Review form validation schema
 const reviewSchema = z.object({
@@ -46,10 +49,13 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
         queryFn: () => reviewsApi.getReviewsByProductId(productId)
     })
 
-    return;
+    const queryClient = getQueryClient();
 
+    const product = queryClient.getQueryData<{ data: { product: Product } }>(['product', productId])?.data.product as Product;
 
-    // Calculate rating breakdown
+    const reviewCount = data?.data.reviews.length || 0;
+    const reviews: IProductReview[] = data?.data.reviews || [];
+
     const ratingBreakdown = [5, 4, 3, 2, 1].map(stars => {
         const count = reviews.filter(r => r.rating === stars).length;
         const percentage = reviewCount > 0 ? (count / reviewCount) * 100 : 0;
@@ -79,10 +85,10 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
                 <div className="space-y-6">
                     <div>
                         <div className="flex items-baseline gap-2 mb-2">
-                            <span className="text-6xl font-bold">{rating.toFixed(1)}</span>
+                            <span className="text-6xl font-bold">{product.averageRating.toFixed(1)}</span>
                             <span className="text-2xl text-muted-foreground">/5</span>
                         </div>
-                        <p className="text-sm text-muted-foreground">({reviewCount} New Reviews)</p>
+                        <p className="text-sm text-muted-foreground">({reviewCount} Reviews)</p>
                     </div>
 
                     {/* Rating Breakdown */}
@@ -198,7 +204,7 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
                                                 <FormControl>
                                                     <Textarea
                                                         placeholder="Share your experience with this product..."
-                                                        className="min-h-[120px] resize-none"
+                                                        className="min-h-30 resize-none"
                                                         {...field}
                                                     />
                                                 </FormControl>

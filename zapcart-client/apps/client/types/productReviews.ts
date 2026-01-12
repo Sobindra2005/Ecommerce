@@ -6,6 +6,7 @@ interface productUser {
 
 export interface IProductReview {
     _id: string;
+    id: string;
     product: string;
     user: productUser;
 
