@@ -1,8 +1,5 @@
 
 import axios from 'axios';
-import { getCookie } from './cookies';
-import { get } from 'http';
-
 const baseUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || 'http://localhost:8080/api';
 
 const endpoints = {
@@ -12,7 +9,6 @@ const endpoints = {
     logout: '/auth/logout',
 }
 
-
 const axiosInstance = axios.create({
     baseURL: baseUrl,
     headers: {
@@ -21,17 +17,6 @@ const axiosInstance = axios.create({
     withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use(
-    (config) => {
-        const token = getCookie('token');
-        if (token) {
-            config.headers = config.headers || {};
-            config.headers['Authorization'] = `Bearer ${token}`;
-        }
-        return config;
-    },
-    (error) => Promise.reject(error)
-);
 
 const apiClient = {
     get: async (endpoint: string, config = {}) => {
@@ -71,6 +56,14 @@ export const productApi = {
 export const reviewsApi = {
     getReviewsByProductId: (productId: string) => {
         return apiClient.get(`/reviews/product/${productId}`);
+    },
+    createReview: (data: FormData | { product: string; rating: number; comment: string; images?: string[] }) => {
+        const config = data instanceof FormData ? {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        } : {};
+        return apiClient.post('/reviews', data, config);
     }
 }
 

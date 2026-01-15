@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { IProductReview } from "@/types/productReviews";
-import { Star, ThumbsUp, ThumbsDown, BadgeCheck, MessageSquare, Image as ImageIcon } from "lucide-react";
+import { Star, ThumbsUp, ThumbsDown, BadgeCheck, MessageSquare, Image as ImageIcon, X } from "lucide-react";
 import { Button } from "@repo/ui/ui/button";
 import { cn } from "@repo/lib/utils";
 import { format } from "date-fns";
@@ -14,7 +14,7 @@ interface ReviewCardProps {
 
 export function ReviewCard({ review, onVoteHelpful }: ReviewCardProps) {
     const [userVote, setUserVote] = useState<'helpful' | 'notHelpful' | null>(null);
-    const [showImages, setShowImages] = useState(false);
+    const [previewImage, setPreviewImage] = useState<string | null>(null);
 
     // Get initials from userName
     const getInitials = (name: string) => {
@@ -95,7 +95,7 @@ export function ReviewCard({ review, onVoteHelpful }: ReviewCardProps) {
             {/* Review Images */}
             {review.images && review.images.length > 0 && (
                 <div className="ml-16 mb-4">
-                    <div className="flex items-center gap-2 mb-2">
+                    {/* <div className="flex items-center gap-2 mb-2">
                         <ImageIcon className="w-4 h-4 text-muted-foreground" />
                         <button 
                             onClick={() => setShowImages(!showImages)}
@@ -103,8 +103,8 @@ export function ReviewCard({ review, onVoteHelpful }: ReviewCardProps) {
                         >
                             {showImages ? 'Hide' : 'View'} {review.images.length} {review.images.length === 1 ? 'image' : 'images'}
                         </button>
-                    </div>
-                    {showImages && (
+                    </div> */}
+              
                         <div className="flex gap-2 flex-wrap">
                             {review.images.map((img, idx) => (
                                 <img
@@ -112,10 +112,33 @@ export function ReviewCard({ review, onVoteHelpful }: ReviewCardProps) {
                                     src={img}
                                     alt={`Review image ${idx + 1}`}
                                     className="w-20 h-20 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-opacity"
+                                    onClick={() => setPreviewImage(img)}
                                 />
                             ))}
                         </div>
-                    )}
+
+                </div>
+            )}
+
+            {/* Image Preview Modal */}
+            {previewImage && (
+                <div 
+                    className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4"
+                    onClick={() => setPreviewImage(null)}
+                >
+                    <button
+                        onClick={() => setPreviewImage(null)}
+                        className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                        aria-label="Close preview"
+                    >
+                        <X className="w-6 h-6 text-white" />
+                    </button>
+                    <img
+                        src={previewImage}
+                        alt="Review image preview"
+                        className="max-w-full max-h-full object-contain"
+                        onClick={(e) => e.stopPropagation()}
+                    />
                 </div>
             )}
 

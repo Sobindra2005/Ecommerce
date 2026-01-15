@@ -85,8 +85,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
         queryFn: systemSettingsApi.getSettings
     })
 
-    const shippingInfo = (data?.data.settings as SystemSetting[] | undefined)?.find(s => s.key === "SHIPPING_INFO");
-    const shippingInfoDescription:ShippingSettingsDescription | undefined = shippingInfo && typeof shippingInfo.description === 'string' ? JSON.parse(shippingInfo.description) : undefined;
+    const settings = data?.settings || data?.data?.settings;
+    const shippingInfo = (settings as SystemSetting[] | undefined)?.find(s => s.key === "SHIPPING_INFO");
+    const shippingInfoDescription: ShippingSettingsDescription | undefined =
+        shippingInfo && typeof shippingInfo.description === 'string'
+            ? JSON.parse(shippingInfo.description)
+            : undefined;
+
     return (
         <div className="space-y-6 min-h-screen">
             {/* Category */}
@@ -244,82 +249,82 @@ export function ProductInfo({ product }: ProductInfoProps) {
                                 transition={{ duration: 0.2 }}
                                 className="overflow-hidden">
                                 <div className="py-3 space-y-4">
-                            {/* Shipping Methods */}
-                            {shippingInfoDescription.methods?.filter(m => m.active).map((method) => {
-                                const freeOverRule = method.costRules?.find(r => r.type === "FREE_OVER");
-                                const flatRateRule = method.costRules?.find(r => r.type === "FLAT_RATE");
-                                
-                                return (
-                                    <div key={method.code} className="space-y-3">
-                                        <div className="flex items-center gap-2">
-                                            <Truck className="w-4 h-4" />
-                                            <span className="font-medium">{method.label}</span>
-                                        </div>
-                                        <p className="text-sm text-muted-foreground">{method.description}</p>
-                                        
-                                        <div className="grid grid-cols-2 gap-4">
-                                            {/* Free Shipping Info */}
-                                            {freeOverRule && (
-                                                <div className="flex items-start gap-3">
-                                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
-                                                        <Package className="w-5 h-5 text-white" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="text-sm font-medium">Free Shipping</div>
-                                                        <div className="text-sm text-muted-foreground">
-                                                            Orders over {freeOverRule.currency}{freeOverRule.value}
+                                    {/* Shipping Methods */}
+                                    {shippingInfoDescription.methods?.filter(m => m.active).map((method) => {
+                                        const freeOverRule = method.costRules?.find(r => r.type === "FREE_OVER");
+                                        const flatRateRule = method.costRules?.find(r => r.type === "FLAT_RATE");
+
+                                        return (
+                                            <div key={method.code} className="space-y-3">
+                                                <div className="flex items-center gap-2">
+                                                    <Truck className="w-4 h-4" />
+                                                    <span className="font-medium">{method.label}</span>
+                                                </div>
+                                                <p className="text-sm text-muted-foreground">{method.description}</p>
+
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    {/* Free Shipping Info */}
+                                                    {freeOverRule && (
+                                                        <div className="flex items-start gap-3">
+                                                            <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
+                                                                <Package className="w-5 h-5 text-white" />
+                                                            </div>
+                                                            <div>
+                                                                <div className="text-sm font-medium">Free Shipping</div>
+                                                                <div className="text-sm text-muted-foreground">
+                                                                    Orders over {freeOverRule.currency}{freeOverRule.value}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Flat Rate */}
+                                                    {flatRateRule && (
+                                                        <div className="flex items-start gap-3">
+                                                            <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
+                                                                <Box className="w-5 h-5 text-white" />
+                                                            </div>
+                                                            <div>
+                                                                <div className="text-sm font-medium">Shipping Cost</div>
+                                                                <div className="text-sm text-muted-foreground">
+                                                                    {flatRateRule.currency}{flatRateRule.value}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Delivery Time */}
+                                                    <div className="flex items-start gap-3">
+                                                        <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
+                                                            <Calendar className="w-5 h-5 text-white" />
+                                                        </div>
+                                                        <div>
+                                                            <div className="text-sm font-medium">Delivery Time</div>
+                                                            <div className="text-sm text-muted-foreground">
+                                                                {method.deliveryTimeInDays.min}-{method.deliveryTimeInDays.max} business days
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            )}
-                                            
-                                            {/* Flat Rate */}
-                                            {flatRateRule && (
-                                                <div className="flex items-start gap-3">
-                                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
-                                                        <Box className="w-5 h-5 text-white" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="text-sm font-medium">Shipping Cost</div>
-                                                        <div className="text-sm text-muted-foreground">
-                                                            {flatRateRule.currency}{flatRateRule.value}
+
+                                                    {/* Handling Time */}
+                                                    {shippingInfoDescription.general?.handlingTimeInDays && (
+                                                        <div className="flex items-start gap-3">
+                                                            <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
+                                                                <Truck className="w-5 h-5 text-white" />
+                                                            </div>
+                                                            <div>
+                                                                <div className="text-sm font-medium">Processing Time</div>
+                                                                <div className="text-sm text-muted-foreground">
+                                                                    {shippingInfoDescription.general.handlingTimeInDays[0]}-{shippingInfoDescription.general.handlingTimeInDays[1]} business days
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                            
-                                            {/* Delivery Time */}
-                                            <div className="flex items-start gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
-                                                    <Calendar className="w-5 h-5 text-white" />
-                                                </div>
-                                                <div>
-                                                    <div className="text-sm font-medium">Delivery Time</div>
-                                                    <div className="text-sm text-muted-foreground">
-                                                        {method.deliveryTimeInDays.min}-{method.deliveryTimeInDays.max} business days
-                                                    </div>
+                                                    )}
                                                 </div>
                                             </div>
-                                            
-                                            {/* Handling Time */}
-                                            {shippingInfoDescription.general?.handlingTimeInDays && (
-                                                <div className="flex items-start gap-3">
-                                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center shrink-0">
-                                                        <Truck className="w-5 h-5 text-white" />
-                                                    </div>
-                                                    <div>
-                                                        <div className="text-sm font-medium">Processing Time</div>
-                                                        <div className="text-sm text-muted-foreground">
-                                                            {shippingInfoDescription.general.handlingTimeInDays[0]}-{shippingInfoDescription.general.handlingTimeInDays[1]} business days
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                );
-                            })}
-                            
+                                        );
+                                    })}
+
                                     {/* Business Days */}
                                     {shippingInfoDescription.general?.shippingBusinessDays && (
                                         <div className="text-xs text-muted-foreground pt-2 border-t">

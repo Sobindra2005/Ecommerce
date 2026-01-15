@@ -14,6 +14,7 @@ import {
     rejectReview,
 } from '@/controllers/productReview.controller';
 import { protect, restrictTo } from '@/middlewares/authMiddleware';
+import { upload } from '@/config/multer';
 
 const router = Router();
 
@@ -26,7 +27,7 @@ router.get('/:id', getReviewById);
 router.use(protect);
 
 // Authenticated user routes
-router.post('/', createReview);
+router.post('/', upload.array('images', 5), createReview);
 router.get('/user/me', getUserReviews);
 router.put('/:id', updateReview);
 router.delete('/:id', deleteReview);

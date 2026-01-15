@@ -10,7 +10,6 @@ import { UserRole } from '@/generated/prisma';
 
 const router = express.Router();
 
-
 router.get('/', getAllSystemSettings);
 router.get('/delivery-estimate', getDeliveryEstimate);
 

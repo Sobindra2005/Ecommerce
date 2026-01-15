@@ -153,7 +153,7 @@ const ProductReviewSchema = new Schema<IProductReview>(
     status: {
       type: String,
       enum: ['pending', 'approved', 'rejected'],
-      default: 'pending',
+      default: 'approved',
       index: true
     },
     moderatorNote: {

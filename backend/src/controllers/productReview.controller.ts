@@ -26,7 +26,7 @@ export const getProductReviews = asyncHandler(async (req: Request, res: Response
     // Build sort object with string keys for MongoDB
     type MongoSortOrder = 1 | -1;
     const sortOption: Record<string, MongoSortOrder> = {};
-    
+
 
     if (sort === 'createdAt') {
         sortOption.createdAt = -1;
@@ -48,6 +48,8 @@ export const getProductReviews = asyncHandler(async (req: Request, res: Response
         rating: rating ? Number(rating) : null,
         verifiedOnly: verifiedOnly === 'true',
     });
+
+    console.log('Fetched reviews:', reviews);
 
     interface ReviewQuery {
         product: string;
@@ -111,7 +113,7 @@ export const getReviewById = asyncHandler(async (req: Request, res: Response) =>
     const review = await ProductReview.findById(id)
         .populate('user', 'name email')
         .populate('product', 'name slug images');
-
+ 
     if (!review) {
         throw new AppError('Review not found', 404);
     }
@@ -128,8 +130,12 @@ export const getReviewById = asyncHandler(async (req: Request, res: Response) =>
  */
 export const createReview = asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user!.id;
-    const { product, rating, comment, images, orderId } = req.body;
+    const { product, rating, comment, orderId } = req.body;
+    const images = req.files as Express.Multer.File[];
 
+    console.log('Uploaded images:', images);
+
+    const imageUrls = images ? images.map(file => file.path) : [];
     // Validation
     if (!product || !rating || !comment) {
         throw new AppError('Please provide product, rating, and comment', 400);
@@ -147,7 +153,7 @@ export const createReview = asyncHandler(async (req: Request, res: Response) => 
         user: userId,
         rating,
         comment,
-        images,
+        images: imageUrls,
         orderId,
     })) as IProductReview;
 
