@@ -26,6 +26,7 @@ export interface IProductReview {
     helpfulCount: number;
     notHelpfulCount: number;
     helpfulVotes: productUser[]; 
+    notHelpfulVotes: productUser[];
 
     // Moderation
     status: 'pending' | 'approved' | 'rejected';

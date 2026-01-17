@@ -21,6 +21,7 @@ export interface IProductReview extends Document {
   helpfulCount: number;
   notHelpfulCount: number;
   helpfulVotes: number[]; // User IDs who voted helpful
+  notHelpfulVotes: number[]; // User IDs who voted not helpful
 
   // Moderation
   status: 'pending' | 'approved' | 'rejected';
@@ -48,7 +49,7 @@ export interface IProductReview extends Document {
   reject(moderatorId: string, note: string): Promise<this>;
   addReply(content: string, userId: number): Promise<this>;
   markHelpful(userId: number): Promise<this>;
-  markNotHelpful(): Promise<this>;
+  markNotHelpful(userId: number): Promise<this>;
 }
 
 // Static methods interface
@@ -148,7 +149,9 @@ const ProductReviewSchema = new Schema<IProductReview>(
     helpfulVotes: [{
       type: Number,
     }],
-
+    notHelpfulVotes: [{
+      type: Number,
+    }],
     // Moderation
     status: {
       type: String,
@@ -381,23 +384,51 @@ ProductReviewSchema.methods.addReply = async function (content: string, userId: 
 ProductReviewSchema.methods.markHelpful = async function (userId: number) {
   const userIdObj = userId;
 
-  // Check if user already voted
-  const hasVoted = this.helpfulVotes.some((id: number) => id === userIdObj);
+  // Check if user already voted helpful
+  const hasVotedHelpful = this.helpfulVotes.some((id: number) => id === userIdObj);
 
-  if (!hasVoted) {
-    this.helpfulVotes.push(userIdObj);
-    this.helpfulCount += 1;
-    await this.save();
+  if (hasVotedHelpful) {
+    return this;
   }
+
+  // Remove from notHelpful if exists
+  const notHelpfulIndex = this.notHelpfulVotes.findIndex((id: number) => id === userIdObj);
+  if (notHelpfulIndex !== -1) {
+    this.notHelpfulVotes.splice(notHelpfulIndex, 1);
+    this.notHelpfulCount = Math.max(0, this.notHelpfulCount - 1);
+  }
+
+  this.helpfulVotes.push(userIdObj);
+  this.helpfulCount += 1;
+  await this.save();
 
   return this;
 };
 
 // Instance method to mark as not helpful
-ProductReviewSchema.methods.markNotHelpful = async function () {
+ProductReviewSchema.methods.markNotHelpful = async function (userId: number) {
+  const userIdObj = userId;
+
+  // Check if user already voted not helpful
+  const hasVotedNotHelpful = this.notHelpfulVotes.some((id: number) => id === userIdObj);
+
+  if (hasVotedNotHelpful) {
+    return this;
+  }
+
+  const helpfulIndex = this.helpfulVotes.findIndex((id: number) => id === userIdObj);
+  if (helpfulIndex !== -1) {
+    this.helpfulVotes.splice(helpfulIndex, 1);
+    this.helpfulCount = Math.max(0, this.helpfulCount - 1);
+  }
+
+  this.notHelpfulVotes.push(userIdObj);
   this.notHelpfulCount += 1;
-  return this.save();
+  await this.save();
+
+  return this;
 };
+
 
 // Model
 const ProductReview = mongoose.model<IProductReview, IProductReviewModel>(

@@ -290,6 +290,7 @@ export const markReviewHelpful = asyncHandler(async (req: Request, res: Response
  */
 export const markReviewNotHelpful = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
+    const userId = req.user!.id;
 
     const review = await ProductReview.findById(id);
 
@@ -298,7 +299,7 @@ export const markReviewNotHelpful = asyncHandler(async (req: Request, res: Respo
     }
 
     // Use instance method to mark as not helpful
-    await review.markNotHelpful();
+    await review.markNotHelpful(userId);
 
     res.status(200).json({
         status: 'success',

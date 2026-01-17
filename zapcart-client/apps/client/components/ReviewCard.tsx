@@ -15,6 +15,10 @@ interface ReviewCardProps {
 export function ReviewCard({ review, onVoteHelpful }: ReviewCardProps) {
     const [userVote, setUserVote] = useState<'helpful' | 'notHelpful' | null>(null);
     const [previewImage, setPreviewImage] = useState<string | null>(null);
+    
+    // Optimistic UI counts
+    const [helpfulCount, setHelpfulCount] = useState(review.helpfulCount);
+    const [notHelpfulCount, setNotHelpfulCount] = useState(review.notHelpfulCount);
 
     // Get initials from userName
     const getInitials = (name: string) => {
@@ -27,8 +31,28 @@ export function ReviewCard({ review, onVoteHelpful }: ReviewCardProps) {
 
     const handleVote = (voteType: 'helpful' | 'notHelpful') => {
         if (userVote === voteType) {
-            setUserVote(null); // Remove vote if clicking same button
+            setUserVote(null);
+            if (voteType === 'helpful') {
+                setHelpfulCount(prev => Math.max(0, prev - 1));
+            } else {
+                setNotHelpfulCount(prev => Math.max(0, prev - 1));
+            }
         } else {
+            // Add new vote or switch vote
+            if (userVote === 'helpful') {
+                setHelpfulCount(prev => Math.max(0, prev - 1));
+                setNotHelpfulCount(prev => prev + 1);
+            } else if (userVote === 'notHelpful') {
+                setNotHelpfulCount(prev => Math.max(0, prev - 1));
+                setHelpfulCount(prev => prev + 1);
+            } else {
+                // First vote
+                if (voteType === 'helpful') {
+                    setHelpfulCount(prev => prev + 1);
+                } else {
+                    setNotHelpfulCount(prev => prev + 1);
+                }
+            }
             setUserVote(voteType);
             onVoteHelpful?.(review.id, voteType);
         }
@@ -151,29 +175,29 @@ export function ReviewCard({ review, onVoteHelpful }: ReviewCardProps) {
                         size="sm"
                         onClick={() => handleVote('helpful')}
                         className={cn(
-                            "h-8 px-3 gap-1.5",
+                            "h-8 px-3 gap-1.5 transition-all",
                             userVote === 'helpful' && "bg-green-50 border-green-600 text-green-600"
                         )}
                     >
                         <ThumbsUp className="w-3.5 h-3.5" />
-                        <span className="text-xs font-medium">{review.helpfulCount}</span>
+                        <span className="text-xs font-medium">{helpfulCount}</span>
                     </Button>
                     <Button
                         variant="outline"
                         size="sm"
                         onClick={() => handleVote('notHelpful')}
                         className={cn(
-                            "h-8 px-3 gap-1.5",
+                            "h-8 px-3 gap-1.5 transition-all",
                             userVote === 'notHelpful' && "bg-red-50 border-red-600 text-red-600"
                         )}
                     >
                         <ThumbsDown className="w-3.5 h-3.5" />
-                        <span className="text-xs font-medium">{review.notHelpfulCount}</span>
+                        <span className="text-xs font-medium">{notHelpfulCount}</span>
                     </Button>
                 </div>
                 {review.helpfulnessRatio > 0 && (
                     <span className="text-xs text-muted-foreground">
-                        {Math.round(review.helpfulnessRatio * 100)}% found this helpful
+                        {Math.round(review.helpfulnessRatio)}% found this helpful
                     </span>
                 )}
             </div>

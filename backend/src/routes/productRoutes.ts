@@ -14,8 +14,6 @@ import {
     deleteProductVariant,
     bulkUpdateProducts,
     bulkDeleteProducts,
-    incrementProductViews,
-    updateProductRating,
 } from '@/controllers/product.controller';
 import { protect, restrictTo } from '@/middlewares/authMiddleware';
 
@@ -28,7 +26,6 @@ router.get('/search', searchProducts);
 router.get('/category/:categoryId', getProductsByCategory);
 router.get('/:identifier', getProductById);
 router.get('/:id/related', getRelatedProducts);
-router.post('/:id/view', incrementProductViews);
 
 router.use(protect);
 
@@ -51,7 +48,5 @@ router.delete('/:id/variants/:sku', deleteProductVariant);
 router.patch('/bulk', bulkUpdateProducts);
 router.delete('/bulk', bulkDeleteProducts);
 
-// Rating (could be restricted to verified buyers)
-router.post('/:id/rating', updateProductRating);
 
 export default router;

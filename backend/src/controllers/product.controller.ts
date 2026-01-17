@@ -274,6 +274,8 @@ export const getProductById = asyncHandler(async (req: Request, res: Response) =
         throw new AppError('Product not found', 404);
     }
 
+    await product.incrementViews();
+
     res.status(200).json({
         status: 'success',
         data: { product },
@@ -566,57 +568,5 @@ export const bulkDeleteProducts = asyncHandler(async (req: Request, res: Respons
     res.status(204).json({
         status: 'success',
         data: null,
-    });
-});
-
-/**
- * Increment product view count
- * POST /api/v1/products/:id/view
- */
-export const incrementProductViews = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
-
-    const product = await Product.findById(id);
-
-    if (!product) {
-        throw new AppError('Product not found', 404);
-    }
-
-    // Use instance method from Product model
-    await product.incrementViews();
-
-    res.status(200).json({
-        status: 'success',
-        data: { viewCount: product.viewCount },
-    });
-});
-
-/**
- * Update product rating
- * POST /api/v1/products/:id/rating
- * Body: { rating: number, isNew: boolean }
- */
-export const updateProductRating = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const { rating, isNew = true } = req.body;
-
-    if (!rating || rating < 0 || rating > 5) {
-        throw new AppError('Please provide a valid rating between 0 and 5', 400);
-    }
-
-    const product = await Product.findById(id);
-    if (!product) {
-        throw new AppError('Product not found', 404);
-    }
-
-    // Use instance method from Product model
-    await product.updateRating(rating, isNew);
-
-    res.status(200).json({
-        status: 'success',
-        data: {
-            averageRating: product.averageRating,
-            reviewCount: product.reviewCount,
-        },
     });
 });

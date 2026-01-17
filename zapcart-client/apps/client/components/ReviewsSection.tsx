@@ -117,10 +117,23 @@ export function ReviewsSection({ productId }: ReviewsSectionProps) {
 
         createReviewMutation.mutate(formData);
     };
+    
+    const markHelpfulMutation = useMutation({
+        mutationFn: ({ reviewId, voteType }: { reviewId: string; voteType: 'helpful' | 'notHelpful' }) => {
+            return voteType === 'helpful'
+                ? reviewsApi.markHelpful(reviewId)
+                : reviewsApi.markNotHelpful(reviewId);
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['productReviews', productId] });
+        },
+        onError: (error) => {
+            console.error("Error voting on review:", error);
+        }
+    });
 
     const handleVoteHelpful = (reviewId: string, voteType: 'helpful' | 'notHelpful') => {
-        console.log(`User voted ${voteType} on review:`, reviewId);
-
+        markHelpfulMutation.mutate({ reviewId, voteType });
     };
 
     return (
