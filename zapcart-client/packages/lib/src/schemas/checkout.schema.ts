@@ -15,13 +15,27 @@ export const checkoutSchema = z.object({
     address: z.string().min(5, "Address must be at least 5 characters"),
     city: z.string().min(2, "City must be at least 2 characters"),
     zip: z.string().min(3, "ZIP code must be at least 3 characters"),
+    shippingCoordinates: z
+        .object({
+            lat: z.number().min(-90).max(90),
+            lng: z.number().min(-180).max(180),
+        })
+        .nullable(),
     sameAsBilling: z.boolean(),
     billingAddress: z.string().optional(),
     billingCity: z.string().optional(),
     billingZip: z.string().optional(),
+    billingCoordinates: z
+        .object({
+            lat: z.number().min(-90).max(90),
+            lng: z.number().min(-180).max(180),
+        })
+        .nullable()
+        .optional(),
     paymentMethod: z.enum(["card", "paypal", "cod"], {
         message: "Please select a payment method",
     }),
+
 }).superRefine((data, ctx) => {
     // Validate billing address fields when sameAsBilling is false
     if (!data.sameAsBilling) {

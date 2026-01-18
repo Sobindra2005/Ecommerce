@@ -30,6 +30,7 @@ interface FormInputProps<
     icon?: React.ReactNode;
     className?: string;
     inputClassName?: string;
+    disabled?: boolean;
 }
 
 export function FormInput<
@@ -44,6 +45,7 @@ export function FormInput<
     icon,
     className,
     inputClassName,
+    disabled,
 }: FormInputProps<TFieldValues, TName>) {
     return (
         <FormField
@@ -63,6 +65,7 @@ export function FormInput<
                                 {...field}
                                 type={type}
                                 placeholder={placeholder}
+                                disabled={disabled}
                                 className={cn(
                                     icon && "pl-10",
                                     fieldState.error && "border-red-500 focus-visible:ring-red-500/50 pr-10",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutSchema, CheckoutFormData } from "@repo/lib/schemas/checkout.schema";
@@ -14,7 +14,7 @@ import { AddressFields } from "./AddressFields";
 import { AnimatePresence, motion } from "framer-motion";
 import { MdEmail, MdPerson } from "react-icons/md";
 import { Checkbox } from "@repo/ui/ui/checkbox";
-import { Amiko } from "next/font/google";
+import { selectUser, useUserStore } from "@/stores";
 
 interface OrderDetails {
     paymentMethod: string;
@@ -28,24 +28,34 @@ interface CheckoutFormProps {
 export function CheckoutForm({ onPlaceOrder, onBack }: CheckoutFormProps) {
     const [showLocationPicker, setShowLocationPicker] = useState(false);
     const [isShippingPicker, setIsShippingPicker] = useState(true);
-
+    const user = useUserStore(selectUser);
     const form = useForm<CheckoutFormData>({
         resolver: zodResolver(checkoutSchema),
         defaultValues: {
-            firstName: "",
-            lastName: "",
-            email: "",
+            firstName: user?.firstName || "",
+            lastName: user?.lastName || "",
+            email: user?.email || "",
             address: "",
             city: "",
             zip: "",
+            shippingCoordinates: null,
             sameAsBilling: true,
             billingAddress: "",
             billingCity: "",
             billingZip: "",
+            billingCoordinates: null,
             paymentMethod: "card",
         },
         mode: "onChange",
     });
+
+    useEffect(() => {
+        if (user) {
+            form.setValue("firstName", user.firstName || "");
+            form.setValue("lastName", user.lastName || "");
+            form.setValue("email", user.email || "");
+        }
+    }, [user, form]);
 
     const sameAsBilling = form.watch("sameAsBilling");
 
@@ -57,15 +67,16 @@ export function CheckoutForm({ onPlaceOrder, onBack }: CheckoutFormProps) {
     };
 
     const handleLocationSelect = (location: { lat: number; lng: number; address: string; city: string; zip: string }) => {
-        // Populate form fields with selected location data
         if (isShippingPicker) {
             form.setValue("address", location.address, { shouldValidate: true });
             form.setValue("city", location.city, { shouldValidate: true });
             form.setValue("zip", location.zip, { shouldValidate: true });
+            form.setValue("shippingCoordinates", { lat: location.lat, lng: location.lng }, { shouldValidate: true });
         } else {
             form.setValue("billingAddress", location.address, { shouldValidate: true });
             form.setValue("billingCity", location.city, { shouldValidate: true });
             form.setValue("billingZip", location.zip, { shouldValidate: true });
+            form.setValue("billingCoordinates", { lat: location.lat, lng: location.lng }, { shouldValidate: true });
         }
     };
 
@@ -98,6 +109,7 @@ export function CheckoutForm({ onPlaceOrder, onBack }: CheckoutFormProps) {
                                 name="firstName"
                                 label="First Name"
                                 placeholder="John"
+                                disabled={!!user?.firstName}
                                 icon={<MdPerson size={18} />}
                             />
                             <FormInput
@@ -105,6 +117,7 @@ export function CheckoutForm({ onPlaceOrder, onBack }: CheckoutFormProps) {
                                 name="lastName"
                                 label="Last Name"
                                 placeholder="Doe"
+                                disabled={!!user?.lastName}
                                 icon={<MdPerson size={18} />}
                             />
                         </div>
@@ -114,6 +127,7 @@ export function CheckoutForm({ onPlaceOrder, onBack }: CheckoutFormProps) {
                             name="email"
                             label="Email"
                             type="email"
+                            disabled={!!user?.email}
                             placeholder="john@example.com"
                             icon={<MdEmail size={18} />}
                         />
