@@ -139,6 +139,7 @@ export function CheckoutForm({ onPlaceOrder, onBack }: CheckoutFormProps) {
                         />
                     </div>
 
+
                     <div className="space-y-4">
                         <div className="flex items-center space-x-2">
                             <Checkbox
@@ -156,8 +157,8 @@ export function CheckoutForm({ onPlaceOrder, onBack }: CheckoutFormProps) {
                             </Label>
                         </div>
 
-                        {!sameAsBilling && (
-                            <AnimatePresence>
+                        <AnimatePresence mode="wait">
+                            {!sameAsBilling && (
                                 <motion.div
                                     initial={{ opacity: 0, height: 0 }}
                                     animate={{ opacity: 1, height: "auto" }}
@@ -173,8 +174,9 @@ export function CheckoutForm({ onPlaceOrder, onBack }: CheckoutFormProps) {
                                         onMapPickerClick={openBillingPicker}
                                     />
                                 </motion.div>
-                            </AnimatePresence>
-                        )}
+
+                            )}
+                        </AnimatePresence>
                     </div>
 
                     <div className="space-y-4">
