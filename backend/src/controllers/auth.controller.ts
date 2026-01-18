@@ -270,7 +270,7 @@ export const logout = asyncHandler(async (req: Request, res: Response) => {
  * PATCH /api/v1/auth/update-profile
  */
 export const updateProfile = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user?.id; 
+    const userId = req.user?.id;
     if (!userId) {
         throw new AppError('Unauthorized', 401);
     }
@@ -291,7 +291,13 @@ export const updateProfile = asyncHandler(async (req: Request, res: Response) =>
     }
 
     // Build update data
-    const updateData: Record<string, any> = {};
+    const updateData: Partial<{
+        email: string;
+        firstName: string;
+        lastName: string;
+        phone: string;
+        avatar: string;
+    }> = {};
     if (email) updateData.email = email.toLowerCase();
     if (firstName) updateData.firstName = firstName;
     if (lastName) updateData.lastName = lastName;

@@ -273,8 +273,8 @@ async function seedPrisma() {
     await prisma.inventoryLog.create({
       data: {
         inventoryId: inventory.id,
-        orderItemId: faker.datatype.boolean() && orderItems.length > 0 
-          ? (faker.helpers.arrayElement(orderItems) as { id: number }).id 
+        orderItemId: faker.datatype.boolean() && orderItems.length > 0
+          ? (faker.helpers.arrayElement(orderItems) as { id: number }).id
           : null,
         action: faker.helpers.arrayElement([
           'PURCHASE',
@@ -334,7 +334,9 @@ async function seedMongoose() {
 
   // Seed Categories
   console.log('  → Seeding Categories...');
+  //@typescript-eslint/no-explicit-any
   const categories: any[] = [];
+  //@typescript-eslint/no-explicit-any
   const rootCategories: any[] = [];
 
   // Create root categories first
@@ -395,6 +397,7 @@ async function seedMongoose() {
 
   // Seed Products
   console.log('  → Seeding Products...');
+  //@typescript-eslint/no-explicit-any
   const products: any[] = [];
   for (let i = 0; i < 50; i++) {
     try {
@@ -500,6 +503,7 @@ async function seedMongoose() {
 
     const review = new ProductReview({
       product: product._id,
+      //@typescript-eslint/no-explicit-any
       user: fakeUserId as any, // Type assertion needed
       rating: faker.number.int({ min: 1, max: 5 }),
       title: faker.lorem.sentence({ min: 3, max: 8 }),
@@ -509,6 +513,7 @@ async function seedMongoose() {
         : [],
       isVerifiedPurchase: faker.datatype.boolean({ probability: 0.6 }),
       orderId: faker.datatype.boolean({ probability: 0.3 })
+        //@typescript-eslint/no-explicit-any
         ? (faker.database.mongodbObjectId() as any)
         : undefined,
       helpfulCount: faker.number.int({ min: 0, max: 100 }),
@@ -519,6 +524,7 @@ async function seedMongoose() {
         ? faker.lorem.sentence()
         : undefined,
       moderatedBy: faker.datatype.boolean({ probability: 0.2 })
+  //@typescript-eslint/no-explicit-any
         ? (faker.database.mongodbObjectId() as any)
         : undefined,
       moderatedAt: faker.datatype.boolean({ probability: 0.2 })
@@ -527,6 +533,7 @@ async function seedMongoose() {
       reply: faker.datatype.boolean({ probability: 0.3 })
         ? {
           content: faker.lorem.paragraph(),
+  //@typescript-eslint/no-explicit-any
           repliedBy: faker.database.mongodbObjectId() as any,
           repliedAt: faker.date.past(),
         }
