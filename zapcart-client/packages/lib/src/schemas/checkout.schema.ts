@@ -1,12 +1,5 @@
 import { z } from "zod";
 
-// Address Schema
-const addressSchema = z.object({
-    address: z.string().min(5, "Address must be at least 5 characters"),
-    city: z.string().min(2, "City must be at least 2 characters"),
-    zip: z.string().min(3, "ZIP code must be at least 3 characters"),
-});
-
 // Checkout Form Schema
 export const checkoutSchema = z.object({
     firstName: z.string().min(2, "First name must be at least 2 characters"),
