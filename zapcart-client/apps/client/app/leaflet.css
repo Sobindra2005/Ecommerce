@@ -1,0 +1,17 @@
+/* Leaflet CSS Custom Styles */
+/* Fix for marker icons in production */
+.leaflet-container {
+    z-index: 1;
+}
+
+.leaflet-marker-icon {
+    background-image: url("https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.leaflet-marker-shadow {
+    background-image: url("https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+}

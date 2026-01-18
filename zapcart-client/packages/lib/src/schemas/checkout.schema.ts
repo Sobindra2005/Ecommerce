@@ -1,0 +1,52 @@
+import { z } from "zod";
+
+// Address Schema
+const addressSchema = z.object({
+    address: z.string().min(5, "Address must be at least 5 characters"),
+    city: z.string().min(2, "City must be at least 2 characters"),
+    zip: z.string().min(3, "ZIP code must be at least 3 characters"),
+});
+
+// Checkout Form Schema
+export const checkoutSchema = z.object({
+    firstName: z.string().min(2, "First name must be at least 2 characters"),
+    lastName: z.string().min(2, "Last name must be at least 2 characters"),
+    email: z.string().email("Please enter a valid email address"),
+    address: z.string().min(5, "Address must be at least 5 characters"),
+    city: z.string().min(2, "City must be at least 2 characters"),
+    zip: z.string().min(3, "ZIP code must be at least 3 characters"),
+    sameAsBilling: z.boolean(),
+    billingAddress: z.string().optional(),
+    billingCity: z.string().optional(),
+    billingZip: z.string().optional(),
+    paymentMethod: z.enum(["card", "paypal", "cod"], {
+        message: "Please select a payment method",
+    }),
+}).superRefine((data, ctx) => {
+    // Validate billing address fields when sameAsBilling is false
+    if (!data.sameAsBilling) {
+        if (!data.billingAddress || data.billingAddress.length < 5) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Billing address must be at least 5 characters",
+                path: ["billingAddress"],
+            });
+        }
+        if (!data.billingCity || data.billingCity.length < 2) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Billing city must be at least 2 characters",
+                path: ["billingCity"],
+            });
+        }
+        if (!data.billingZip || data.billingZip.length < 3) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Billing ZIP code must be at least 3 characters",
+                path: ["billingZip"],
+            });
+        }
+    }
+});
+
+export type CheckoutFormData = z.infer<typeof checkoutSchema>;

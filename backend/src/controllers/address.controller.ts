@@ -175,3 +175,18 @@ export const deleteAddress = asyncHandler(async (req: Request, res: Response) =>
         data: null,
     });
 });
+
+
+export const getUserAddresses = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user!.id;
+    const addresses = await prisma.address.findMany({
+        where: { userId },
+        orderBy: { createdAt: 'desc' },
+    });
+    
+    res.status(200).json({
+        status: 'success',
+        results: addresses.length,
+        data: { addresses },
+    });
+});
