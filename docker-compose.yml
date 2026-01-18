@@ -40,6 +40,8 @@ services:
       - FRONTEND_URL=${FRONTEND_URL}
       - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-your_api_key}
       - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-your_api_secret}
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_USEPOLL_INTERVAL=500
     ports:
       - "8080:8080"
     depends_on:
@@ -62,13 +64,9 @@ services:
     volumes:
       - ./backend/src:/app/src
       - ./backend/dist:/app/dist
+      - ./backend/node_modules:/app/node_modules
     develop:
       watch:
-        - action: sync
-          path: ./backend/src
-          target: /app/src
-          ignore:
-            - node_modules/
         - action: rebuild
           path: ./backend/package.json
 
