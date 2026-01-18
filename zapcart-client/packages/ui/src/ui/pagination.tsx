@@ -1,5 +1,5 @@
-import * as React from "react"
-import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import { cn } from "@repo/lib/utils"
 // import { ButtonProps, buttonVariants } from "@/registry/new-york/ui/button" // Assuming we might want to use button variants later, but for now styling directly to match design
 
@@ -39,7 +39,7 @@ const Pagination = ({
         }
         range.push(totalPages);
 
-        for (let i of range) {
+        for (const i of range) {
             if (l) {
                 if (i - l === 2) {
                     rangeWithDots.push(l + 1);

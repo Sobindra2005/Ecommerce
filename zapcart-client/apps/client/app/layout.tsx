@@ -2,6 +2,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import "leaflet/dist/leaflet.css";
+import "./leaflet.css";
 import { cn } from "@repo/lib/utils";
 import { CartProvider } from "@/contexts/CartContext";
 import { Header } from "@/components/Header";

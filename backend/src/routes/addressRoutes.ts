@@ -5,6 +5,7 @@ import {
     getAddress,
     updateAddress,
     deleteAddress,
+    getUserAddresses,
 } from '@/controllers/address.controller';
 import { protect } from '@/middlewares/authMiddleware';
 
@@ -17,6 +18,10 @@ router
     .route('/')
     .get(getAllAddresses)
     .post(createAddress);
+
+router
+    .route('/user')
+    .get(getUserAddresses);
 
 router
     .route('/:id')
