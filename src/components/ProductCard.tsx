@@ -1,5 +1,5 @@
-
-import {  ShoppingBag, Star } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ShoppingBag, Star } from "lucide-react";
 
 export interface Product {
   id: string;
@@ -18,7 +18,7 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <div className="group bg-white p-3 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col w-full cursor-pointer hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300">
+    <Link to={`/product/${product.id}`} className="group bg-white p-3 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col w-full cursor-pointer hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-shadow duration-300 block">
       {/* Image Container */}
       <div className="relative bg-[#f8f9fa] rounded-xl overflow-hidden aspect-[4/5] mb-4">
         {/* Discount Badge */}
@@ -32,7 +32,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Floating Actions */}
         <div className="absolute top-3 right-3 flex flex-col gap-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 md:opacity-100 md:group-hover:opacity-100">
-         
+
           <button className="bg-white p-2 rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] text-gray-600 hover:text-black transition-colors flex items-center justify-center">
             <ShoppingBag size={16} strokeWidth={2} />
           </button>
@@ -55,11 +55,11 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.rating.toFixed(1)}
           </div>
         </div>
-        
+
         <h3 className="font-bold text-gray-900 text-[16px] leading-tight mb-2.5">
           {product.name}
         </h3>
-        
+
         <div className="flex items-baseline gap-2">
           <span className="font-extrabold text-gray-900 text-[18px]">
             ${product.price.toFixed(2)}
@@ -71,6 +71,6 @@ export function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
