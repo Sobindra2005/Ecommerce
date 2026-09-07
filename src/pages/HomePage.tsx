@@ -44,7 +44,7 @@ export function HomePage() {
             className="w-full h-full object-cover object-center"
           />
           {/* Gradient overlay to blend the left edge smoothly into the background color */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#e8e4dc] via-[#e8e4dc]/80 to-transparent w-full md:w-1/2"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-[#e8e4dc] via-[#e8e4dc]/80 to-transparent w-full md:w-1/2"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex w-full z-10 py-12 md:py-0">
