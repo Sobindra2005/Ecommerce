@@ -35,7 +35,7 @@ export function HomePage() {
       </nav>
 
       {/* Hero / Overview Section */}
-      <section className="relative w-full min-h-[90dvh] bg-[#e8e4dc] overflow-hidden flex items-center">
+      <section className="relative w-full min-h-[90vh] bg-[#e8e4dc] overflow-hidden flex items-center">
         {/* Right Side Image (Model) */}
         <div className="absolute top-0 right-0 w-full md:w-[60%] h-full z-0 opacity-40 md:opacity-100">
           <img
@@ -47,7 +47,7 @@ export function HomePage() {
           <div className="absolute inset-0 bg-linear-to-r from-[#e8e4dc] via-[#e8e4dc]/80 to-transparent w-full md:w-1/2"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex w-full z-10 py-12 md:py-0">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex w-full z-10 py-12 md:py-12">
           <div className="w-full md:w-[55%] flex flex-col justify-center">
             {/* NEW ARRIVALS */}
             <div className="flex items-center gap-4 mb-6">
