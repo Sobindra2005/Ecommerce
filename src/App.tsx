@@ -1,11 +1,10 @@
 
 
-function App() {
+import { HomePage } from './pages/HomePage'
 
+function App() {
   return (
-    <>
-     hey here we are 
-    </>
+    <HomePage />
   )
 }
 
