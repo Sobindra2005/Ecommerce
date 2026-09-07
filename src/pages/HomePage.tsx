@@ -1,9 +1,57 @@
 
+import { useState, Fragment } from "react";
 import { ProductCard } from "../components/ProductCard";
 import { Search, ShoppingCart, User, Menu, ArrowRight, ArrowLeft, Leaf, Truck, RefreshCw } from "lucide-react";
 import { FEATURED_PRODUCTS } from "./data";
 
+const HERO_SLIDES = [
+  {
+    id: 1,
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=1200",
+    tagline: "New Arrivals",
+    title: "Autumn\nCollection '26",
+    description: "Elevate your everyday wardrobe with timeless pieces, made for the season.",
+    handwritten: "Style\nfor a new\nseason",
+  },
+  {
+    id: 2,
+    image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80&w=1200",
+    tagline: "Exclusive",
+    title: "Winter\nEssentials",
+    description: "Stay warm and stylish with our curated winter collection.",
+    handwritten: "Cozy\nup this\nwinter",
+  },
+  {
+    id: 3,
+    image: "https://images.unsplash.com/photo-1445205170230-053b83016050?auto=format&fit=crop&q=80&w=1200",
+    tagline: "Trending",
+    title: "Streetwear\nVibes",
+    description: "Discover the latest trends in urban fashion.",
+    handwritten: "Own\nthe\nstreets",
+  },
+  {
+    id: 4,
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&q=80&w=1200",
+    tagline: "Clearance",
+    title: "End of\nSeason Sale",
+    description: "Up to 70% off on selected items. Shop before it's gone.",
+    handwritten: "Don't\nmiss\nout",
+  }
+];
+
 export function HomePage() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
+  const slide = HERO_SLIDES[currentSlide];
+
   return (
     <div className="min-h-screen bg-white text-[#333333] font-sans">
       {/* Navigation */}
@@ -39,9 +87,10 @@ export function HomePage() {
         {/* Right Side Image (Model) */}
         <div className="absolute top-0 right-0 w-full md:w-[60%] h-full z-0 opacity-40 md:opacity-100">
           <img
-            src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&q=80&w=1200"
-            alt="Autumn Fashion"
-            className="w-full h-full object-cover object-center"
+            key={slide.id}
+            src={slide.image}
+            alt={slide.title.replace('\n', ' ')}
+            className="w-full h-full object-cover object-center animate-[fadeIn_0.5s_ease-in-out]"
           />
           {/* Gradient overlay to blend the left edge smoothly into the background color */}
           <div className="absolute inset-0 bg-linear-to-r from-[#e8e4dc] via-[#e8e4dc]/80 to-transparent w-full md:w-1/2"></div>
@@ -49,18 +98,23 @@ export function HomePage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex w-full z-10 py-12 md:py-12">
           <div className="w-full md:w-[55%] flex flex-col justify-center">
-            {/* NEW ARRIVALS */}
+            {/* TAGLINE */}
             <div className="flex items-center gap-4 mb-6">
-              <span className="uppercase tracking-[0.2em] text-[10px] sm:text-[11px] font-bold text-gray-700">New Arrivals</span>
+              <span className="uppercase tracking-[0.2em] text-[10px] sm:text-[11px] font-bold text-gray-700">{slide.tagline}</span>
               <div className="w-8 sm:w-12 h-[1px] bg-gray-400"></div>
             </div>
 
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[80px] font-extrabold text-[#1a1a1a] leading-[1.05] mb-6 tracking-tight">
-              Autumn<br />Collection '26
+              {slide.title.split('\n').map((line, i) => (
+                <Fragment key={i}>
+                  {line}
+                  {i < slide.title.split('\n').length - 1 && <br />}
+                </Fragment>
+              ))}
             </h1>
 
             <p className="text-gray-600 text-base sm:text-lg mb-10 max-w-[420px] leading-relaxed">
-              Elevate your everyday wardrobe with timeless pieces, made for the season.
+              {slide.description}
             </p>
 
             <button className="bg-[#1a1c23] text-white px-8 py-3.5 sm:py-4 rounded-full font-semibold text-sm w-fit flex items-center gap-3 hover:bg-black transition-colors mb-12 sm:mb-16 shadow-lg shadow-black/10">
@@ -97,11 +151,19 @@ export function HomePage() {
 
             {/* Pagination */}
             <div className="flex items-center gap-4 mt-auto">
-              <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-white transition-colors">
+              <button 
+                onClick={prevSlide}
+                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-white transition-colors cursor-pointer z-20"
+              >
                 <ArrowLeft size={16} />
               </button>
-              <span className="text-[11px] font-bold text-gray-500 tracking-[0.15em]">01 / 04</span>
-              <button className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-white transition-colors">
+              <span className="text-[11px] font-bold text-gray-500 tracking-[0.15em] w-12 text-center">
+                {String(currentSlide + 1).padStart(2, '0')} / {String(HERO_SLIDES.length).padStart(2, '0')}
+              </span>
+              <button 
+                onClick={nextSlide}
+                className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-white transition-colors cursor-pointer z-20"
+              >
                 <ArrowRight size={16} />
               </button>
             </div>
@@ -110,7 +172,12 @@ export function HomePage() {
           {/* Handwritten Text on Right */}
           <div className="hidden lg:flex absolute right-16 xl:right-32 top-1/2 -translate-y-1/2 z-10 flex-col items-center">
             <div className="font-serif italic text-2xl xl:text-3xl text-white mix-blend-overlay -rotate-12 opacity-90 text-right leading-tight drop-shadow-md">
-              Style<br />for a new<br />season
+              {slide.handwritten.split('\n').map((line, i) => (
+                <Fragment key={i}>
+                  {line}
+                  {i < slide.handwritten.split('\n').length - 1 && <br />}
+                </Fragment>
+              ))}
             </div>
             <svg className="w-16 h-3 mt-3 -rotate-12 text-white opacity-70 mix-blend-overlay drop-shadow-md" viewBox="0 0 100 10" preserveAspectRatio="none">
               <path d="M0 5 Q 50 0 100 5" stroke="currentColor" fill="transparent" strokeWidth="2" strokeLinecap="round" />
