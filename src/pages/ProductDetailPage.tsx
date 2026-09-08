@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Star,
   ShoppingBag,
@@ -8,10 +8,6 @@ import {
   RefreshCw,
   ShieldCheck,
   ArrowRight,
-  Search,
-  ShoppingCart,
-  User,
-  Menu,
   ChevronDown
 } from "lucide-react";
 import { ProductCard } from "../components/ProductCard";
@@ -27,7 +23,7 @@ const PRODUCT_IMAGES = [
 const TABS = ["Details", "Materials", "Size & Fit", "Shipping & Returns"];
 
 export function ProductDetailPage() {
-  const { id } = useParams();
+
   const [selectedImage, setSelectedImage] = useState(PRODUCT_IMAGES[0]);
   const [selectedSize, setSelectedSize] = useState("M");
   const [activeTab, setActiveTab] = useState("Details");

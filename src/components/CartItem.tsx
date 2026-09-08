@@ -20,7 +20,17 @@ const TrashIcon = () => (
   </svg>
 );
 
-export function CartItem({ image, title, subtitle, price, quantity, onUpdateQuantity, onDelete }) {
+interface CartItemProps {
+  image: string;
+  title: string;
+  subtitle: string;
+  price: number;
+  quantity: number;
+  onUpdateQuantity: (quantity: number) => void;
+  onDelete: () => void;
+}
+
+export function CartItem({ image, title, subtitle, price, quantity, onUpdateQuantity, onDelete }: CartItemProps) {
   return (
     <div className="flex items-center py-6 border-b border-gray-100 last:border-b-0 gap-4">
       {/* Product Info */}

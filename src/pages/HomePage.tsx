@@ -1,7 +1,7 @@
 
 import { useState, Fragment } from "react";
 import { ProductCard } from "../components/ProductCard";
-import { Search, ShoppingCart, User, Menu, ArrowRight, ArrowLeft, Leaf, Truck, RefreshCw } from "lucide-react";
+import { ArrowRight, ArrowLeft, Leaf, Truck, RefreshCw } from "lucide-react";
 import { FEATURED_PRODUCTS } from "./data";
 
 const HERO_SLIDES = [

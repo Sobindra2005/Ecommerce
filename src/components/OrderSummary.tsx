@@ -5,7 +5,15 @@ const ShieldIcon = () => (
   </svg>
 );
 
-export function OrderSummary({ subTotal, discountPercent, discountAmount, deliveryFee, total }) {
+interface OrderSummaryProps {
+  subTotal: number;
+  discountPercent: number;
+  discountAmount: number;
+  deliveryFee: number;
+  total: number;
+}
+
+export function OrderSummary({ subTotal, discountPercent, discountAmount, deliveryFee, total }: OrderSummaryProps) {
   return (
     <div className="border border-gray-200 rounded-3xl p-6 bg-white flex flex-col h-full">
       <h2 className="text-lg font-semibold text-gray-900 mb-6">Order Summary</h2>

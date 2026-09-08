@@ -32,13 +32,13 @@ const initialItems = [
 export function ShoppingCart() {
     const [items, setItems] = useState(initialItems);
 
-    const handleUpdateQuantity = (id, newQuantity) => {
+    const handleUpdateQuantity = (id: number, newQuantity: number) => {
         setItems(items.map(item =>
             item.id === id ? { ...item, quantity: Math.max(1, newQuantity) } : item
         ));
     };
 
-    const handleDelete = (id) => {
+    const handleDelete = (id: number) => {
         setItems(items.filter(item => item.id !== id));
     };
 
@@ -78,7 +78,7 @@ export function ShoppingCart() {
                                     <CartItem
                                         key={item.id}
                                         {...item}
-                                        onUpdateQuantity={(newQ) => handleUpdateQuantity(item.id, newQ)}
+                                        onUpdateQuantity={(newQ: number) => handleUpdateQuantity(item.id, newQ)}
                                         onDelete={() => handleDelete(item.id)}
                                     />
                                 ))
