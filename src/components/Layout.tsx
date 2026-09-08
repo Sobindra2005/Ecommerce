@@ -1,13 +1,22 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
+import { FEATURED_PRODUCTS } from "../pages/data";
 import { Search, ShoppingCart, User, Menu, MessageCircle, X, Send } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Layout() {
   const navigate = useNavigate();
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    { id: 1, text: "Hi there! 👋 Welcome to Vogue. How can we help you today?", sender: "bot", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
+  const [messages, setMessages] = useState<any[]>([
+    { id: 1, text: "Hi there! 👋 Welcome to Vogue. How can we help you today?", sender: "bot", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+    { id: 2, text: "Can you recommend something for the upcoming season?", sender: "user", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+    { 
+      id: 3, 
+      text: "I highly recommend our Trendy Brown Coat. It's currently on sale and perfect for the season!", 
+      sender: "bot", 
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      product: FEATURED_PRODUCTS[0]
+    }
   ]);
   const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -178,14 +187,39 @@ export function Layout() {
                       <User size={16} className="text-blue-600" />
                     </div>
                   )}
-                  <div className={`p-3 rounded-2xl shadow-sm text-sm max-w-[80%] ${msg.sender === 'user'
-                    ? 'bg-blue-600 text-white rounded-tr-none'
-                    : 'bg-white border border-gray-100 text-gray-700 rounded-tl-none'
-                    }`}>
-                    {msg.text}
-                    <div className={`text-[10px] mt-1 text-right ${msg.sender === 'user' ? 'text-blue-200' : 'text-gray-400'}`}>
-                      {msg.time}
+                  <div className="flex flex-col gap-2 max-w-[80%]">
+                    <div className={`p-3 rounded-2xl shadow-sm text-sm ${msg.sender === 'user'
+                      ? 'bg-blue-600 text-white rounded-tr-none'
+                      : 'bg-white border border-gray-100 text-gray-700 rounded-tl-none'
+                      }`}>
+                      {msg.text}
+                      <div className={`text-[10px] mt-1 text-right ${msg.sender === 'user' ? 'text-blue-200' : 'text-gray-400'}`}>
+                        {msg.time}
+                      </div>
                     </div>
+                    {msg.product && (
+                      <div 
+                        onClick={() => navigate(`/product/${msg.product.id}`)}
+                        className="bg-white border border-gray-200 rounded-xl p-2 flex gap-3 items-center shadow-sm cursor-pointer hover:border-blue-400 transition-colors"
+                      >
+                        <img src={msg.product.imageUrl} alt={msg.product.name} className="w-12 h-12 rounded-lg object-cover" />
+                        <div className="flex-1 overflow-hidden">
+                          <h4 className="font-semibold text-sm text-gray-800 truncate">{msg.product.name}</h4>
+                          <div className="flex items-center gap-1.5 mt-0.5">
+                            <span className="font-bold text-sm">${msg.product.price.toFixed(2)}</span>
+                            {msg.product.originalPrice && (
+                              <span className="text-xs text-gray-400 line-through">${msg.product.originalPrice.toFixed(2)}</span>
+                            )}
+                            {msg.product.discountBadge && (
+                              <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-medium whitespace-nowrap">{msg.product.discountBadge}</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-blue-600 font-bold px-1">
+                          ›
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
