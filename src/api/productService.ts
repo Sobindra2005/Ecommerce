@@ -7,6 +7,9 @@ export interface ProductListParams {
     category?: string;
     brand?: string;
     sort?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    sizes?: string;
 }
 
 export interface ProductSummary {
@@ -29,6 +32,7 @@ export interface PaginatedResponse<T> {
         page: number;
         pages: number;
         total: number;
+        sizeCounts?: Record<string, number>;
     };
     message: string;
     success: boolean;

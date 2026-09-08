@@ -10,26 +10,35 @@ export function SearchPage() {
   const [products, setProducts] = useState<UIProduct[]>([]);
   const [loading, setLoading] = useState(false);
 
-  // Filter states
-  const [selectedSizes, setSelectedSizes] = useState<string[]>(['XS', 'S', 'M', 'L', 'XL']);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>(['Zara', 'Mango', 'H&M', 'Other Brands']);
-  const [priceRange, setPriceRange] = useState<[number, number]>([50, 500]);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [debouncedPriceRange, setDebouncedPriceRange] = useState<[number, number]>([0, 1000]);
+  const [sizeCounts, setSizeCounts] = useState<Record<string, number>>({ XS: 0, S: 0, M: 0, L: 0, XL: 0 });
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedPriceRange(priceRange);
+    }, 500);
+    return () => clearTimeout(handler);
+  }, [priceRange]);
 
   const toggleSize = (size: string) => {
     setSelectedSizes(prev => prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]);
-  };
-
-  const toggleBrand = (brand: string) => {
-    setSelectedBrands(prev => prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]);
   };
 
   useEffect(() => {
     const fetchSearchResults = async () => {
       try {
         setLoading(true);
-        const params = activeSearch
+        const params: any = activeSearch
           ? { keyword: activeSearch, limit: 24 }
-          : { limit: 8, sort: 'rating' as const };
+          : { limit: 8, sort: 'rating' };
+
+        params.minPrice = debouncedPriceRange[0];
+        params.maxPrice = debouncedPriceRange[1];
+        if (selectedSizes.length > 0) {
+          params.sizes = selectedSizes.join(',');
+        }
 
         const response = await getProducts(params);
         if (response.success) {
@@ -44,6 +53,7 @@ export function SearchPage() {
             discountBadge: p.discountPercentage > 0 ? `${p.discountPercentage}% OFF` : undefined
           }));
           setProducts(mappedProducts);
+          if (response.data.sizeCounts) setSizeCounts(response.data.sizeCounts);
         }
       } catch (err) {
         console.error("Search failed:", err);
@@ -52,7 +62,7 @@ export function SearchPage() {
       }
     };
     fetchSearchResults();
-  }, [activeSearch]);
+  }, [activeSearch, selectedSizes, debouncedPriceRange]);
 
   const handleSearch = (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -76,11 +86,11 @@ export function SearchPage() {
               </div>
               <div className="space-y-3">
                 {[
-                  { name: 'XS', count: 4 },
-                  { name: 'S', count: 8 },
-                  { name: 'M', count: 12 },
-                  { name: 'L', count: 10 },
-                  { name: 'XL', count: 6 },
+                  { name: 'XS', count: sizeCounts['XS'] || 0 },
+                  { name: 'S', count: sizeCounts['S'] || 0 },
+                  { name: 'M', count: sizeCounts['M'] || 0 },
+                  { name: 'L', count: sizeCounts['L'] || 0 },
+                  { name: 'XL', count: sizeCounts['XL'] || 0 },
                 ].map((size) => {
                   const isChecked = selectedSizes.includes(size.name);
                   return (
@@ -131,34 +141,7 @@ export function SearchPage() {
               </div>
             </div>
 
-            {/* Brand Filter */}
-            <div className="mb-8 border-t border-gray-100 pt-6">
-              <div className="flex justify-between items-center mb-4 cursor-pointer group">
-                <h3 className="font-bold text-[14px] text-gray-900 group-hover:text-black">Brand</h3>
-                <ChevronDown size={16} className="text-gray-500 group-hover:text-gray-700" />
-              </div>
-              <div className="space-y-3">
-                {[
-                  { name: 'Zara', count: 6 },
-                  { name: 'Mango', count: 5 },
-                  { name: 'H&M', count: 4 },
-                  { name: 'Other Brands', count: 9 },
-                ].map((brand) => {
-                  const isChecked = selectedBrands.includes(brand.name);
-                  return (
-                    <label key={brand.name} className="flex items-center justify-between cursor-pointer group" onClick={(e) => { e.preventDefault(); toggleBrand(brand.name); }}>
-                      <div className="flex items-center gap-3">
-                        <div className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${isChecked ? 'bg-black border-black text-white' : 'border-gray-300 group-hover:border-gray-400'}`}>
-                          {isChecked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
-                        </div>
-                        <span className={`text-[13.5px] ${isChecked ? 'text-gray-900 font-semibold' : 'text-gray-600'}`}>{brand.name}</span>
-                      </div>
-                      <span className="text-[12px] text-gray-400">({brand.count})</span>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
+
           </aside>
 
           {/* Right Content */}
