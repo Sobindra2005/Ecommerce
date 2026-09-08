@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { FEATURED_PRODUCTS } from "../pages/data";
-import { Search, ShoppingCart, User, Menu, MessageCircle, X, Send } from "lucide-react";
+import { Search, ShoppingCart, User, Menu, MessageCircle, X, Send, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Layout() {
@@ -10,12 +10,13 @@ export function Layout() {
   const [messages, setMessages] = useState<any[]>([
     { id: 1, text: "Hi there! 👋 Welcome to Vogue. How can we help you today?", sender: "bot", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
     { id: 2, text: "Can you recommend something for the upcoming season?", sender: "user", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
-    { 
-      id: 3, 
-      text: "I highly recommend our Trendy Brown Coat. It's currently on sale and perfect for the season!", 
-      sender: "bot", 
+    {
+      id: 3,
+      text: "I highly recommend our Trendy Brown Coat. It's currently on sale and perfect for the season!",
+      sender: "bot",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      product: FEATURED_PRODUCTS[0]
+      products: FEATURED_PRODUCTS.slice(0, 5),
+      highlightedProductId: "1"
     }
   ]);
   const [inputValue, setInputValue] = useState("");
@@ -140,7 +141,7 @@ export function Layout() {
               animate={{ opacity: 1 }}
               transition={{
                 delay: 0.1,
-                duration:0
+                duration: 0
               }}
               layoutId="chat-icon">
               <MessageCircle size={24} className="w-8 h-8" />
@@ -197,28 +198,11 @@ export function Layout() {
                         {msg.time}
                       </div>
                     </div>
-                    {msg.product && (
-                      <div 
-                        onClick={() => navigate(`/product/${msg.product.id}`)}
-                        className="bg-white border border-gray-200 rounded-xl p-2 flex gap-3 items-center shadow-sm cursor-pointer hover:border-blue-400 transition-colors"
-                      >
-                        <img src={msg.product.imageUrl} alt={msg.product.name} className="w-12 h-12 rounded-lg object-cover" />
-                        <div className="flex-1 overflow-hidden">
-                          <h4 className="font-semibold text-sm text-gray-800 truncate">{msg.product.name}</h4>
-                          <div className="flex items-center gap-1.5 mt-0.5">
-                            <span className="font-bold text-sm">${msg.product.price.toFixed(2)}</span>
-                            {msg.product.originalPrice && (
-                              <span className="text-xs text-gray-400 line-through">${msg.product.originalPrice.toFixed(2)}</span>
-                            )}
-                            {msg.product.discountBadge && (
-                              <span className="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded font-medium whitespace-nowrap">{msg.product.discountBadge}</span>
-                            )}
-                          </div>
-                        </div>
-                        <div className="text-blue-600 font-bold px-1">
-                          ›
-                        </div>
-                      </div>
+                    {msg.products && (
+                      <MessageCarousel
+                        products={msg.products}
+                        onProductClick={(id) => navigate(`/product/${id}`)}
+                      />
                     )}
                   </div>
                 </div>
@@ -251,3 +235,64 @@ export function Layout() {
     </div>
   );
 }
+
+const MessageCarousel = ({ products, onProductClick }: { products: any[], onProductClick: (id: string) => void }) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { clientWidth } = scrollRef.current;
+      const scrollAmount = direction === 'left' ? -clientWidth / 2 : clientWidth / 2;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className="relative mt-2 -mx-2 px-2 w-[calc(100%+1rem)] max-w-[340px]">
+      <style>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+      <div
+        ref={scrollRef}
+        className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-hide  pt-1 px-1"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        {products.map(product => (
+          <div
+            key={product.id}
+            onClick={() => onProductClick(product.id)}
+            className={`snap-start shrink-0 w-[70px] bg-white border border-gray-100 hover:bg-gray-100 rounded-xl p-0.5 cursor-pointer transition-all flex flex-col gap-1`}
+          >
+            <div className="w-full aspect-square rounded-lg overflow-hidden bg-gray-50 mb-1">
+              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+            </div>
+            <h4 className="font-semibold text-[11px] text-gray-800 truncate">{product.name}</h4>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="font-bold text-[12px] text-gray-900">${product.price.toFixed(2)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+
+      <button
+        onClick={(e) => { e.stopPropagation(); scroll('left'); }}
+        className="absolute left-0 top-[40%] -translate-y-1/2 w-7 h-7 bg-white shadow-md rounded-full flex items-center justify-center border border-gray-100 text-blue-600 z-10 hover:bg-gray-50"
+      >
+        <ChevronLeft size={16} />
+      </button>
+
+
+      <button
+        onClick={(e) => { e.stopPropagation(); scroll('right'); }}
+        className="absolute right-0 top-[40%] -translate-y-1/2 w-7 h-7 bg-white shadow-md rounded-full flex items-center justify-center border border-gray-100 text-blue-600 z-10 hover:bg-gray-50"
+      >
+        <ChevronRight size={16} />
+      </button>
+
+    </div>
+  );
+};
+
