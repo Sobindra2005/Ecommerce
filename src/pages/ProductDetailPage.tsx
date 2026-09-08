@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useParams } from "react-router-dom";
 import {
   Star,
   ShoppingBag,
@@ -11,22 +11,53 @@ import {
   ChevronDown
 } from "lucide-react";
 import { ProductCard } from "../components/ProductCard";
-import { FEATURED_PRODUCTS } from "./data";
-
-const PRODUCT_IMAGES = [
-  "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1572495641004-28421ae52e52?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=800",
-  "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=800"
-];
+import type { Product as UIProduct } from "../components/ProductCard";
+import { getProductDetails } from "../api/productService";
+import type { ProductDetails } from "../api/productService";
 
 const TABS = ["Details", "Materials", "Size & Fit", "Shipping & Returns"];
 
-export function ProductDetailPage() {
 
-  const [selectedImage, setSelectedImage] = useState(PRODUCT_IMAGES[0]);
+export function ProductDetailPage() {
+  const { id } = useParams<{ id: string }>(); // Using ID param which acts as slug
+  const [product, setProduct] = useState<ProductDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [selectedImage, setSelectedImage] = useState("");
   const [selectedSize, setSelectedSize] = useState("M");
   const [activeTab, setActiveTab] = useState("Details");
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      if (!id) return;
+      try {
+        setLoading(true);
+        const response = await getProductDetails(id);
+        if (response.success) {
+          setProduct(response.data);
+          if (response.data.images && response.data.images.length > 0) {
+             setSelectedImage(response.data.images[0].url);
+          }
+        } else {
+          setError("Product not found");
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch product details");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProduct();
+  }, [id]);
+
+  if (loading) return <div className="text-center py-32 text-gray-500 font-medium text-lg animate-pulse">Loading product details...</div>;
+  if (error || !product) return <div className="text-center py-32 text-red-500 font-medium text-lg">{error || "Product not found"}</div>;
+
+  const currentPrice = product.discountPercentage > 0 
+      ? product.basePrice * (1 - product.discountPercentage / 100) 
+      : product.basePrice;
 
   return (
     <>
@@ -39,13 +70,13 @@ export function ProductDetailPage() {
           <div className="flex gap-4 lg:w-[55%] sm:h-162.5">
             {/* Thumbnails */}
             <div className="flex flex-col gap-3 w-16 sm:w-20 shrink-0">
-              {PRODUCT_IMAGES.map((img, i) => (
+              {product.images.map((img, i) => (
                 <button
                   key={i}
-                  onClick={() => setSelectedImage(img)}
-                  className={`border-[1.5px]  rounded-lg overflow-hidden aspect-4/5 ${selectedImage === img ? 'border-black' : 'border-gray-200'}`}
+                  onClick={() => setSelectedImage(img.url)}
+                  className={`border-[1.5px]  rounded-lg overflow-hidden aspect-4/5 ${selectedImage === img.url ? 'border-black' : 'border-gray-200'}`}
                 >
-                  <img src={img} alt={`Thumbnail ${i}`} className="w-full h-full object-cover" />
+                  <img src={img.url} alt={`Thumbnail ${i}`} className="w-full h-full object-cover" />
                 </button>
               ))}
               <button className="flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 border border-gray-200 rounded-full text-gray-600 hover:bg-gray-50 mt-2 mx-auto shadow-sm">
@@ -63,12 +94,12 @@ export function ProductDetailPage() {
           <div className="flex flex-col lg:w-[45%] pt-2">
             <div className="mb-4">
               <span className="bg-[#f0f0f0] text-gray-800 text-[11px] font-bold px-3 py-1.5 rounded-md uppercase tracking-wide">
-                New Arrival
+                {product.brand}
               </span>
             </div>
 
             <h1 className="text-3xl sm:text-[42px] font-bold text-gray-900 leading-[1.15] mb-3 tracking-tight">
-              Essential Oversized<br />Hoodie
+              {product.name}
             </h1>
 
             <div className="flex items-center gap-3 mb-6">
@@ -77,17 +108,21 @@ export function ProductDetailPage() {
                   <Star key={star} size={15} className="fill-black text-black" />
                 ))}
               </div>
-              <span className="text-[14px] font-medium text-gray-600">4.8 (128 reviews)</span>
+              <span className="text-[14px] font-medium text-gray-600">{product.averageRating.toFixed(1)} ({product.numberOfReviews} reviews)</span>
             </div>
 
             <div className="flex items-end gap-3 mb-6">
-              <span className="text-[32px] font-bold text-gray-900 leading-none">$59.99</span>
-              <span className="text-[16px] text-gray-400 line-through font-medium mb-1">$89.99</span>
-              <span className="bg-black text-white text-[11px] font-bold px-2.5 py-1 rounded mb-1.5">33% OFF</span>
+              <span className="text-[32px] font-bold text-gray-900 leading-none">${currentPrice.toFixed(2)}</span>
+              {product.discountPercentage > 0 && (
+                <>
+                  <span className="text-[16px] text-gray-400 line-through font-medium mb-1">${product.basePrice.toFixed(2)}</span>
+                  <span className="bg-black text-white text-[11px] font-bold px-2.5 py-1 rounded mb-1.5">{product.discountPercentage}% OFF</span>
+                </>
+              )}
             </div>
 
             <p className="text-gray-600 text-[15px] leading-relaxed mb-8 sm:w-[85%]">
-              Premium heavyweight cotton hoodie with an oversized fit for ultimate comfort and modern style.
+              {product.description}
             </p>
 
             {/* Size Selector */}
@@ -175,21 +210,13 @@ export function ProductDetailPage() {
             {activeTab === "Details" && (
               <div>
                 <p className="text-gray-700 text-[15px] leading-relaxed mb-6">
-                  Crafted from high-quality heavyweight cotton, this hoodie delivers unmatched comfort and durability. The oversized fit and minimal design make it a versatile staple for any wardrobe.
+                  {product.description}
                 </p>
                 <ul className="space-y-4">
-                  {[
-                    { label: "Oversized fit", icon: <ShoppingBag size={18} strokeWidth={1.5} /> },
-                    { label: "Soft & heavyweight fabric", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg> },
-                    { label: "Adjustable drawstring hood", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="4" /><line x1="21.17" y1="8" x2="12" y2="8" /><line x1="3.95" y1="6.06" x2="8.54" y2="14" /></svg> },
-                    { label: "Ribbed cuffs and hem", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg> },
-                    { label: "Unisex style", icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg> }
-                  ].map((feature, idx) => (
+                  {product.specifications && Object.entries(product.specifications).map(([key, value], idx) => (
                     <li key={idx} className="flex items-center gap-3 text-[14px] text-gray-800 font-medium">
-                      <div className="w-5 h-5 flex items-center justify-center shrink-0 text-gray-900">
-                        {feature.icon}
-                      </div>
-                      {feature.label}
+                      <div className="w-2 h-2 rounded-full bg-gray-400 shrink-0"></div>
+                      <span className="font-bold">{key}:</span> {value as string}
                     </li>
                   ))}
                 </ul>
@@ -206,7 +233,7 @@ export function ProductDetailPage() {
 
           <div className="md:w-[55%] rounded-2xl overflow-hidden bg-gray-100">
             <img
-              src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&q=80&w=800"
+              src={product.images.length > 1 ? product.images[1].url : product.images[0].url}
               alt="Fabric Detail"
               className="w-full h-full object-cover"
             />
@@ -223,9 +250,23 @@ export function ProductDetailPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
-            {FEATURED_PRODUCTS.slice(0, 4).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            {product.youMayAlsoLike && product.youMayAlsoLike.length > 0 ? (
+              product.youMayAlsoLike.map((rec) => {
+                const uiRec: UIProduct = {
+                  id: rec.slug,
+                  name: rec.name,
+                  category: rec.category,
+                  price: rec.discountPercentage > 0 ? rec.basePrice * (1 - rec.discountPercentage / 100) : rec.basePrice,
+                  originalPrice: rec.discountPercentage > 0 ? rec.basePrice : undefined,
+                  rating: rec.averageRating,
+                  imageUrl: rec.thumbnail,
+                  discountBadge: rec.discountPercentage > 0 ? `${rec.discountPercentage}% OFF` : undefined
+                };
+                return <ProductCard key={uiRec.id} product={uiRec} />;
+              })
+            ) : (
+               <div className="col-span-full text-gray-500">No recommendations available at the moment.</div>
+            )}
           </div>
         </div>
       </main>

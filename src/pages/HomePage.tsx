@@ -1,8 +1,9 @@
 
-import { useState, Fragment } from "react";
+import { useState, useEffect, Fragment } from "react";
 import { ProductCard } from "../components/ProductCard";
+import type { Product as UIProduct } from "../components/ProductCard";
 import { ArrowRight, ArrowLeft, Leaf, Truck, RefreshCw } from "lucide-react";
-import { FEATURED_PRODUCTS } from "./data";
+import { getProducts } from "../api/productService";
 
 const HERO_SLIDES = [
   {
@@ -41,6 +42,35 @@ const HERO_SLIDES = [
 
 export function HomePage() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [featuredProducts, setFeaturedProducts] = useState<UIProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await getProducts({ limit: 4 });
+        if (response.success) {
+          const mappedProducts = response.data.products.map((p) => ({
+            id: p.slug,
+            name: p.name,
+            category: p.category,
+            price: p.discountPercentage > 0 ? p.basePrice * (1 - p.discountPercentage / 100) : p.basePrice,
+            originalPrice: p.discountPercentage > 0 ? p.basePrice : undefined,
+            rating: p.averageRating,
+            imageUrl: p.thumbnail,
+            discountBadge: p.discountPercentage > 0 ? `${p.discountPercentage}% OFF` : undefined
+          }));
+          setFeaturedProducts(mappedProducts);
+        }
+      } catch (err) {
+        console.error("Failed to fetch products:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
@@ -123,7 +153,7 @@ export function HomePage() {
 
             {/* Pagination */}
             <div className="flex items-center gap-4 mt-auto">
-              <button 
+              <button
                 onClick={prevSlide}
                 className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-white transition-colors cursor-pointer z-20"
               >
@@ -132,7 +162,7 @@ export function HomePage() {
               <span className="text-[11px] font-bold text-gray-500 tracking-[0.15em] w-12 text-center">
                 {String(currentSlide + 1).padStart(2, '0')} / {String(HERO_SLIDES.length).padStart(2, '0')}
               </span>
-              <button 
+              <button
                 onClick={nextSlide}
                 className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-white transition-colors cursor-pointer z-20"
               >
@@ -165,7 +195,7 @@ export function HomePage() {
           <div className="bg-white rounded-2xl h-[350px] relative overflow-hidden flex shadow-sm border border-gray-100 group cursor-pointer">
             {/* Background decorative faint circle */}
             <div className="absolute top-0 right-1/2 w-64 h-64 bg-gray-50 rounded-full blur-2xl -translate-y-1/2 translate-x-1/4 z-0"></div>
-            
+
             {/* Left Text */}
             <div className="w-1/2 sm:w-[55%] p-6 sm:p-10 flex flex-col justify-center relative z-10">
               <div className="mb-4">
@@ -185,7 +215,7 @@ export function HomePage() {
                 </button>
               </div>
             </div>
-            
+
             {/* Right Image */}
             <div className="w-1/2 sm:w-[45%] h-full relative z-10">
               <img
@@ -194,7 +224,7 @@ export function HomePage() {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
             </div>
-            
+
             {/* Floating Badge */}
             <div className="absolute bottom-8 right-[40%] sm:right-[38%] bg-[#f4ece3] text-[#111] py-3 px-4 rounded-2xl rotate-[-6deg] shadow-xl flex flex-col items-center justify-center z-20 min-w-[90px] border border-white/50 backdrop-blur-sm">
               <span className="text-[9px] font-bold tracking-widest uppercase text-gray-600">Up To</span>
@@ -202,7 +232,7 @@ export function HomePage() {
               <span className="text-[9px] font-bold tracking-widest uppercase text-gray-600">Off</span>
             </div>
           </div>
-          
+
           {/* Banner 2: Autumn Collection */}
           <div className="bg-[#f6f2eb] rounded-2xl h-[350px] relative overflow-hidden flex group cursor-pointer">
             {/* Left Text */}
@@ -224,11 +254,11 @@ export function HomePage() {
                   Shop Now <ArrowRight size={16} />
                 </button>
               </div>
-              
+
               {/* Decorative SVG (simulated with a simple shape or leaf icon if we had one, leaving subtle shape) */}
               <div className="absolute bottom-4 left-4 opacity-20 w-12 h-12 bg-[#a46e45] rounded-tl-full rounded-br-full -rotate-12 pointer-events-none"></div>
             </div>
-            
+
             {/* Right Image */}
             <div className="w-1/2 sm:w-[45%] h-full relative z-10">
               <img
@@ -254,9 +284,15 @@ export function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-12">
-          {FEATURED_PRODUCTS.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+          {loading ? (
+            <div className="col-span-full text-center py-10 text-gray-500 font-medium">Loading amazing products...</div>
+          ) : featuredProducts.length > 0 ? (
+            featuredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full text-center py-10 text-gray-500 font-medium">No products found.</div>
+          )}
         </div>
 
         <div className="mt-12 text-center sm:hidden">
