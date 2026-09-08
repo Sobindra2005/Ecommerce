@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Search, X, ChevronDown, ChevronUp, LayoutGrid, List } from "lucide-react";
-import { ProductCard } from "../components/ProductCard";
+import { ProductCard, ProductCardSkeleton } from "../components/ProductCard";
 import type { Product as UIProduct } from "../components/ProductCard";
 import { getProducts } from "../api/productService";
 
@@ -11,8 +11,8 @@ export function SearchPage() {
   const [loading, setLoading] = useState(false);
 
   // Filter states
-  const [selectedSizes, setSelectedSizes] = useState<string[]>(['XS','S','M','L','XL']);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>(['Zara','Mango','H&M', 'Other Brands']);
+  const [selectedSizes, setSelectedSizes] = useState<string[]>(['XS', 'S', 'M', 'L', 'XL']);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(['Zara', 'Mango', 'H&M', 'Other Brands']);
   const [priceRange, setPriceRange] = useState<[number, number]>([50, 500]);
 
   const toggleSize = (size: string) => {
@@ -27,21 +27,21 @@ export function SearchPage() {
     const fetchSearchResults = async () => {
       try {
         setLoading(true);
-        const params = activeSearch 
-          ? { keyword: activeSearch, limit: 24 } 
+        const params = activeSearch
+          ? { keyword: activeSearch, limit: 24 }
           : { limit: 8, sort: 'rating' as const };
-        
+
         const response = await getProducts(params);
         if (response.success) {
           const mappedProducts = response.data.products.map((p) => ({
-             id: p.slug,
-             name: p.name,
-             category: p.category,
-             price: p.discountPercentage > 0 ? p.basePrice * (1 - p.discountPercentage / 100) : p.basePrice,
-             originalPrice: p.discountPercentage > 0 ? p.basePrice : undefined,
-             rating: p.averageRating,
-             imageUrl: p.thumbnail || "https://images.unsplash.com/photo-1551028719-00167b16eac5",
-             discountBadge: p.discountPercentage > 0 ? `${p.discountPercentage}% OFF` : undefined
+            id: p.slug,
+            name: p.name,
+            category: p.category,
+            price: p.discountPercentage > 0 ? p.basePrice * (1 - p.discountPercentage / 100) : p.basePrice,
+            originalPrice: p.discountPercentage > 0 ? p.basePrice : undefined,
+            rating: p.averageRating,
+            imageUrl: p.thumbnail || "https://images.unsplash.com/photo-1551028719-00167b16eac5",
+            discountBadge: p.discountPercentage > 0 ? `${p.discountPercentage}% OFF` : undefined
           }));
           setProducts(mappedProducts);
         }
@@ -63,11 +63,11 @@ export function SearchPage() {
     <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 font-sans text-[#333]">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row gap-10">
-          
+
           {/* Sidebar */}
           <aside className="w-full lg:w-[240px] shrink-0 hidden lg:block">
             <h2 className="text-xl font-extrabold text-gray-900 mb-8 tracking-tight">Filters</h2>
-            
+
             {/* Size Filter */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-4 cursor-pointer group">
@@ -87,7 +87,7 @@ export function SearchPage() {
                     <label key={size.name} className="flex items-center justify-between cursor-pointer group" onClick={(e) => { e.preventDefault(); toggleSize(size.name); }}>
                       <div className="flex items-center gap-3">
                         <div className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${isChecked ? 'bg-black border-black text-white' : 'border-gray-300 group-hover:border-gray-400'}`}>
-                          {isChecked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                          {isChecked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
                         </div>
                         <span className={`text-[13.5px] ${isChecked ? 'text-gray-900 font-semibold' : 'text-gray-600'}`}>{size.name}</span>
                       </div>
@@ -149,7 +149,7 @@ export function SearchPage() {
                     <label key={brand.name} className="flex items-center justify-between cursor-pointer group" onClick={(e) => { e.preventDefault(); toggleBrand(brand.name); }}>
                       <div className="flex items-center gap-3">
                         <div className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${isChecked ? 'bg-black border-black text-white' : 'border-gray-300 group-hover:border-gray-400'}`}>
-                          {isChecked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                          {isChecked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
                         </div>
                         <span className={`text-[13.5px] ${isChecked ? 'text-gray-900 font-semibold' : 'text-gray-600'}`}>{brand.name}</span>
                       </div>
@@ -163,7 +163,7 @@ export function SearchPage() {
 
           {/* Right Content */}
           <div className="flex-1">
-            
+
             {/* Top Search Area */}
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
               <form onSubmit={handleSearch} className="flex-1 relative flex items-center w-full bg-[#f8f9fa] rounded-full px-4 h-14 border border-transparent focus-within:border-gray-300 focus-within:bg-white transition-all">
@@ -181,7 +181,7 @@ export function SearchPage() {
                   </button>
                 )}
               </form>
-              <button 
+              <button
                 onClick={handleSearch}
                 className="h-14 px-8 bg-[#1a1c23] hover:bg-black text-white rounded-full font-semibold text-[14px] flex items-center gap-2 transition-colors shrink-0"
               >
@@ -192,17 +192,17 @@ export function SearchPage() {
             {/* Header row (Results + Sort/View) */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
               <span className="text-[14px] text-gray-600 font-medium">
-                {activeSearch 
-                  ? <>Showing {products.length} results for "<span className="font-bold text-gray-900">{activeSearch}</span>"</> 
+                {activeSearch
+                  ? <>Showing {products.length} results for "<span className="font-bold text-gray-900">{activeSearch}</span>"</>
                   : <>Showing {products.length} recommended products</>
                 }
               </span>
-              
+
               <div className="flex items-center gap-4">
                 <button className="flex items-center gap-2 text-[13px] font-medium text-gray-700 bg-transparent px-2 py-1 hover:text-black transition-colors">
                   Sort by: Featured <ChevronDown size={14} className="text-gray-500" />
                 </button>
-                
+
                 <div className="flex items-center gap-1 border border-gray-200 rounded-lg p-1">
                   <button className="p-1.5 bg-gray-100 rounded-[4px] text-gray-900 transition-colors">
                     <LayoutGrid size={16} />
@@ -216,7 +216,12 @@ export function SearchPage() {
 
             {/* Product Grid */}
             {loading ? (
-               <div className="text-center py-24 text-gray-500 animate-pulse font-medium text-lg">Searching...</div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-10">
+                {Array.from({ length: 4 }).map((_, i) => (
+                  <ProductCardSkeleton key={i} />
+                ))}
+              </div>
+
             ) : products.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-10">
                 {products.map((product) => (
@@ -230,7 +235,7 @@ export function SearchPage() {
                 <p className="text-gray-500 text-sm">We couldn't find anything matching "{activeSearch}".</p>
               </div>
             )}
-            
+
           </div>
         </div>
       </div>
