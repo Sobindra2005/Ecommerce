@@ -1,22 +1,63 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, X, ChevronDown, ChevronUp, LayoutGrid, List } from "lucide-react";
 import { ProductCard } from "../components/ProductCard";
-import { FEATURED_PRODUCTS } from "./data";
+import type { Product as UIProduct } from "../components/ProductCard";
+import { getProducts } from "../api/productService";
 
 export function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSearch, setActiveSearch] = useState("");
+  const [products, setProducts] = useState<UIProduct[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  // Filter states
+  const [selectedSizes, setSelectedSizes] = useState<string[]>(['XS','S','M','L','XL']);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>(['Zara','Mango','H&M', 'Other Brands']);
+  const [priceRange, setPriceRange] = useState<[number, number]>([50, 500]);
+
+  const toggleSize = (size: string) => {
+    setSelectedSizes(prev => prev.includes(size) ? prev.filter(s => s !== size) : [...prev, size]);
+  };
+
+  const toggleBrand = (brand: string) => {
+    setSelectedBrands(prev => prev.includes(brand) ? prev.filter(b => b !== brand) : [...prev, brand]);
+  };
+
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      try {
+        setLoading(true);
+        const params = activeSearch 
+          ? { keyword: activeSearch, limit: 24 } 
+          : { limit: 8, sort: 'rating' as const };
+        
+        const response = await getProducts(params);
+        if (response.success) {
+          const mappedProducts = response.data.products.map((p) => ({
+             id: p.slug,
+             name: p.name,
+             category: p.category,
+             price: p.discountPercentage > 0 ? p.basePrice * (1 - p.discountPercentage / 100) : p.basePrice,
+             originalPrice: p.discountPercentage > 0 ? p.basePrice : undefined,
+             rating: p.averageRating,
+             imageUrl: p.thumbnail || "https://images.unsplash.com/photo-1551028719-00167b16eac5",
+             discountBadge: p.discountPercentage > 0 ? `${p.discountPercentage}% OFF` : undefined
+          }));
+          setProducts(mappedProducts);
+        }
+      } catch (err) {
+        console.error("Search failed:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSearchResults();
+  }, [activeSearch]);
 
   const handleSearch = (e?: React.FormEvent) => {
     e?.preventDefault();
     setActiveSearch(searchQuery);
   };
-
-  const filteredProducts = activeSearch 
-    ? FEATURED_PRODUCTS.filter((product) =>
-        product.name.toLowerCase().includes(activeSearch.toLowerCase())
-      )
-    : FEATURED_PRODUCTS;
 
   return (
     <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 font-sans text-[#333]">
@@ -35,41 +76,26 @@ export function SearchPage() {
               </div>
               <div className="space-y-3">
                 {[
-                  { name: 'XS', count: 4, checked: false },
-                  { name: 'S', count: 8, checked: false },
-                  { name: 'M', count: 12, checked: true },
-                  { name: 'L', count: 10, checked: false },
-                  { name: 'XL', count: 6, checked: false },
-                ].map((size) => (
-                  <label key={size.name} className="flex items-center justify-between cursor-pointer group">
-                    <div className="flex items-center gap-3">
-                      <div className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${size.checked ? 'bg-black border-black text-white' : 'border-gray-300 group-hover:border-gray-400'}`}>
-                        {size.checked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                  { name: 'XS', count: 4 },
+                  { name: 'S', count: 8 },
+                  { name: 'M', count: 12 },
+                  { name: 'L', count: 10 },
+                  { name: 'XL', count: 6 },
+                ].map((size) => {
+                  const isChecked = selectedSizes.includes(size.name);
+                  return (
+                    <label key={size.name} className="flex items-center justify-between cursor-pointer group" onClick={(e) => { e.preventDefault(); toggleSize(size.name); }}>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${isChecked ? 'bg-black border-black text-white' : 'border-gray-300 group-hover:border-gray-400'}`}>
+                          {isChecked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                        </div>
+                        <span className={`text-[13.5px] ${isChecked ? 'text-gray-900 font-semibold' : 'text-gray-600'}`}>{size.name}</span>
                       </div>
-                      <span className={`text-[13.5px] ${size.checked ? 'text-gray-900 font-semibold' : 'text-gray-600'}`}>{size.name}</span>
-                    </div>
-                    <span className="text-[12px] text-gray-400">({size.count})</span>
-                  </label>
-                ))}
+                      <span className="text-[12px] text-gray-400">({size.count})</span>
+                    </label>
+                  );
+                })}
               </div>
-            </div>
-
-            {/* Color Filter */}
-            <div className="mb-8">
-              <div className="flex justify-between items-center mb-4 cursor-pointer group">
-                <h3 className="font-bold text-[14px] text-gray-900 group-hover:text-black">Color</h3>
-                <ChevronUp size={16} className="text-gray-500 group-hover:text-gray-700" />
-              </div>
-              <div className="flex gap-2 flex-wrap">
-                <button className="w-5 h-5 rounded-full bg-black ring-2 ring-offset-2 ring-gray-200"></button>
-                <button className="w-5 h-5 rounded-full bg-[#8c7a6b]"></button>
-                <button className="w-5 h-5 rounded-full bg-[#c6b4a3]"></button>
-                <button className="w-5 h-5 rounded-full bg-[#5c4a3d]"></button>
-                <button className="w-5 h-5 rounded-full bg-[#4a5d23]"></button>
-                <button className="w-5 h-5 rounded-full bg-[#1e2a4f]"></button>
-                <button className="w-5 h-5 rounded-full bg-white border border-gray-300"></button>
-              </div>
-              <button className="text-[11px] text-gray-500 mt-3 font-medium hover:text-gray-800 transition-colors">+2 more</button>
             </div>
 
             {/* Price Range Filter */}
@@ -78,15 +104,30 @@ export function SearchPage() {
                 <h3 className="font-bold text-[14px] text-gray-900 group-hover:text-black">Price Range</h3>
                 <ChevronUp size={16} className="text-gray-500 group-hover:text-gray-700" />
               </div>
-              <div className="mt-6 mb-2 relative px-1">
-                <div className="w-full h-1 bg-gray-200 rounded-full"></div>
-                <div className="absolute top-0 left-0 w-full h-1 bg-black rounded-full"></div>
-                <div className="absolute top-1/2 left-0 w-3.5 h-3.5 bg-black rounded-full -translate-y-1/2 border-2 border-white shadow"></div>
-                <div className="absolute top-1/2 right-0 w-3.5 h-3.5 bg-black rounded-full -translate-y-1/2 border-2 border-white shadow"></div>
-              </div>
-              <div className="flex justify-between text-[11px] font-medium text-gray-500 mt-2">
-                <span>$50</span>
-                <span>$500+</span>
+              <div className="flex items-center gap-3">
+                <div className="relative w-1/2">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-[13px]">$</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={priceRange[0]}
+                    onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
+                    className="w-full h-10 bg-gray-50 border border-gray-200 rounded-lg pl-6 pr-3 text-[13.5px] text-gray-900 outline-none focus:border-gray-400 focus:bg-white transition-colors"
+                    placeholder="Min"
+                  />
+                </div>
+                <div className="w-2 h-[1px] bg-gray-300"></div>
+                <div className="relative w-1/2">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-[13px]">$</span>
+                  <input
+                    type="number"
+                    min={0}
+                    value={priceRange[1]}
+                    onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                    className="w-full h-10 bg-gray-50 border border-gray-200 rounded-lg pl-6 pr-3 text-[13.5px] text-gray-900 outline-none focus:border-gray-400 focus:bg-white transition-colors"
+                    placeholder="Max"
+                  />
+                </div>
               </div>
             </div>
 
@@ -102,15 +143,20 @@ export function SearchPage() {
                   { name: 'Mango', count: 5 },
                   { name: 'H&M', count: 4 },
                   { name: 'Other Brands', count: 9 },
-                ].map((brand) => (
-                  <label key={brand.name} className="flex items-center justify-between cursor-pointer group">
-                    <div className="flex items-center gap-3">
-                      <div className="w-4 h-4 rounded-[4px] border border-gray-300 group-hover:border-gray-400 flex items-center justify-center transition-colors"></div>
-                      <span className="text-[13.5px] text-gray-600">{brand.name}</span>
-                    </div>
-                    <span className="text-[12px] text-gray-400">({brand.count})</span>
-                  </label>
-                ))}
+                ].map((brand) => {
+                  const isChecked = selectedBrands.includes(brand.name);
+                  return (
+                    <label key={brand.name} className="flex items-center justify-between cursor-pointer group" onClick={(e) => { e.preventDefault(); toggleBrand(brand.name); }}>
+                      <div className="flex items-center gap-3">
+                        <div className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${isChecked ? 'bg-black border-black text-white' : 'border-gray-300 group-hover:border-gray-400'}`}>
+                          {isChecked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>}
+                        </div>
+                        <span className={`text-[13.5px] ${isChecked ? 'text-gray-900 font-semibold' : 'text-gray-600'}`}>{brand.name}</span>
+                      </div>
+                      <span className="text-[12px] text-gray-400">({brand.count})</span>
+                    </label>
+                  );
+                })}
               </div>
             </div>
           </aside>
@@ -147,8 +193,8 @@ export function SearchPage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
               <span className="text-[14px] text-gray-600 font-medium">
                 {activeSearch 
-                  ? <>Showing {filteredProducts.length} results for "<span className="font-bold text-gray-900">{activeSearch}</span>"</> 
-                  : <>Showing {filteredProducts.length} recommended products</>
+                  ? <>Showing {products.length} results for "<span className="font-bold text-gray-900">{activeSearch}</span>"</> 
+                  : <>Showing {products.length} recommended products</>
                 }
               </span>
               
@@ -169,9 +215,11 @@ export function SearchPage() {
             </div>
 
             {/* Product Grid */}
-            {filteredProducts.length > 0 ? (
+            {loading ? (
+               <div className="text-center py-24 text-gray-500 animate-pulse font-medium text-lg">Searching...</div>
+            ) : products.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-10">
-                {filteredProducts.map((product) => (
+                {products.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
