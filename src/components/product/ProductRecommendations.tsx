@@ -28,7 +28,7 @@ export function ProductRecommendations({ recommendations }: ProductRecommendatio
               price: rec.discountPercentage > 0 ? rec.basePrice * (1 - rec.discountPercentage / 100) : rec.basePrice,
               originalPrice: rec.discountPercentage > 0 ? rec.basePrice : undefined,
               rating: rec.averageRating,
-              imageUrl: rec.thumbnail,
+              imageUrl: rec.thumbnail ?? "",
               discountBadge: rec.discountPercentage > 0 ? `${rec.discountPercentage}% OFF` : undefined
             };
             return <ProductCard key={uiRec.id} product={uiRec} />;

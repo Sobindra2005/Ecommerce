@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { ProductCard, ProductCardSkeleton } from "../components/ProductCard";
 import type { Product as UIProduct } from "../components/ProductCard";
-import { ArrowRight, ArrowLeft, Leaf, Truck, RefreshCw } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { EventBannerCard, EventBannerSkeleton } from "../components/EventBannerCard";
 import { HeroSection, HeroSkeleton } from "../components/HeroSection";
 import { getProducts } from "../api/productService";
@@ -28,7 +28,7 @@ export function HomePage() {
             price: p.discountPercentage > 0 ? p.basePrice * (1 - p.discountPercentage / 100) : p.basePrice,
             originalPrice: p.discountPercentage > 0 ? p.basePrice : undefined,
             rating: p.averageRating,
-            imageUrl: p.thumbnail,
+            imageUrl: p.thumbnail ?? "",
             discountBadge: p.discountPercentage > 0 ? `${p.discountPercentage}% OFF` : undefined
           }));
           setFeaturedProducts(mappedProducts);
