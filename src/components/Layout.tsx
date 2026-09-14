@@ -151,7 +151,7 @@ export function Layout() {
           <motion.div
             layoutId="chat-widget"
             className="fixed bottom-6 right-6 bg-white shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
-            style={{ borderRadius: "16px", width: "370px", height: "500px" }}
+            style={{ borderRadius: "16px", width: "400px", height: "550px" }}
           >
             {/* Chat Header */}
             <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
@@ -238,17 +238,16 @@ export function Layout() {
 
 const MessageCarousel = ({ products, onProductClick }: { products: any[], onProductClick: (id: string) => void }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
-
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
       const { clientWidth } = scrollRef.current;
-      const scrollAmount = direction === 'left' ? -clientWidth / 2 : clientWidth / 2;
+      const scrollAmount = direction === 'left' ? -clientWidth * 0.55 : clientWidth * 0.55;
       scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
   return (
-    <div className="relative mt-2 -mx-2 px-2 w-[calc(100%+1rem)] max-w-[340px]">
+    <div className="relative mt-3 -mx-2 px-2 w-[calc(100%+1rem)] max-w-[560px]">
       <style>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
@@ -256,22 +255,29 @@ const MessageCarousel = ({ products, onProductClick }: { products: any[], onProd
       `}</style>
       <div
         ref={scrollRef}
-        className="flex gap-2 overflow-x-auto snap-x snap-mandatory scrollbar-hide  pt-1 px-1"
+        className="flex gap-1 overflow-x-auto snap-x snap-mandatory scrollbar-hide pt-1 pb-2 px-4"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {products.map(product => (
           <div
             key={product.id}
-            onClick={() => onProductClick(product.id)}
-            className={`snap-start shrink-0 w-[70px] bg-white border border-gray-100 hover:bg-gray-100 rounded-xl p-0.5 cursor-pointer transition-all flex flex-col gap-1`}
+            className="snap-start shrink-0 w-[120px] bg-white border border-gray-100 rounded-xl p-1 cursor-pointer transition-all hover:shadow-md flex flex-col"
           >
-            <div className="w-full aspect-square rounded-lg overflow-hidden bg-gray-50 mb-1">
-              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
+            <div
+              onClick={() => onProductClick(product.id)}
+              className="w-full aspect-[4/4] rounded-lg overflow-hidden bg-gray-50 mb-1.5"
+            >
+              <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover transition-transform hover:scale-105" />
             </div>
-            <h4 className="font-semibold text-[11px] text-gray-800 truncate">{product.name}</h4>
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <span className="font-bold text-[12px] text-gray-900">${product.price.toFixed(2)}</span>
-            </div>
+            <h4 className=" text-[13px] font-semibold text-gray-700 truncate">{product.name}</h4>
+            <span className="font-extrabold text-[13px] text-gray-900 mb-1 ">${product.price.toFixed(2)}</span>
+            <button
+              onClick={(e) => { e.stopPropagation(); }}
+              className="w-full flex items-center justify-center gap-2 bg-[#1e293b] hover:bg-[#334155] text-white text-[12px] font-medium py-1.5 rounded-md transition-colors"
+            >
+              <ShoppingCart size={15} />
+              Add to cart
+            </button>
           </div>
         ))}
       </div>
@@ -279,19 +285,17 @@ const MessageCarousel = ({ products, onProductClick }: { products: any[], onProd
 
       <button
         onClick={(e) => { e.stopPropagation(); scroll('left'); }}
-        className="absolute left-0 top-[40%] -translate-y-1/2 w-7 h-7 bg-white shadow-md rounded-full flex items-center justify-center border border-gray-100 text-blue-600 z-10 hover:bg-gray-50"
+        className="absolute left-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur shadow-lg rounded-full flex items-center justify-center border border-gray-200 text-gray-700 z-10 hover:bg-white hover:shadow-xl transition-all"
       >
-        <ChevronLeft size={16} />
+        <ChevronLeft size={18} />
       </button>
-
 
       <button
         onClick={(e) => { e.stopPropagation(); scroll('right'); }}
-        className="absolute right-0 top-[40%] -translate-y-1/2 w-7 h-7 bg-white shadow-md rounded-full flex items-center justify-center border border-gray-100 text-blue-600 z-10 hover:bg-gray-50"
+        className="absolute right-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur shadow-lg rounded-full flex items-center justify-center border border-gray-200 text-gray-700 z-10 hover:bg-white hover:shadow-xl transition-all"
       >
-        <ChevronRight size={16} />
+        <ChevronRight size={18} />
       </button>
-
     </div>
   );
 };
