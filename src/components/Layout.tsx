@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { FEATURED_PRODUCTS } from "../pages/data";
+import { getProducts } from "../api/productService";
 import { Search, ShoppingCart, User, Menu, MessageCircle, X, Send, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -12,10 +12,10 @@ export function Layout() {
     { id: 2, text: "Can you recommend something for the upcoming season?", sender: "user", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
     {
       id: 3,
-      text: "I highly recommend our Trendy Brown Coat. It's currently on sale and perfect for the season!",
+      text: "Here are our top recommended picks for this season! 🔥",
       sender: "bot",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      products: FEATURED_PRODUCTS.slice(0, 5),
+      products: [],
       highlightedProductId: "1"
     }
   ]);
@@ -25,6 +25,28 @@ export function Layout() {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const fetchRecommended = async () => {
+      try {
+        const response = await getProducts({ limit: 5, sort: 'rating' });
+        if (response.success && response.data.products.length > 0) {
+          const mapped = response.data.products.map((p) => ({
+            id: p.slug,
+            name: p.name,
+            price: p.discountPercentage > 0 ? p.basePrice * (1 - p.discountPercentage / 100) : p.basePrice,
+            imageUrl: p.thumbnail || "https://images.unsplash.com/photo-1551028719-00167b16eac5",
+          }));
+          setMessages(prev => prev.map(msg =>
+            msg.id === 3 ? { ...msg, products: mapped } : msg
+          ));
+        }
+      } catch (err) {
+        console.error("Failed to fetch recommended products:", err);
+      }
+    };
+    fetchRecommended();
+  }, []);
 
   useEffect(() => {
     if (isChatOpen) {
