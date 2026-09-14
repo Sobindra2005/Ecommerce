@@ -74,3 +74,29 @@ export function ProductCard({ product }: ProductCardProps) {
     </Link>
   );
 }
+
+export function ProductCardSkeleton() {
+  return (
+    <div className="bg-white p-3 rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-gray-100 flex flex-col w-full animate-pulse">
+      {/* Image Container */}
+      <div className="relative bg-gray-200 rounded-xl overflow-hidden aspect-[4/5] mb-4"></div>
+
+      {/* Product Info */}
+      <div className="flex flex-col px-1 pb-1">
+        <div className="flex justify-between items-center mb-2">
+          {/* Category */}
+          <div className="h-3.5 bg-gray-200 rounded w-16"></div>
+          {/* Rating */}
+          <div className="h-3.5 bg-gray-200 rounded w-10"></div>
+        </div>
+
+        {/* Title */}
+        <div className="h-4 bg-gray-200 rounded w-3/4 mb-1.5"></div>
+
+        {/* Price */}
+        <div className="h-4 bg-gray-200 rounded w-1/2 mb-3"></div>
+
+      </div>
+    </div>
+  );
+}
