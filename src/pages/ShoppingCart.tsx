@@ -1,4 +1,4 @@
-﻿import { CartItem } from "../components/CartItem";
+import { CartItem } from "../components/CartItem";
 import { OrderSummary } from "../components/OrderSummary";
 import { useCart } from "../context/CartContext";
 
@@ -26,15 +26,15 @@ export function ShoppingCart() {
     const total = Math.round(subTotal - discountAmount + deliveryFee);
 
     return (
-        <div className="min-h-screen bg-white text-gray-900 p-4 md:p-8 ">
+        <div className="min-h-screen text-gray-200 p-4 md:p-8 ">
             <div className="max-w-6xl mx-auto">
-                <h1 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-gray-900">Shopping Cart</h1>
+                <h1 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-gray-100">Shopping Cart</h1>
 
                 <div className="flex flex-col lg:flex-row gap-8 items-start">
 
                     {/* Left Column - Cart Items */}
-                    <div className="w-full border border-gray-200 rounded-3xl bg-white p-6 mb-6">
-                        <div className="hidden md:flex items-center text-sm font-semibold text-gray-900 pb-4 border-b border-gray-100">
+                    <div className="w-full border border-gray-800 rounded-3xl bg-gray-900 p-6 mb-6">
+                        <div className="hidden md:flex items-center text-sm font-semibold text-gray-100 pb-4 border-b border-gray-800">
                             <div className="flex-1">Product Details</div>
                             <div className="w-[120px] text-center">Quantity</div>
                             <div className="w-[80px] text-center">Total</div>
@@ -45,14 +45,14 @@ export function ShoppingCart() {
                             {items.length > 0 ? (
                                 items.map(item => (
                                     <CartItem
-                                        key={item.product._id || item.product.id}
+                                        key={item.product._id}
                                         image={item.product.images?.[0]?.url || item.product.thumbnail || 'https://via.placeholder.com/150'}
                                         title={item.product.name}
                                         subtitle={item.product.category || item.product.brand || 'Item'}
                                         price={item.product.basePrice || item.product.price || 0}
                                         quantity={item.quantity}
-                                        onUpdateQuantity={(newQ: number) => handleUpdateQuantity(item.product._id || item.product.id, newQ)}
-                                        onDelete={() => handleDelete(item.product._id || item.product.id)}
+                                        onUpdateQuantity={(newQ: number) => handleUpdateQuantity(item.product._id, newQ)}
+                                        onDelete={() => handleDelete(item.product._id)}
                                     />
                                 ))
                             ) : (

@@ -1,6 +1,9 @@
-﻿import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Star, ShoppingBag, Heart, Truck, RefreshCw, ShieldCheck, ChevronDown } from "lucide-react";
 import type { ProductDetails } from "../../api/productService";
+import { cn } from "../../lib/utils";
+import { Button } from "../ui/button";
+import { useCart } from "../../context/CartContext";
 
 interface ProductInfoProps {
   product: ProductDetails;
@@ -9,6 +12,7 @@ interface ProductInfoProps {
 export function ProductInfo({ product }: ProductInfoProps) {
   const [selectedImage, setSelectedImage] = useState(product.images?.[0]?.url || "");
   const [selectedSize, setSelectedSize] = useState("M");
+  const { addToCart } = useCart();
 
   useEffect(() => {
     if (product.images && product.images.length > 0) {
@@ -30,7 +34,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
             <button
               key={i}
               onClick={() => setSelectedImage(img.url)}
-              className={`border-[1.5px] rounded-lg overflow-hidden aspect-4/5 bg-gray-900 ${selectedImage === img.url ? 'border-white' : 'border-gray-700'}`}
+              className={cn("border-[1.5px] rounded-lg overflow-hidden aspect-4/5 bg-gray-900", selectedImage === img.url ? 'border-white' : 'border-gray-700')}
             >
               <img src={img.url} alt={`Thumbnail ${i}`} className="w-full h-full object-cover" />
             </button>
@@ -95,10 +99,9 @@ export function ProductInfo({ product }: ProductInfoProps) {
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`w-[56px] h-12 flex items-center justify-center rounded-lg border font-semibold text-[13px] transition-colors ${selectedSize === size
+                className={cn("w-[56px] h-12 flex items-center justify-center rounded-lg border font-semibold text-[13px] transition-colors", selectedSize === size
                     ? "bg-black text-white border-black"
-                    : "bg-gray-900 text-gray-200 border-gray-700 hover:border-white"
-                  }`}
+                    : "bg-gray-900 text-gray-200 border-gray-700 hover:border-white")}
               >
                 {size}
               </button>
@@ -108,13 +111,13 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
         {/* Actions */}
         <div className="flex gap-3 mb-10">
-          <button onClick={() => addToCart(product._id || product.id, 1)} className="flex-1 bg-white text-black h-[56px] rounded-xl font-bold flex items-center justify-center gap-2.5 hover:bg-gray-200 transition-colors text-[15px]">
+          <Button onClick={() => addToCart(product._id, 1)} variant="default" className="flex-1 bg-white text-black h-[56px] rounded-xl font-bold flex items-center justify-center gap-2.5 hover:bg-gray-200 transition-colors text-[15px]">
             <ShoppingBag size={18} strokeWidth={2.5} />
             Add to Cart
-          </button>
-          <button className="w-[56px] h-[56px] flex items-center justify-center border border-gray-700 rounded-xl text-white hover:border-white transition-colors shrink-0">
+          </Button>
+          <Button variant="outline" className="w-[56px] h-[56px] flex items-center justify-center border-gray-700 rounded-xl text-white hover:border-white transition-colors shrink-0 px-0">
             <Heart size={22} strokeWidth={1.5} />
-          </button>
+          </Button>
         </div>
 
         {/* Features (Shipping/Returns) */}
@@ -153,40 +156,40 @@ export function ProductInfoSkeleton() {
       <div className="flex gap-4 lg:w-[55%] sm:h-162.5">
         <div className="flex flex-col gap-3 w-16 sm:w-20 shrink-0">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-gray-200 rounded-lg aspect-4/5"></div>
+            <div key={i} className="bg-gray-800 rounded-lg aspect-4/5"></div>
           ))}
         </div>
-        <div className="flex-1 rounded-2xl bg-gray-200 h-96 sm:h-full"></div>
+        <div className="flex-1 rounded-2xl bg-gray-800 h-96 sm:h-full"></div>
       </div>
 
       {/* Info Section */}
       <div className="flex flex-col lg:w-[45%] pt-2">
         <div className="mb-4">
-          <div className="h-6 bg-gray-200 rounded w-20"></div>
+          <div className="h-6 bg-gray-800 rounded w-20"></div>
         </div>
-        <div className="h-10 sm:h-12 bg-gray-200 rounded w-3/4 mb-3"></div>
-        <div className="h-4 bg-gray-200 rounded w-32 mb-6"></div>
-        <div className="h-8 bg-gray-200 rounded w-24 mb-6"></div>
-        <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-        <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-        <div className="h-4 bg-gray-200 rounded w-5/6 mb-8"></div>
+        <div className="h-10 sm:h-12 bg-gray-800 rounded w-3/4 mb-3"></div>
+        <div className="h-4 bg-gray-800 rounded w-32 mb-6"></div>
+        <div className="h-8 bg-gray-800 rounded w-24 mb-6"></div>
+        <div className="h-4 bg-gray-800 rounded w-full mb-2"></div>
+        <div className="h-4 bg-gray-800 rounded w-full mb-2"></div>
+        <div className="h-4 bg-gray-800 rounded w-5/6 mb-8"></div>
         
-        <div className="h-6 bg-gray-200 rounded w-32 mb-3 mt-2"></div>
+        <div className="h-6 bg-gray-800 rounded w-32 mb-3 mt-2"></div>
         <div className="flex gap-2.5 mb-8">
           {[1, 2, 3, 4, 5].map((i) => (
-            <div key={i} className="w-[56px] h-12 bg-gray-200 rounded-lg"></div>
+            <div key={i} className="w-[56px] h-12 bg-gray-800 rounded-lg"></div>
           ))}
         </div>
 
         <div className="flex gap-3 mb-10">
-          <div className="flex-1 bg-gray-200 h-[56px] rounded-xl"></div>
-          <div className="w-[56px] h-[56px] bg-gray-200 rounded-xl"></div>
+          <div className="flex-1 bg-gray-800 h-[56px] rounded-xl"></div>
+          <div className="w-[56px] h-[56px] bg-gray-800 rounded-xl"></div>
         </div>
 
-        <div className="flex justify-between border-t border-gray-100 pt-6">
-          <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-10 bg-gray-200 rounded w-1/4"></div>
-          <div className="h-10 bg-gray-200 rounded w-1/4"></div>
+        <div className="flex justify-between border-t border-gray-800 pt-6">
+          <div className="h-10 bg-gray-800 rounded w-1/4"></div>
+          <div className="h-10 bg-gray-800 rounded w-1/4"></div>
+          <div className="h-10 bg-gray-800 rounded w-1/4"></div>
         </div>
       </div>
     </div>

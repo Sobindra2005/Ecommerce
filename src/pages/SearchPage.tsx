@@ -3,7 +3,8 @@ import { Search, X, ChevronDown, ChevronUp, LayoutGrid, List } from "lucide-reac
 import { ProductCard, ProductCardSkeleton } from "../components/ProductCard";
 import type { Product as UIProduct } from "../components/ProductCard";
 import { getProducts } from "../api/productService";
-
+import { cn } from "../lib/utils";
+import { Button } from "../components/ui/button";
 export function SearchPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeSearch, setActiveSearch] = useState("");
@@ -96,10 +97,10 @@ export function SearchPage() {
                   return (
                     <label key={size.name} className="flex items-center justify-between cursor-pointer group" onClick={(e) => { e.preventDefault(); toggleSize(size.name); }}>
                       <div className="flex items-center gap-3">
-                        <div className={`w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors ${isChecked ? 'bg-white border-white text-black' : 'border-gray-600 group-hover:border-gray-400'}`}>
+                        <div className={cn("w-4 h-4 rounded-[4px] border flex items-center justify-center transition-colors", isChecked ? "bg-white border-white text-black" : "border-gray-600 group-hover:border-gray-400")}>
                           {isChecked && <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>}
                         </div>
-                        <span className={`text-[13.5px] ${isChecked ? 'text-white font-semibold' : 'text-gray-400'}`}>{size.name}</span>
+                        <span className={cn("text-[13.5px]", isChecked ? "text-white font-semibold" : "text-gray-400")}>{size.name}</span>
                       </div>
                       <span className="text-[12px] text-gray-500">({size.count})</span>
                     </label>
@@ -164,12 +165,13 @@ export function SearchPage() {
                   </button>
                 )}
               </form>
-              <button
+              <Button
                 onClick={handleSearch}
-                className="h-14 px-8 bg-white hover:bg-gray-200 text-black rounded-full font-semibold text-[14px] flex items-center gap-2 transition-colors shrink-0"
+                variant="default"
+                className="h-14 px-8 rounded-full font-semibold text-[14px] flex items-center gap-2 shrink-0"
               >
                 Search <span className="text-lg leading-none">→</span>
-              </button>
+              </Button>
             </div>
 
             {/* Header row (Results + Sort/View) */}
@@ -182,17 +184,17 @@ export function SearchPage() {
               </span>
 
               <div className="flex items-center gap-4">
-                <button className="flex items-center gap-2 text-[13px] font-medium text-gray-700 bg-transparent px-2 py-1 hover:text-black transition-colors">
+                <Button variant="ghost" className="flex items-center gap-2 text-[13px] font-medium text-gray-700 bg-transparent px-2 py-1 hover:text-black hover:bg-transparent">
                   Sort by: Featured <ChevronDown size={14} className="text-gray-400" />
-                </button>
+                </Button>
 
                 <div className="flex items-center gap-1 border border-gray-700 rounded-lg p-1">
-                  <button className="p-1.5 bg-gray-700 rounded-[4px] text-white transition-colors">
+                  <Button variant="secondary" size="icon" className="h-8 w-8 rounded-[4px]">
                     <LayoutGrid size={16} />
-                  </button>
-                  <button className="p-1.5 text-gray-400 hover:text-gray-900 transition-colors">
+                  </Button>
+                  <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 rounded-[4px] hover:text-gray-900">
                     <List size={16} />
-                  </button>
+                  </Button>
                 </div>
               </div>
             </div>

@@ -12,8 +12,8 @@ export function ProductRecommendations({ recommendations }: ProductRecommendatio
   return (
     <div>
       <div className="flex justify-between items-end mb-6">
-        <h2 className="text-[22px] font-extrabold text-gray-900">You May Also Like</h2>
-        <Link to="/" className="text-[13px] font-bold text-gray-900 hover:text-gray-600 transition-colors flex items-center gap-1">
+        <h2 className="text-[22px] font-extrabold text-white">You May Also Like</h2>
+        <Link to="/" className="text-[13px] font-bold text-white hover:text-gray-300 transition-colors flex items-center gap-1">
           View All <ArrowRight size={14} strokeWidth={2} />
         </Link>
       </div>
@@ -34,7 +34,7 @@ export function ProductRecommendations({ recommendations }: ProductRecommendatio
             return <ProductCard key={uiRec.id} product={uiRec} />;
           })
         ) : (
-           <div className="col-span-full text-gray-500">No recommendations available at the moment.</div>
+           <div className="col-span-full text-gray-400">No recommendations available at the moment.</div>
         )}
       </div>
     </div>
@@ -45,8 +45,8 @@ export function ProductRecommendationsSkeleton() {
   return (
     <div className="animate-pulse">
       <div className="flex justify-between items-end mb-6">
-        <div className="h-8 bg-gray-200 rounded w-48"></div>
-        <div className="h-4 bg-gray-200 rounded w-16 mb-1"></div>
+        <div className="h-8 bg-gray-800 rounded w-48"></div>
+        <div className="h-4 bg-gray-800 rounded w-16 mb-1"></div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
         {[1, 2, 3, 4].map((i) => (

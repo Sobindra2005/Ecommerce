@@ -83,10 +83,10 @@ export function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24">
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Trending Now</h2>
-            <p className="text-gray-500">Discover what our customers are loving right now.</p>
+            <h2 className="text-3xl font-bold text-white mb-2">Trending Now</h2>
+            <p className="text-gray-400">Discover what our customers are loving right now.</p>
           </div>
-          <a href="#" className="hidden sm:inline-flex items-center gap-1 font-semibold text-gray-900 hover:text-gray-600 transition-colors">
+          <a href="#" className="hidden sm:inline-flex items-center gap-1 font-semibold text-white hover:text-gray-300 transition-colors">
             View All Products <ArrowRight size={18} />
           </a>
         </div>
@@ -101,12 +101,12 @@ export function HomePage() {
               <ProductCard key={product.id} product={product} />
             ))
           ) : (
-            <div className="col-span-full text-center py-10 text-gray-500 font-medium">No products found.</div>
+            <div className="col-span-full text-center py-10 text-gray-400 font-medium">No products found.</div>
           )}
         </div>
 
         <div className="mt-12 text-center sm:hidden">
-          <button className="border border-gray-300 rounded-full px-8 py-3 font-semibold text-gray-900 hover:bg-gray-50 transition-colors">
+          <button className="border border-gray-700 rounded-full px-8 py-3 font-semibold text-white hover:bg-gray-900 transition-colors">
             View All Products
           </button>
         </div>

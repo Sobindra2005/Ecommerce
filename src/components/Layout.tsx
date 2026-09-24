@@ -1,9 +1,10 @@
-﻿import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getProducts } from "../api/productService";
 import { Search, ShoppingCart, User, Menu, MessageCircle, X, Send, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../context/CartContext";
+import { cn } from "../lib/utils";
 
 export function Layout() {
   const { cart } = useCart();
@@ -207,19 +208,18 @@ export function Layout() {
               </div>
 
               {messages.map((msg) => (
-                <div key={msg.id} className={`flex gap-2 ${msg.sender === 'user' ? 'flex-row-reverse' : ''}`}>
+                <div key={msg.id} className={cn("flex gap-2", msg.sender === 'user' && "flex-row-reverse")}>
                   {msg.sender === 'bot' && (
                     <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
                       <User size={16} className="text-blue-600" />
                     </div>
                   )}
                   <div className="flex flex-col gap-2 max-w-[80%]">
-                    <div className={`p-3 rounded-2xl shadow-sm text-sm ${msg.sender === 'user'
-                      ? 'bg-blue-600 text-white rounded-tr-none'
-                      : 'bg-slate-800 border border-slate-700 text-gray-200 rounded-tl-none'
-                      }`}>
+                    <div className={cn("p-3 rounded-2xl shadow-sm text-sm", msg.sender === 'user'
+                      ? "bg-blue-600 text-white rounded-tr-none"
+                      : "bg-slate-800 border border-slate-700 text-gray-200 rounded-tl-none")}>
                       {msg.text}
-                      <div className={`text-[10px] mt-1 text-right ${msg.sender === 'user' ? 'text-blue-200' : 'text-gray-400'}`}>
+                      <div className={cn("text-[10px] mt-1 text-right", msg.sender === 'user' ? "text-blue-200" : "text-gray-400")}>
                         {msg.time}
                       </div>
                     </div>
