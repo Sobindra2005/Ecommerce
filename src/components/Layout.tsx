@@ -1,18 +1,21 @@
-import { useState, useRef, useEffect } from "react";
+﻿import { useState, useRef, useEffect } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getProducts } from "../api/productService";
 import { Search, ShoppingCart, User, Menu, MessageCircle, X, Send, ChevronLeft, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useCart } from "../context/CartContext";
 
 export function Layout() {
+  const { cart } = useCart();
+  const totalItems = cart?.items.reduce((sum, item) => sum + item.quantity, 0) || 0;
   const navigate = useNavigate();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [messages, setMessages] = useState<any[]>([
-    { id: 1, text: "Hi there! 👋 Welcome to Vogue. How can we help you today?", sender: "bot", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+    { id: 1, text: "Hi there! ðŸ‘‹ Welcome to Vogue. How can we help you today?", sender: "bot", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
     { id: 2, text: "Can you recommend something for the upcoming season?", sender: "user", time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
     {
       id: 3,
-      text: "Here are our top recommended picks for this season! 🔥",
+      text: "Here are our top recommended picks for this season! ðŸ”¥",
       sender: "bot",
       time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       products: [],
@@ -80,29 +83,29 @@ export function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#333333] font-sans flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-gray-100 font-sans flex flex-col">
       {/* Navigation */}
-      <nav className="border-b border-gray-100 sticky top-0 bg-white/80 backdrop-blur-md z-50">
+      <nav className="border-b border-slate-800 sticky top-0 bg-slate-950/80 backdrop-blur-md z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link to="/" className="flex items-center gap-8">
-              <span className="text-2xl font-black tracking-tighter text-black">VOGUE.</span>
+              <span className="text-2xl font-black tracking-tighter text-white">VOGUE.</span>
             </Link>
-            <div className="hidden md:flex gap-6 font-medium text-sm text-gray-500">
-              <Link to="/" className="text-black transition-colors">Home</Link>
-              <a href="#" className="hover:text-black transition-colors">Shop</a>
-              <a href="#" className="hover:text-black transition-colors">Categories</a>
-              <a href="#" className="hover:text-black transition-colors">Events</a>
-              <a href="#" className="hover:text-black transition-colors">Blog</a>
+            <div className="hidden md:flex gap-6 font-medium text-sm text-gray-400">
+              <Link to="/" className="text-white transition-colors">Home</Link>
+              <a href="#" className="hover:text-white transition-colors">Shop</a>
+              <a href="#" className="hover:text-white transition-colors">Categories</a>
+              <a href="#" className="hover:text-white transition-colors">Events</a>
+              <a href="#" className="hover:text-white transition-colors">Blog</a>
             </div>
             <div className="flex items-center gap-5">
-              <button onClick={() => navigate("/search")} className="text-gray-600 hover:text-black transition-colors"><Search size={22} /></button>
-              <button onClick={() => navigate("/shoppingcart")} className="text-gray-600 hover:text-black transition-colors relative">
+              <button onClick={() => navigate("/search")} className="text-gray-400 hover:text-white transition-colors"><Search size={22} /></button>
+              <button onClick={() => navigate("/shoppingcart")} className="text-gray-400 hover:text-white transition-colors relative">
                 <ShoppingCart size={22} />
-                <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">3</span>
+                <span className="absolute -top-1.5 -right-1.5 bg-white text-slate-950 text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">{totalItems}</span>
               </button>
-              <button className="text-gray-600 hover:text-black transition-colors"><User size={22} /></button>
-              <button className="md:hidden text-gray-600 hover:text-black transition-colors"><Menu size={24} /></button>
+              <button className="text-gray-400 hover:text-white transition-colors"><User size={22} /></button>
+              <button className="md:hidden text-gray-400 hover:text-white transition-colors"><Menu size={24} /></button>
             </div>
           </div>
         </div>
@@ -114,7 +117,7 @@ export function Layout() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-black text-white py-16 border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <span className="text-2xl font-black tracking-tighter mb-4 block">VOGUE.</span>
@@ -142,8 +145,8 @@ export function Layout() {
             <h4 className="font-bold mb-4">Newsletter</h4>
             <p className="text-gray-400 text-sm mb-4">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
             <div className="flex">
-              <input type="email" placeholder="Your email" className="bg-gray-800 border-none px-4 py-2 text-sm w-full focus:ring-1 focus:ring-white rounded-l-md outline-none" />
-              <button className="bg-white text-black px-4 py-2 text-sm font-bold rounded-r-md">Subscribe</button>
+              <input type="email" placeholder="Your email" className="bg-slate-800 border-none px-4 py-2 text-sm w-full focus:ring-1 focus:ring-white rounded-l-md outline-none" />
+                <button className="bg-white text-black px-4 py-2 text-sm font-bold rounded-r-md">Subscribe</button>
             </div>
           </div>
         </div>
@@ -155,7 +158,7 @@ export function Layout() {
           <motion.div
             layoutId="chat-widget"
             onClick={() => setIsChatOpen(true)}
-            className="fixed bottom-6 right-6 bg-gray-500 text-white shadow-lg hover:bg-gray-800 transition-colors z-50 flex items-center justify-center cursor-pointer"
+            className="fixed bottom-6 right-6 bg-slate-700 text-white shadow-lg hover:bg-slate-600 transition-colors z-50 flex items-center justify-center cursor-pointer"
             style={{ borderRadius: "16px", width: "56px", height: "56px" }}
           >
             <motion.div
@@ -172,7 +175,7 @@ export function Layout() {
         ) : (
           <motion.div
             layoutId="chat-widget"
-            className="fixed bottom-6 right-6 bg-white shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
+            className="fixed bottom-6 right-6 bg-slate-900 shadow-2xl z-50 flex flex-col overflow-hidden border border-slate-700"
             style={{ borderRadius: "16px", width: "400px", height: "550px" }}
           >
             {/* Chat Header */}
@@ -198,7 +201,7 @@ export function Layout() {
             </div>
 
             {/* Chat Body */}
-            <div className="flex-1 p-4 bg-gray-50 flex flex-col gap-3 overflow-y-auto">
+            <div className="flex-1 p-4 bg-slate-950 flex flex-col gap-3 overflow-y-auto">
               <div className="text-center text-xs text-gray-400 my-2">
                 Today
               </div>
@@ -213,7 +216,7 @@ export function Layout() {
                   <div className="flex flex-col gap-2 max-w-[80%]">
                     <div className={`p-3 rounded-2xl shadow-sm text-sm ${msg.sender === 'user'
                       ? 'bg-blue-600 text-white rounded-tr-none'
-                      : 'bg-white border border-gray-100 text-gray-700 rounded-tl-none'
+                      : 'bg-slate-800 border border-slate-700 text-gray-200 rounded-tl-none'
                       }`}>
                       {msg.text}
                       <div className={`text-[10px] mt-1 text-right ${msg.sender === 'user' ? 'text-blue-200' : 'text-gray-400'}`}>
@@ -233,14 +236,14 @@ export function Layout() {
             </div>
 
             {/* Chat Input */}
-            <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-100 bg-white">
+            <form onSubmit={handleSendMessage} className="p-4 border-t border-slate-700 bg-slate-900">
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Type your message..."
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm bg-gray-50 focus:bg-white transition-colors"
+                  className="w-full px-3 py-2.5 border border-slate-700 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm bg-slate-800 text-white focus:bg-slate-700 transition-colors"
                 />
                 <button
                   type="submit"
@@ -259,6 +262,7 @@ export function Layout() {
 }
 
 const MessageCarousel = ({ products, onProductClick }: { products: any[], onProductClick: (id: string) => void }) => {
+  const { addToCart } = useCart();
   const scrollRef = useRef<HTMLDivElement>(null);
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -283,18 +287,18 @@ const MessageCarousel = ({ products, onProductClick }: { products: any[], onProd
         {products.map(product => (
           <div
             key={product.id}
-            className="snap-start shrink-0 w-[120px] bg-white border border-gray-100 rounded-xl p-1 cursor-pointer transition-all hover:shadow-md flex flex-col"
+            className="snap-start shrink-0 w-[120px] bg-slate-800 border border-slate-700 rounded-xl p-1 cursor-pointer transition-all hover:shadow-md flex flex-col"
           >
             <div
               onClick={() => onProductClick(product.id)}
-              className="w-full aspect-[4/4] rounded-lg overflow-hidden bg-gray-50 mb-1.5"
+              className="w-full aspect-[4/4] rounded-lg overflow-hidden bg-slate-700 mb-1.5"
             >
               <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover transition-transform hover:scale-105" />
             </div>
-            <h4 className=" text-[13px] font-semibold text-gray-700 truncate">{product.name}</h4>
-            <span className="font-extrabold text-[13px] text-gray-900 mb-1 ">${product.price.toFixed(2)}</span>
+            <h4 className=" text-[13px] font-semibold text-gray-200 truncate">{product.name}</h4>
+            <span className="font-extrabold text-[13px] text-white mb-1 ">${product.price.toFixed(2)}</span>
             <button
-              onClick={(e) => { e.stopPropagation(); }}
+              onClick={(e) => { e.stopPropagation(); addToCart(product.id, 1); }}
               className="w-full flex items-center justify-center gap-2 bg-[#1e293b] hover:bg-[#334155] text-white text-[12px] font-medium py-1.5 rounded-md transition-colors"
             >
               <ShoppingCart size={15} />
@@ -307,18 +311,19 @@ const MessageCarousel = ({ products, onProductClick }: { products: any[], onProd
 
       <button
         onClick={(e) => { e.stopPropagation(); scroll('left'); }}
-        className="absolute left-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur shadow-lg rounded-full flex items-center justify-center border border-gray-200 text-gray-700 z-10 hover:bg-white hover:shadow-xl transition-all"
+        className="absolute left-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-slate-800/90 backdrop-blur shadow-lg rounded-full flex items-center justify-center border border-slate-600 text-gray-200 z-10 hover:bg-slate-700 hover:shadow-xl transition-all"
       >
         <ChevronLeft size={18} />
       </button>
 
       <button
         onClick={(e) => { e.stopPropagation(); scroll('right'); }}
-        className="absolute right-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur shadow-lg rounded-full flex items-center justify-center border border-gray-200 text-gray-700 z-10 hover:bg-white hover:shadow-xl transition-all"
+        className="absolute right-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-slate-800/90 backdrop-blur shadow-lg rounded-full flex items-center justify-center border border-slate-600 text-gray-200 z-10 hover:bg-slate-700 hover:shadow-xl transition-all"
       >
         <ChevronRight size={18} />
       </button>
     </div>
   );
 };
+
 
