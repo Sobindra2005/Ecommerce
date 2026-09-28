@@ -1,10 +1,15 @@
-﻿import  { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import  { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 interface CartItem {
     product: {
         _id: string;
         name: string;
-        price: number;
+        price?: number;
+        basePrice?: number;
+        images?: { url: string }[];
+        thumbnail?: string;
+        category?: string;
+        brand?: string;
     };
     quantity: number;
 }
