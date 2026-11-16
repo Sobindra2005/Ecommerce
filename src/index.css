@@ -3,4 +3,41 @@
 
 @theme {
   --font-sans: "Plus Jakarta Sans", sans-serif;
+
+  --color-vogue-canvas: #ffffff;
+  --color-vogue-surface: #f8f9fa;
+  --color-vogue-surface-muted: #f6f2eb;
+  --color-vogue-hero: #e8e4dc;
+  --color-vogue-hero-muted: #d8d4cc;
+  --color-vogue-ink: #1a1a1a;
+  --color-vogue-ink-soft: #333333;
+  --color-vogue-muted: #6b7280;
+  --color-vogue-subtle: #9ca3af;
+  --color-vogue-line: #e5e7eb;
+  --color-vogue-line-soft: #f3f4f6;
+  --color-vogue-action: #1a1c23;
+  --color-vogue-action-hover: #000000;
+  --color-vogue-dark: #111111;
+  --color-vogue-dark-muted: #1e293b;
+  --color-vogue-dark-hover: #334155;
+  --color-vogue-accent-dark: #8d5b35;
+  --color-vogue-accent-soft: #f4ece3;
+  --color-vogue-neutral: #f0f0f0;
+  --color-vogue-media: #f4f5f7;
+  --color-vogue-success: #d1f4e0;
+  --color-vogue-success-ink: #1a7f5a;
+  --color-vogue-promo: #ffe4e6;
+  --color-vogue-promo-ink: #e11d48;
+  --color-vogue-accent: #a46e45;
+  --color-vogue-rating: #fbbf24;
+  --shadow-vogue-card: 0 0.5rem 1.5rem rgb(0 0 0 / 0.08);
+  --shadow-vogue-control: 0 0.125rem 0.5rem rgb(0 0 0 / 0.08);
+  --shadow-vogue-soft: 0 0.125rem 0.75rem rgb(0 0 0 / 0.04);
+}
+
+@layer base {
+  body {
+    background: var(--color-vogue-canvas);
+    color: var(--color-vogue-ink-soft);
+  }
 }

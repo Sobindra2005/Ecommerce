@@ -42,14 +42,14 @@ export function ProductInfo({ product }: ProductInfoProps) {
 
         {/* Main Image */}
         <div className="flex-1 min-w-0 min-h-0 relative h-full">
-          <img src={selectedImage} alt="Product" className="w-full h-full object-cover object-top rounded-2xl bg-[#f4f5f7]" />
+          <img src={selectedImage} alt="Product" className="w-full h-full object-cover object-top rounded-2xl bg-vogue-media" />
         </div>
       </div>
 
       {/* Info Section */}
       <div className="flex flex-col lg:w-[45%] pt-2">
         <div className="mb-4">
-          <span className="bg-[#f0f0f0] text-gray-800 text-[11px] font-bold px-3 py-1.5 rounded-md uppercase tracking-wide">
+          <span className="bg-vogue-neutral text-gray-800 text-[11px] font-bold px-3 py-1.5 rounded-md uppercase tracking-wide">
             {product.brand}
           </span>
         </div>

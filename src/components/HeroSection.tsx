@@ -22,7 +22,7 @@ export function HeroSection({ slides }: HeroSectionProps) {
   const slide = slides[currentSlide] || null;
 
   return (
-    <section className="relative w-full min-h-[90vh] bg-[#e8e4dc] overflow-hidden flex items-center">
+    <section className="relative w-full min-h-[90vh] bg-vogue-hero overflow-hidden flex items-center">
       {slide && (
         <>
           {/* Right Side Image (Model) */}
@@ -34,7 +34,7 @@ export function HeroSection({ slides }: HeroSectionProps) {
               className="w-full h-full object-cover object-center animate-[fadeIn_0.5s_ease-in-out]"
             />
             {/* Gradient overlay to blend the left edge smoothly into the background color */}
-            <div className="absolute inset-0 bg-linear-to-r from-[#e8e4dc] via-[#e8e4dc]/80 to-transparent w-full md:w-1/2"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-vogue-hero via-vogue-hero/80 to-transparent w-full md:w-1/2"></div>
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex w-full z-10 py-12 md:py-12">
@@ -45,7 +45,7 @@ export function HeroSection({ slides }: HeroSectionProps) {
                 <div className="w-8 sm:w-12 h-[1px] bg-gray-400"></div>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[80px] font-extrabold text-[#1a1a1a] leading-[1.05] mb-6 tracking-tight">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[80px] font-extrabold text-vogue-ink leading-[1.05] mb-6 tracking-tight">
                 {slide.title.split('\n').map((line, i, arr) => (
                   <Fragment key={i}>
                     {line}
@@ -58,7 +58,7 @@ export function HeroSection({ slides }: HeroSectionProps) {
                 {slide.description}
               </p>
 
-              <button className="bg-[#1a1c23] text-white px-8 py-3.5 sm:py-4 rounded-full font-semibold text-sm w-fit flex items-center gap-3 hover:bg-black transition-colors mb-12 sm:mb-16 shadow-lg shadow-black/10">
+              <button className="bg-vogue-action text-white px-8 py-3.5 sm:py-4 rounded-full font-semibold text-sm w-fit flex items-center gap-3 hover:bg-vogue-action-hover transition-colors mb-12 sm:mb-16 shadow-lg shadow-black/10">
                 Shop Now <ArrowRight size={16} />
               </button>
 
@@ -133,31 +133,31 @@ export function HeroSection({ slides }: HeroSectionProps) {
 
 export function HeroSkeleton() {
   return (
-    <section className="relative w-full min-h-[90vh] bg-[#e8e4dc] overflow-hidden flex items-center animate-pulse">
-      <div className="absolute top-0 right-0 w-full md:w-[60%] h-full z-0 bg-[#d8d4cc]"></div>
+    <section className="relative w-full min-h-[90vh] bg-vogue-hero overflow-hidden flex items-center animate-pulse">
+      <div className="absolute top-0 right-0 w-full md:w-[60%] h-full z-0 bg-vogue-hero-muted"></div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex w-full z-10 py-12 md:py-12">
         <div className="w-full md:w-[55%] flex flex-col justify-center">
-          <div className="h-3 bg-[#d8d4cc] rounded w-24 mb-6"></div>
+          <div className="h-3 bg-vogue-hero-muted rounded w-24 mb-6"></div>
           
-          <div className="h-16 md:h-20 bg-[#d8d4cc] rounded w-[80%] mb-4"></div>
-          <div className="h-16 md:h-20 bg-[#d8d4cc] rounded w-[60%] mb-6"></div>
+          <div className="h-16 md:h-20 bg-vogue-hero-muted rounded w-[80%] mb-4"></div>
+          <div className="h-16 md:h-20 bg-vogue-hero-muted rounded w-[60%] mb-6"></div>
 
-          <div className="h-5 bg-[#d8d4cc] rounded w-[70%] mb-2"></div>
-          <div className="h-5 bg-[#d8d4cc] rounded w-[50%] mb-10"></div>
+          <div className="h-5 bg-vogue-hero-muted rounded w-[70%] mb-2"></div>
+          <div className="h-5 bg-vogue-hero-muted rounded w-[50%] mb-10"></div>
 
-          <div className="h-14 bg-[#d8d4cc] rounded-full w-40 mb-16"></div>
+          <div className="h-14 bg-vogue-hero-muted rounded-full w-40 mb-16"></div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-[500px] mb-12">
-            <div className="h-10 bg-[#d8d4cc] rounded w-full"></div>
-            <div className="h-10 bg-[#d8d4cc] rounded w-full"></div>
-            <div className="h-10 bg-[#d8d4cc] rounded w-full"></div>
+            <div className="h-10 bg-vogue-hero-muted rounded w-full"></div>
+            <div className="h-10 bg-vogue-hero-muted rounded w-full"></div>
+            <div className="h-10 bg-vogue-hero-muted rounded w-full"></div>
           </div>
 
           <div className="flex items-center gap-4 mt-auto">
-            <div className="w-10 h-10 rounded-full bg-[#d8d4cc]"></div>
-            <div className="h-4 bg-[#d8d4cc] rounded w-12"></div>
-            <div className="w-10 h-10 rounded-full bg-[#d8d4cc]"></div>
+            <div className="w-10 h-10 rounded-full bg-vogue-hero-muted"></div>
+            <div className="h-4 bg-vogue-hero-muted rounded w-12"></div>
+            <div className="w-10 h-10 rounded-full bg-vogue-hero-muted"></div>
           </div>
         </div>
       </div>

@@ -70,7 +70,7 @@ export function SearchPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 font-sans text-[#333]">
+    <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8 font-sans text-vogue-ink-soft">
       <div className="max-w-[1400px] mx-auto">
         <div className="flex flex-col lg:flex-row gap-10">
 
@@ -149,7 +149,7 @@ export function SearchPage() {
 
             {/* Top Search Area */}
             <div className="flex flex-col sm:flex-row items-center gap-4 mb-8">
-              <form onSubmit={handleSearch} className="flex-1 relative flex items-center w-full bg-[#f8f9fa] rounded-full px-4 h-14 border border-transparent focus-within:border-gray-300 focus-within:bg-white transition-all">
+              <form onSubmit={handleSearch} className="flex-1 relative flex items-center w-full bg-vogue-surface rounded-full px-4 h-14 border border-transparent focus-within:border-gray-300 focus-within:bg-white transition-all">
                 <Search size={20} className="text-gray-500 shrink-0" />
                 <input
                   type="text"
@@ -166,7 +166,7 @@ export function SearchPage() {
               </form>
               <button
                 onClick={handleSearch}
-                className="h-14 px-8 bg-[#1a1c23] hover:bg-black text-white rounded-full font-semibold text-[14px] flex items-center gap-2 transition-colors shrink-0"
+                className="h-14 px-8 bg-vogue-action hover:bg-vogue-action-hover text-white rounded-full font-semibold text-[14px] flex items-center gap-2 transition-colors shrink-0"
               >
                 Search <span className="text-lg leading-none">→</span>
               </button>

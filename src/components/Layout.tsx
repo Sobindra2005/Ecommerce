@@ -80,7 +80,7 @@ export function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#333333] font-sans flex flex-col">
+    <div className="min-h-screen bg-white text-vogue-ink-soft font-sans flex flex-col">
       {/* Navigation */}
       <nav className="border-b border-gray-100 sticky top-0 bg-white/80 backdrop-blur-md z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -295,7 +295,7 @@ const MessageCarousel = ({ products, onProductClick }: { products: any[], onProd
             <span className="font-extrabold text-[13px] text-gray-900 mb-1 ">${product.price.toFixed(2)}</span>
             <button
               onClick={(e) => { e.stopPropagation(); }}
-              className="w-full flex items-center justify-center gap-2 bg-[#1e293b] hover:bg-[#334155] text-white text-[12px] font-medium py-1.5 rounded-md transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-vogue-dark-muted hover:bg-vogue-dark-hover text-white text-[12px] font-medium py-1.5 rounded-md transition-colors"
             >
               <ShoppingCart size={15} />
               Add to cart
@@ -321,4 +321,3 @@ const MessageCarousel = ({ products, onProductClick }: { products: any[], onProd
     </div>
   );
 };
-
