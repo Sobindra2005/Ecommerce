@@ -41,11 +41,11 @@ export function HeroSection({ slides }: HeroSectionProps) {
             <div className="w-full md:w-[55%] flex flex-col justify-center">
               {/* TAGLINE */}
               <div className="flex items-center gap-4 mb-6">
-                <span className="uppercase tracking-[0.2em] text-[10px] sm:text-[11px] font-bold text-gray-700">{slide.tagline}</span>
-                <div className="w-8 sm:w-12 h-[1px] bg-gray-400"></div>
+                <span className="uppercase tracking-[0.2em] text-[10px] sm:text-[11px] font-bold text-vogue-text-muted">{slide.tagline}</span>
+                <div className="w-8 sm:w-12 h-px bg-vogue-text-subtle"></div>
               </div>
 
-              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-[80px] font-extrabold text-vogue-ink leading-[1.05] mb-6 tracking-tight">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-vogue-display font-extrabold text-vogue-text leading-[1.05] mb-6 tracking-tight">
                 {slide.title.split('\n').map((line, i, arr) => (
                   <Fragment key={i}>
                     {line}
@@ -54,11 +54,11 @@ export function HeroSection({ slides }: HeroSectionProps) {
                 ))}
               </h1>
 
-              <p className="text-gray-600 text-base sm:text-lg mb-10 max-w-[420px] leading-relaxed">
+              <p className="text-vogue-text-muted text-base sm:text-lg mb-10 max-w-[420px] leading-relaxed">
                 {slide.description}
               </p>
 
-              <button className="bg-vogue-action text-white px-8 py-3.5 sm:py-4 rounded-full font-semibold text-sm w-fit flex items-center gap-3 hover:bg-vogue-action-hover transition-colors mb-12 sm:mb-16 shadow-lg shadow-black/10">
+              <button className="bg-vogue-action text-vogue-canvas px-8 py-3.5 sm:py-4 rounded-vogue-pill font-semibold text-sm w-fit flex items-center gap-3 hover:bg-vogue-action-hover transition-colors mb-12 sm:mb-16 shadow-vogue-card shadow-black/10">
                 Shop Now <ArrowRight size={16} />
               </button>
 
@@ -66,26 +66,26 @@ export function HeroSection({ slides }: HeroSectionProps) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-[500px] mb-12">
             {/* Feature 1 */}
                 <div className="flex gap-3 items-start">
-                  <Leaf size={18} className="text-gray-700 mt-0.5 shrink-0" strokeWidth={1.5} />
+                  <Leaf size={18} className="text-vogue-text-muted mt-0.5 shrink-0" strokeWidth={1.5} />
                   <div className="flex flex-col">
-                    <span className="text-[12px] font-bold text-gray-900 mb-0.5">Premium Quality</span>
-                    <span className="text-[11px] text-gray-500 leading-tight">Crafted to last</span>
+                    <span className="text-[12px] font-bold text-vogue-text mb-0.5">Premium Quality</span>
+                    <span className="text-[11px] text-vogue-text-muted leading-tight">Crafted to last</span>
                   </div>
                 </div>
             {/* Feature 2 */}
                 <div className="flex gap-3 items-start">
-                  <Truck size={18} className="text-gray-700 mt-0.5 shrink-0" strokeWidth={1.5} />
+                  <Truck size={18} className="text-vogue-text-muted mt-0.5 shrink-0" strokeWidth={1.5} />
                   <div className="flex flex-col">
-                    <span className="text-[12px] font-bold text-gray-900 mb-0.5">Free Shipping</span>
-                    <span className="text-[11px] text-gray-500 leading-tight">On orders over $100</span>
+                    <span className="text-[12px] font-bold text-vogue-text mb-0.5">Free Shipping</span>
+                    <span className="text-[11px] text-vogue-text-muted leading-tight">On orders over $100</span>
                   </div>
                 </div>
             {/* Feature 3 */}
                 <div className="flex gap-3 items-start">
-                  <RefreshCw size={18} className="text-gray-700 mt-0.5 shrink-0" strokeWidth={1.5} />
+                  <RefreshCw size={18} className="text-vogue-text-muted mt-0.5 shrink-0" strokeWidth={1.5} />
                   <div className="flex flex-col">
-                    <span className="text-[12px] font-bold text-gray-900 mb-0.5">Easy Returns</span>
-                    <span className="text-[11px] text-gray-500 leading-tight">Hassle free</span>
+                    <span className="text-[12px] font-bold text-vogue-text mb-0.5">Easy Returns</span>
+                    <span className="text-[11px] text-vogue-text-muted leading-tight">Hassle free</span>
                   </div>
                 </div>
               </div>
@@ -94,16 +94,16 @@ export function HeroSection({ slides }: HeroSectionProps) {
               <div className="flex items-center gap-4 mt-auto">
                 <button
                   onClick={prevSlide}
-                  className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-white transition-colors cursor-pointer z-20"
+                  className="w-10 h-10 rounded-vogue-pill border border-vogue-border flex items-center justify-center text-vogue-text-muted hover:bg-vogue-canvas transition-colors cursor-pointer z-20"
                 >
                   <ArrowLeft size={16} />
                 </button>
-                <span className="text-[11px] font-bold text-gray-500 tracking-[0.15em] w-12 text-center">
+                <span className="text-[11px] font-bold text-vogue-text-muted tracking-[0.15em] w-12 text-center">
                   {String(currentSlide + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
                 </span>
                 <button
                   onClick={nextSlide}
-                  className="w-10 h-10 rounded-full border border-gray-300 flex items-center justify-center text-gray-600 hover:bg-white transition-colors cursor-pointer z-20"
+                  className="w-10 h-10 rounded-vogue-pill border border-vogue-border flex items-center justify-center text-vogue-text-muted hover:bg-vogue-canvas transition-colors cursor-pointer z-20"
                 >
                   <ArrowRight size={16} />
                 </button>
@@ -112,7 +112,7 @@ export function HeroSection({ slides }: HeroSectionProps) {
 
             {/* Handwritten Text on Right */}
             <div className="hidden lg:flex absolute right-16 xl:right-32 top-1/2 -translate-y-1/2 z-10 flex-col items-center">
-              <div className="font-serif italic text-2xl xl:text-3xl text-white mix-blend-overlay -rotate-12 opacity-90 text-right leading-tight drop-shadow-md">
+              <div className="font-serif italic text-2xl xl:text-3xl text-vogue-canvas mix-blend-overlay -rotate-12 opacity-90 text-right leading-tight drop-shadow-md">
                 {slide.handwritten.split('\n').map((line, i, arr) => (
                   <Fragment key={i}>
                     {line}
@@ -120,7 +120,7 @@ export function HeroSection({ slides }: HeroSectionProps) {
                   </Fragment>
                 ))}
               </div>
-              <svg className="w-16 h-3 mt-3 -rotate-12 text-white opacity-70 mix-blend-overlay drop-shadow-md" viewBox="0 0 100 10" preserveAspectRatio="none">
+              <svg className="w-16 h-3 mt-3 -rotate-12 text-vogue-canvas opacity-70 mix-blend-overlay drop-shadow-md" viewBox="0 0 100 10" preserveAspectRatio="none">
                 <path d="M0 5 Q 50 0 100 5" stroke="currentColor" fill="transparent" strokeWidth="2" strokeLinecap="round" />
               </svg>
             </div>
@@ -146,7 +146,7 @@ export function HeroSkeleton() {
           <div className="h-5 bg-vogue-hero-muted rounded w-[70%] mb-2"></div>
           <div className="h-5 bg-vogue-hero-muted rounded w-[50%] mb-10"></div>
 
-          <div className="h-14 bg-vogue-hero-muted rounded-full w-40 mb-16"></div>
+          <div className="h-14 bg-vogue-hero-muted rounded-vogue-pill w-40 mb-16"></div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-[500px] mb-12">
             <div className="h-10 bg-vogue-hero-muted rounded w-full"></div>
@@ -155,9 +155,9 @@ export function HeroSkeleton() {
           </div>
 
           <div className="flex items-center gap-4 mt-auto">
-            <div className="w-10 h-10 rounded-full bg-vogue-hero-muted"></div>
+            <div className="w-10 h-10 rounded-vogue-pill bg-vogue-hero-muted"></div>
             <div className="h-4 bg-vogue-hero-muted rounded w-12"></div>
-            <div className="w-10 h-10 rounded-full bg-vogue-hero-muted"></div>
+            <div className="w-10 h-10 rounded-vogue-pill bg-vogue-hero-muted"></div>
           </div>
         </div>
       </div>

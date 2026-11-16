@@ -54,17 +54,17 @@ export function ShoppingCart() {
     const total = Math.round(subTotal - discountAmount + deliveryFee);
 
     return (
-        <div className="min-h-screen bg-white text-gray-900 p-4 md:p-8 ">
+        <div className="min-h-screen bg-vogue-canvas text-vogue-text p-4 md:p-8 ">
             <div className="max-w-6xl mx-auto">
-                <h1 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-gray-900">Shopping Cart</h1>
+                <h1 className="text-3xl md:text-4xl font-bold mb-8 md:mb-12 text-vogue-text">Shopping Cart</h1>
 
                 <div className="flex flex-col lg:flex-row gap-8 items-start">
 
                     {/* Left Column - Cart Items */}
-                    <div className="w-full border border-gray-200 rounded-3xl bg-white p-6 mb-6">
+                    <div className="w-full border border-vogue-border rounded-vogue-panel bg-vogue-canvas p-6 mb-6">
 
                         {/* Header Row (Desktop only) */}
-                        <div className="hidden md:flex items-center text-sm font-semibold text-gray-900 pb-4 border-b border-gray-100">
+                        <div className="hidden md:flex items-center text-sm font-semibold text-vogue-text pb-4 border-b border-vogue-border-subtle">
                             <div className="flex-1">Product Code</div>
                             <div className="w-[120px] text-center">Quantity</div>
                             <div className="w-[80px] text-center">Total</div>
@@ -83,7 +83,7 @@ export function ShoppingCart() {
                                     />
                                 ))
                             ) : (
-                                <div className="py-12 text-center text-gray-500">
+                                <div className="py-12 text-center text-vogue-text-muted">
                                     Your cart is empty.
                                 </div>
                             )}

@@ -3,20 +3,30 @@
 
 @theme {
   --font-sans: "Plus Jakarta Sans", sans-serif;
+  --font-display: "Plus Jakarta Sans", sans-serif;
 
   --color-vogue-canvas: #ffffff;
   --color-vogue-surface: #f8f9fa;
   --color-vogue-surface-muted: #f6f2eb;
+  --color-vogue-surface-subtle: #f3f4f6;
+  --color-vogue-surface-skeleton: #e5e7eb;
   --color-vogue-hero: #e8e4dc;
   --color-vogue-hero-muted: #d8d4cc;
-  --color-vogue-ink: #1a1a1a;
-  --color-vogue-ink-soft: #333333;
-  --color-vogue-muted: #6b7280;
-  --color-vogue-subtle: #9ca3af;
-  --color-vogue-line: #e5e7eb;
-  --color-vogue-line-soft: #f3f4f6;
+  --color-vogue-text: #1a1a1a;
+  --color-vogue-text-strong: #111111;
+  --color-vogue-text-muted: #6b7280;
+  --color-vogue-text-subtle: #9ca3af;
+  --color-vogue-border: #e5e7eb;
+  --color-vogue-border-subtle: #f3f4f6;
   --color-vogue-action: #1a1c23;
   --color-vogue-action-hover: #000000;
+  --color-vogue-danger: #ef4444;
+  --color-vogue-focus: #64748b;
+  --color-vogue-chat: #2563eb;
+  --color-vogue-chat-hover: #1d4ed8;
+  --color-vogue-chat-soft: #dbeafe;
+  --color-vogue-chat-muted: #bfdbfe;
+  --color-vogue-chat-status: #4ade80;
   --color-vogue-dark: #111111;
   --color-vogue-dark-muted: #1e293b;
   --color-vogue-dark-hover: #334155;
@@ -30,14 +40,29 @@
   --color-vogue-promo-ink: #e11d48;
   --color-vogue-accent: #a46e45;
   --color-vogue-rating: #fbbf24;
+  --radius-vogue-control: 0.5rem;
+  --radius-vogue-card: 1rem;
+  --radius-vogue-panel: 1.5rem;
+  --radius-vogue-pill: 9999px;
+  --spacing-vogue-control: 3.5rem;
+  --spacing-vogue-banner-height: 21.875rem;
+  --spacing-vogue-chat-width: 25rem;
+  --spacing-vogue-chat-height: 34.375rem;
+  --text-vogue-display: 5rem;
+  --text-vogue-title: 2.625rem;
+  --text-vogue-price: 2rem;
+  --text-vogue-body: 0.9375rem;
+  --text-vogue-label: 0.8125rem;
   --shadow-vogue-card: 0 0.5rem 1.5rem rgb(0 0 0 / 0.08);
   --shadow-vogue-control: 0 0.125rem 0.5rem rgb(0 0 0 / 0.08);
   --shadow-vogue-soft: 0 0.125rem 0.75rem rgb(0 0 0 / 0.04);
+  --shadow-vogue-popover: 0 1rem 2rem rgb(0 0 0 / 0.12);
 }
 
 @layer base {
   body {
     background: var(--color-vogue-canvas);
-    color: var(--color-vogue-ink-soft);
+    color: var(--color-vogue-text);
+    font-family: var(--font-sans);
   }
 }

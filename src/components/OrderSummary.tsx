@@ -15,50 +15,50 @@ interface OrderSummaryProps {
 
 export function OrderSummary({ subTotal, discountPercent, discountAmount, deliveryFee, total }: OrderSummaryProps) {
   return (
-    <div className="border border-gray-200 rounded-3xl p-6 bg-white flex flex-col h-full">
-      <h2 className="text-lg font-semibold text-gray-900 mb-6">Order Summary</h2>
+    <div className="border border-vogue-border rounded-vogue-panel p-6 bg-vogue-canvas flex flex-col h-full">
+      <h2 className="text-lg font-semibold text-vogue-text mb-6">Order Summary</h2>
 
       <div className="flex gap-2 mb-8">
         <input
           type="text"
           placeholder="Discount voucher"
-          className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-gray-500 focus:ring-1 focus:ring-gray-500"
+          className="flex-1 border border-vogue-border rounded-vogue-pill px-4 py-2 text-sm focus:outline-none focus:border-vogue-focus focus:ring-1 focus:ring-vogue-focus"
         />
-        <button className="border border-gray-300 rounded-full px-6 py-2 text-sm font-medium hover:bg-gray-50 transition-colors cursor-pointer">
+        <button className="border border-vogue-border rounded-vogue-pill px-6 py-2 text-sm font-medium hover:bg-vogue-surface-subtle transition-colors cursor-pointer">
           Apply
         </button>
       </div>
 
       <div className="space-y-4 mb-8 flex-1">
         <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-600">Sub Total</span>
-          <span className="font-semibold text-gray-900">{subTotal.toLocaleString()} USD</span>
+          <span className="text-vogue-text-muted">Sub Total</span>
+          <span className="font-semibold text-vogue-text">{subTotal.toLocaleString()} USD</span>
         </div>
         <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-600">Discount ({discountPercent}%)</span>
-          <span className="font-semibold text-gray-900">-{discountAmount.toLocaleString()}USD</span>
+          <span className="text-vogue-text-muted">Discount ({discountPercent}%)</span>
+          <span className="font-semibold text-vogue-text">-{discountAmount.toLocaleString()}USD</span>
         </div>
         <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-600">Delivery fee</span>
-          <span className="font-semibold text-gray-900">{deliveryFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} USD</span>
+          <span className="text-vogue-text-muted">Delivery fee</span>
+          <span className="font-semibold text-vogue-text">{deliveryFee.toLocaleString('en-US', { minimumFractionDigits: 2 })} USD</span>
         </div>
         
-        <div className="pt-4 mt-4 border-t border-gray-100 flex justify-between items-center">
-          <span className="font-medium text-gray-900">Total</span>
-          <span className="text-xl font-bold text-gray-900">${total} USD</span>
+        <div className="pt-4 mt-4 border-t border-vogue-border-subtle flex justify-between items-center">
+          <span className="font-medium text-vogue-text">Total</span>
+          <span className="text-xl font-bold text-vogue-text">${total} USD</span>
         </div>
       </div>
 
-      <div className="flex items-start gap-3 mb-6 bg-gray-50/50 p-3 rounded-xl text-xs text-gray-600">
-        <div className="shrink-0 mt-0.5 text-gray-400">
+      <div className="flex items-start gap-3 mb-6 bg-vogue-surface-subtle/50 p-3 rounded-vogue-card text-xs text-vogue-text-muted">
+        <div className="shrink-0 mt-0.5 text-vogue-text-subtle">
           <ShieldIcon />
         </div>
         <p>
-          90 Day Limited Warranty against manufacturer's defects <a href="#" className="font-semibold underline decoration-gray-300 hover:text-black">Details</a>
+          90 Day Limited Warranty against manufacturer's defects <a href="#" className="font-semibold underline decoration-vogue-border hover:text-vogue-action-hover">Details</a>
         </p>
       </div>
 
-      <button className="w-full bg-black text-white rounded-full py-4 font-medium hover:bg-gray-800 transition-colors cursor-pointer">
+      <button className="w-full bg-vogue-action text-vogue-canvas rounded-vogue-pill py-4 font-medium hover:bg-vogue-dark-hover transition-colors cursor-pointer">
         Checkout Now
       </button>
     </div>

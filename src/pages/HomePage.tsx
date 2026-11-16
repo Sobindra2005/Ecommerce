@@ -83,10 +83,10 @@ export function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24">
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Trending Now</h2>
-            <p className="text-gray-500">Discover what our customers are loving right now.</p>
+            <h2 className="text-3xl font-bold text-vogue-text mb-2">Trending Now</h2>
+            <p className="text-vogue-text-muted">Discover what our customers are loving right now.</p>
           </div>
-          <a href="#" className="hidden sm:inline-flex items-center gap-1 font-semibold text-gray-900 hover:text-gray-600 transition-colors">
+          <a href="#" className="hidden sm:inline-flex items-center gap-1 font-semibold text-vogue-text hover:text-vogue-text-muted transition-colors">
             View All Products <ArrowRight size={18} />
           </a>
         </div>
@@ -101,12 +101,12 @@ export function HomePage() {
               <ProductCard key={product.id} product={product} />
             ))
           ) : (
-            <div className="col-span-full text-center py-10 text-gray-500 font-medium">No products found.</div>
+            <div className="col-span-full text-center py-10 text-vogue-text-muted font-medium">No products found.</div>
           )}
         </div>
 
         <div className="mt-12 text-center sm:hidden">
-          <button className="border border-gray-300 rounded-full px-8 py-3 font-semibold text-gray-900 hover:bg-gray-50 transition-colors">
+          <button className="border border-vogue-border rounded-vogue-pill px-8 py-3 font-semibold text-vogue-text hover:bg-vogue-surface-subtle transition-colors">
             View All Products
           </button>
         </div>

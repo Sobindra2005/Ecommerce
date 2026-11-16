@@ -80,29 +80,29 @@ export function Layout() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-vogue-ink-soft font-sans flex flex-col">
+    <div className="min-h-screen bg-vogue-canvas text-vogue-text font-sans flex flex-col">
       {/* Navigation */}
-      <nav className="border-b border-gray-100 sticky top-0 bg-white/80 backdrop-blur-md z-50">
+      <nav className="border-b border-vogue-border-subtle sticky top-0 bg-vogue-canvas/80 backdrop-blur-md z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <Link to="/" className="flex items-center gap-8">
-              <span className="text-2xl font-black tracking-tighter text-black">VOGUE.</span>
+              <span className="text-2xl font-black tracking-tighter text-vogue-action">VOGUE.</span>
             </Link>
-            <div className="hidden md:flex gap-6 font-medium text-sm text-gray-500">
-              <Link to="/" className="text-black transition-colors">Home</Link>
-              <a href="#" className="hover:text-black transition-colors">Shop</a>
-              <a href="#" className="hover:text-black transition-colors">Categories</a>
-              <a href="#" className="hover:text-black transition-colors">Events</a>
-              <a href="#" className="hover:text-black transition-colors">Blog</a>
+            <div className="hidden md:flex gap-6 font-medium text-sm text-vogue-text-muted">
+              <Link to="/" className="text-vogue-action transition-colors">Home</Link>
+              <a href="#" className="hover:text-vogue-action-hover transition-colors">Shop</a>
+              <a href="#" className="hover:text-vogue-action-hover transition-colors">Categories</a>
+              <a href="#" className="hover:text-vogue-action-hover transition-colors">Events</a>
+              <a href="#" className="hover:text-vogue-action-hover transition-colors">Blog</a>
             </div>
             <div className="flex items-center gap-5">
-              <button onClick={() => navigate("/search")} className="text-gray-600 hover:text-black transition-colors"><Search size={22} /></button>
-              <button onClick={() => navigate("/shoppingcart")} className="text-gray-600 hover:text-black transition-colors relative">
+              <button onClick={() => navigate("/search")} className="text-vogue-text-muted hover:text-vogue-action-hover transition-colors"><Search size={22} /></button>
+              <button onClick={() => navigate("/shoppingcart")} className="text-vogue-text-muted hover:text-vogue-action-hover transition-colors relative">
                 <ShoppingCart size={22} />
-                <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">3</span>
+                <span className="absolute -top-1.5 -right-1.5 bg-vogue-action text-vogue-canvas text-[10px] font-bold h-4 w-4 rounded-vogue-pill flex items-center justify-center">3</span>
               </button>
-              <button className="text-gray-600 hover:text-black transition-colors"><User size={22} /></button>
-              <button className="md:hidden text-gray-600 hover:text-black transition-colors"><Menu size={24} /></button>
+              <button className="text-vogue-text-muted hover:text-vogue-action-hover transition-colors"><User size={22} /></button>
+              <button className="md:hidden text-vogue-text-muted hover:text-vogue-action-hover transition-colors"><Menu size={24} /></button>
             </div>
           </div>
         </div>
@@ -114,36 +114,36 @@ export function Layout() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-16">
+      <footer className="bg-vogue-dark text-vogue-canvas py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <span className="text-2xl font-black tracking-tighter mb-4 block">VOGUE.</span>
-            <p className="text-gray-400 text-sm mb-6">Your premier destination for the latest fashion trends and timeless classics.</p>
+            <p className="text-vogue-text-subtle text-sm mb-6">Your premier destination for the latest fashion trends and timeless classics.</p>
           </div>
           <div>
             <h4 className="font-bold mb-4">Shop</h4>
-            <ul className="space-y-2 text-gray-400 text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">Women</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Men</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Accessories</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Shoes</a></li>
+            <ul className="space-y-2 text-vogue-text-subtle text-sm">
+              <li><a href="#" className="hover:text-vogue-canvas transition-colors">Women</a></li>
+              <li><a href="#" className="hover:text-vogue-canvas transition-colors">Men</a></li>
+              <li><a href="#" className="hover:text-vogue-canvas transition-colors">Accessories</a></li>
+              <li><a href="#" className="hover:text-vogue-canvas transition-colors">Shoes</a></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold mb-4">Company</h4>
-            <ul className="space-y-2 text-gray-400 text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Store Locator</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+            <ul className="space-y-2 text-vogue-text-subtle text-sm">
+              <li><a href="#" className="hover:text-vogue-canvas transition-colors">About Us</a></li>
+              <li><a href="#" className="hover:text-vogue-canvas transition-colors">Careers</a></li>
+              <li><a href="#" className="hover:text-vogue-canvas transition-colors">Store Locator</a></li>
+              <li><a href="#" className="hover:text-vogue-canvas transition-colors">Contact</a></li>
             </ul>
           </div>
           <div>
             <h4 className="font-bold mb-4">Newsletter</h4>
-            <p className="text-gray-400 text-sm mb-4">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
+            <p className="text-vogue-text-subtle text-sm mb-4">Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.</p>
             <div className="flex">
-              <input type="email" placeholder="Your email" className="bg-gray-800 border-none px-4 py-2 text-sm w-full focus:ring-1 focus:ring-white rounded-l-md outline-none" />
-              <button className="bg-white text-black px-4 py-2 text-sm font-bold rounded-r-md">Subscribe</button>
+              <input type="email" placeholder="Your email" className="bg-vogue-dark-muted border-none px-4 py-2 text-sm w-full focus:ring-1 focus:ring-vogue-canvas rounded-l-vogue-control outline-none" />
+              <button className="bg-vogue-canvas text-vogue-action px-4 py-2 text-sm font-bold rounded-r-vogue-control">Subscribe</button>
             </div>
           </div>
         </div>
@@ -155,8 +155,7 @@ export function Layout() {
           <motion.div
             layoutId="chat-widget"
             onClick={() => setIsChatOpen(true)}
-            className="fixed bottom-6 right-6 bg-gray-500 text-white shadow-lg hover:bg-gray-800 transition-colors z-50 flex items-center justify-center cursor-pointer"
-            style={{ borderRadius: "16px", width: "56px", height: "56px" }}
+            className="fixed bottom-6 right-6 w-vogue-control h-vogue-control rounded-vogue-card bg-vogue-text-muted text-vogue-canvas shadow-vogue-card hover:bg-vogue-dark-hover transition-colors z-50 flex items-center justify-center cursor-pointer"
           >
             <motion.div
               initial={{ opacity: 0 }}
@@ -172,51 +171,50 @@ export function Layout() {
         ) : (
           <motion.div
             layoutId="chat-widget"
-            className="fixed bottom-6 right-6 bg-white shadow-2xl z-50 flex flex-col overflow-hidden border border-gray-200"
-            style={{ borderRadius: "16px", width: "400px", height: "550px" }}
+            className="fixed bottom-6 right-6 w-vogue-chat-width h-vogue-chat-height rounded-vogue-card bg-vogue-canvas shadow-vogue-popover z-50 flex flex-col overflow-hidden border border-vogue-border"
           >
             {/* Chat Header */}
-            <div className="bg-blue-600 text-white p-4 flex justify-between items-center">
+            <div className="bg-vogue-chat text-vogue-canvas p-4 flex justify-between items-center">
               <motion.span layoutId="chat-icon" className="flex items-center gap-3 font-bold">
                 <div className="relative">
-                  <div className="bg-white/20 p-1.5 rounded-full">
+                  <div className="bg-vogue-canvas/20 p-1.5 rounded-vogue-pill">
                     <MessageCircle size={20} />
                   </div>
-                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-400 border-2 border-blue-600 rounded-full"></div>
+                  <div className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-vogue-chat-status border-2 border-vogue-chat rounded-vogue-pill"></div>
                 </div>
                 <div>
                   <div className="text-sm">Customer Support</div>
-                  <div className="text-xs text-blue-100 font-normal">We usually reply in minutes</div>
+                  <div className="text-xs text-vogue-chat-muted font-normal">We usually reply in minutes</div>
                 </div>
               </motion.span>
               <button
                 onClick={(e) => { e.stopPropagation(); setIsChatOpen(false); }}
-                className="text-white/70 hover:text-white transition-colors p-1"
+                className="text-vogue-canvas/70 hover:text-vogue-canvas transition-colors p-1"
               >
                 <X size={20} />
               </button>
             </div>
 
             {/* Chat Body */}
-            <div className="flex-1 p-4 bg-gray-50 flex flex-col gap-3 overflow-y-auto">
-              <div className="text-center text-xs text-gray-400 my-2">
+            <div className="flex-1 p-4 bg-vogue-surface-subtle flex flex-col gap-3 overflow-y-auto">
+              <div className="text-center text-xs text-vogue-text-subtle my-2">
                 Today
               </div>
 
               {messages.map((msg) => (
                 <div key={msg.id} className={`flex gap-2 ${msg.sender === 'user' ? 'flex-row-reverse' : ''}`}>
                   {msg.sender === 'bot' && (
-                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                      <User size={16} className="text-blue-600" />
+                    <div className="w-8 h-8 rounded-vogue-pill bg-vogue-chat-soft flex items-center justify-center flex-shrink-0">
+                      <User size={16} className="text-vogue-chat" />
                     </div>
                   )}
                   <div className="flex flex-col gap-2 max-w-[80%]">
-                    <div className={`p-3 rounded-2xl shadow-sm text-sm ${msg.sender === 'user'
-                      ? 'bg-blue-600 text-white rounded-tr-none'
-                      : 'bg-white border border-gray-100 text-gray-700 rounded-tl-none'
+                    <div className={`p-3 rounded-vogue-card shadow-vogue-soft text-sm ${msg.sender === 'user'
+                      ? 'bg-vogue-chat text-vogue-canvas rounded-tr-none'
+                      : 'bg-vogue-canvas border border-vogue-border-subtle text-vogue-text-muted rounded-tl-none'
                       }`}>
                       {msg.text}
-                      <div className={`text-[10px] mt-1 text-right ${msg.sender === 'user' ? 'text-blue-200' : 'text-gray-400'}`}>
+                      <div className={`text-[10px] mt-1 text-right ${msg.sender === 'user' ? 'text-vogue-chat-muted' : 'text-vogue-text-subtle'}`}>
                         {msg.time}
                       </div>
                     </div>
@@ -233,19 +231,19 @@ export function Layout() {
             </div>
 
             {/* Chat Input */}
-            <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-100 bg-white">
+            <form onSubmit={handleSendMessage} className="p-4 border-t border-vogue-border-subtle bg-vogue-canvas">
               <div className="flex gap-2">
                 <input
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Type your message..."
-                  className="w-full px-3 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm bg-gray-50 focus:bg-white transition-colors"
+                  className="w-full px-3 py-2.5 border border-vogue-border rounded-vogue-control focus:outline-none focus:ring-1 focus:ring-vogue-chat text-sm bg-vogue-surface-subtle focus:bg-vogue-canvas transition-colors"
                 />
                 <button
                   type="submit"
                   disabled={!inputValue.trim()}
-                  className="bg-blue-600 text-white p-2.5 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:hover:bg-blue-600 transition-colors flex-shrink-0 flex items-center justify-center shadow-sm"
+                  className="bg-vogue-chat text-vogue-canvas p-2.5 rounded-vogue-control hover:bg-vogue-chat-hover disabled:opacity-50 disabled:hover:bg-vogue-chat transition-colors flex-shrink-0 flex items-center justify-center shadow-vogue-soft"
                 >
                   <Send size={18} className="ml-1" />
                 </button>
@@ -283,19 +281,19 @@ const MessageCarousel = ({ products, onProductClick }: { products: any[], onProd
         {products.map(product => (
           <div
             key={product.id}
-            className="snap-start shrink-0 w-[120px] bg-white border border-gray-100 rounded-xl p-1 cursor-pointer transition-all hover:shadow-md flex flex-col"
+            className="snap-start shrink-0 w-[120px] bg-vogue-canvas border border-vogue-border-subtle rounded-vogue-card p-1 cursor-pointer transition-all hover:shadow-md flex flex-col"
           >
             <div
               onClick={() => onProductClick(product.id)}
-              className="w-full aspect-[4/4] rounded-lg overflow-hidden bg-gray-50 mb-1.5"
+              className="w-full aspect-[4/4] rounded-vogue-control overflow-hidden bg-vogue-surface-subtle mb-1.5"
             >
               <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover transition-transform hover:scale-105" />
             </div>
-            <h4 className=" text-[13px] font-semibold text-gray-700 truncate">{product.name}</h4>
-            <span className="font-extrabold text-[13px] text-gray-900 mb-1 ">${product.price.toFixed(2)}</span>
+            <h4 className=" text-[13px] font-semibold text-vogue-text-muted truncate">{product.name}</h4>
+            <span className="font-extrabold text-[13px] text-vogue-text mb-1 ">${product.price.toFixed(2)}</span>
             <button
               onClick={(e) => { e.stopPropagation(); }}
-              className="w-full flex items-center justify-center gap-2 bg-vogue-dark-muted hover:bg-vogue-dark-hover text-white text-[12px] font-medium py-1.5 rounded-md transition-colors"
+              className="w-full flex items-center justify-center gap-2 bg-vogue-dark-muted hover:bg-vogue-dark-hover text-vogue-canvas text-[12px] font-medium py-1.5 rounded-vogue-control transition-colors"
             >
               <ShoppingCart size={15} />
               Add to cart
@@ -307,14 +305,14 @@ const MessageCarousel = ({ products, onProductClick }: { products: any[], onProd
 
       <button
         onClick={(e) => { e.stopPropagation(); scroll('left'); }}
-        className="absolute left-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur shadow-lg rounded-full flex items-center justify-center border border-gray-200 text-gray-700 z-10 hover:bg-white hover:shadow-xl transition-all"
+        className="absolute left-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-vogue-canvas/90 backdrop-blur shadow-vogue-card rounded-vogue-pill flex items-center justify-center border border-vogue-border text-vogue-text-muted z-10 hover:bg-vogue-canvas hover:shadow-vogue-popover transition-all"
       >
         <ChevronLeft size={18} />
       </button>
 
       <button
         onClick={(e) => { e.stopPropagation(); scroll('right'); }}
-        className="absolute right-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-white/90 backdrop-blur shadow-lg rounded-full flex items-center justify-center border border-gray-200 text-gray-700 z-10 hover:bg-white hover:shadow-xl transition-all"
+        className="absolute right-0 top-[35%] -translate-y-1/2 w-8 h-8 bg-vogue-canvas/90 backdrop-blur shadow-vogue-card rounded-vogue-pill flex items-center justify-center border border-vogue-border text-vogue-text-muted z-10 hover:bg-vogue-canvas hover:shadow-vogue-popover transition-all"
       >
         <ChevronRight size={18} />
       </button>

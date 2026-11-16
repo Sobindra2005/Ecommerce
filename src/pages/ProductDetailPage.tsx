@@ -33,7 +33,7 @@ export function ProductDetailPage() {
     fetchProduct();
   }, [id]);
 
-  if (error) return <div className="text-center py-32 text-red-500 font-medium text-lg">{error}</div>;
+  if (error) return <div className="text-center py-32 text-vogue-danger font-medium text-lg">{error}</div>;
 
   return (
     <>
